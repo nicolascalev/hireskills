@@ -1,0 +1,20 @@
+:root {
+  --mantine-breakpoint-xs: 36em;
+  --mantine-breakpoint-sm: 48em;
+  --mantine-breakpoint-md: 62em;
+  --mantine-breakpoint-lg: 75em;
+  --mantine-breakpoint-xl: 88em;
+}
+
+.flex-grow-1 {
+  flex-grow: 1;
+}
+.navbar__search {
+  flex-grow: 1;
+}
+
+@media (min-width: 48em) {
+  .navbar__search {
+    max-width: 300px;
+  }
+}
