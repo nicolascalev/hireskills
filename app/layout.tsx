@@ -1,5 +1,12 @@
 import "@mantine/core/styles.css";
-import { AppShell, AppShellHeader, AppShellMain, ColorSchemeScript, MantineProvider } from "@mantine/core";
+import {
+  AppShell,
+  AppShellHeader,
+  AppShellMain,
+  ColorSchemeScript,
+  MantineProvider,
+  createTheme,
+} from "@mantine/core";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "@/app/ui/globals.css";
@@ -12,6 +19,10 @@ export const metadata: Metadata = {
   description: "Find developer based on their skills",
 };
 
+const theme = createTheme({
+  primaryColor: "indigo",
+});
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -23,7 +34,7 @@ export default function RootLayout({
         <ColorSchemeScript />
       </head>
       <body className={inter.className}>
-        <MantineProvider>
+        <MantineProvider theme={theme}>
           <AppShell header={{ height: 60 }}>
             <AppShellHeader>
               <MainNav />
