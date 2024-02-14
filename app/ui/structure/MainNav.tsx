@@ -14,6 +14,17 @@ import {
 import { useDisclosure } from "@mantine/hooks";
 import { SearchableSelect } from "../SearchableSelect";
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
+
+type Link = {
+  label: string;
+  href: string;
+};
+
+const links: Link[] = [
+  { label: "Projects", href: "/projects" },
+  { label: "Developers", href: "/developers" },
+];
 
 function MainNav() {
   const mobileNavbarFooter = useRef<HTMLDivElement>(null);
@@ -29,20 +40,11 @@ function MainNav() {
   }, [opened]);
   useEffect(() => {
     if (mobileNavbarFooter.current) {
-      setMobileNavbarFooterOffsetHeight(mobileNavbarFooter.current.offsetHeight);
+      setMobileNavbarFooterOffsetHeight(
+        mobileNavbarFooter.current.offsetHeight
+      );
     }
   }, [dummy, mobileNavbarFooter]);
-
-  const content = Array(5)
-    .fill(0)
-    .map((_, index) => (
-      <NavLink
-        key={index}
-        href="#required-for-focus"
-        label={"Link" + index}
-        py="md"
-      />
-    ));
 
   return (
     <Container h="100%" size="xl">
@@ -50,15 +52,18 @@ function MainNav() {
         <Group align="center">
           <Avatar color="indigo">HS</Avatar>
           <Group gap="xs" component="nav" visibleFrom="sm">
-            <Button size="sm" variant="subtle" color="dark">
-              Projects
-            </Button>
-            <Button size="sm" variant="subtle" color="dark">
-              Developers
-            </Button>
-            <Button size="sm" variant="subtle" color="dark">
-              Other
-            </Button>
+            {links.map((link) => (
+              <Button
+                component={Link}
+                key={link.href}
+                href={link.href}
+                size="sm"
+                variant="subtle"
+                color="dark"
+              >
+                {link.label}
+              </Button>
+            ))}
           </Group>
         </Group>
         <Group align="center" justify="end" className="flex-grow-1">
@@ -84,8 +89,18 @@ function MainNav() {
             }}
             size="xl"
           >
-            <ScrollArea h={`calc(100svh - 70px - ${mobileNavbarFooterOffsetHeight}px)`}>
-              {content}
+            <ScrollArea
+              h={`calc(100svh - 70px - ${mobileNavbarFooterOffsetHeight}px)`}
+            >
+              {links.map((link) => (
+                <NavLink
+                  component={Link}
+                  key={link.href}
+                  href={link.href}
+                  label={link.label}
+                  py="md"
+                />
+              ))}
             </ScrollArea>
             <Box
               ref={mobileNavbarFooter}

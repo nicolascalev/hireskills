@@ -17,4 +17,8 @@
   .navbar__search {
     max-width: 300px;
   }
+
+  .md-flex-grow-0 {
+    flex-grow: 0;
+  }
 }

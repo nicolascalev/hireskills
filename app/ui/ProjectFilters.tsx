@@ -1,5 +1,5 @@
 import SortProjectsButton from "@/app/ui/SortProjectsButton";
-import { Select, Stack, Switch, TextInput } from "@mantine/core";
+import { Select, Switch, TextInput } from "@mantine/core";
 
 function ProjectFilters() {
   return (

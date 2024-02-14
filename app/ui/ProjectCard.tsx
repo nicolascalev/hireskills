@@ -32,7 +32,7 @@ function ProjectCard() {
                 <IconRosetteFilled style={{ width: "60%", height: "60%" }} />
               </ThemeIcon>
               <Text size="xs">Verified project</Text>
-              <ThemeIcon variant="white" color="blue">
+              <ThemeIcon variant="white">
                 <IconRosetteFilled style={{ width: "60%", height: "60%" }} />
               </ThemeIcon>
               <Text size="xs">Used by people</Text>
