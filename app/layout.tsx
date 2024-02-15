@@ -1,4 +1,6 @@
 import "@mantine/core/styles.css";
+import "@mantine/carousel/styles.css";
+import "@/app/ui/globals.css";
 import {
   AppShell,
   AppShellHeader,
@@ -9,7 +11,6 @@ import {
 } from "@mantine/core";
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
-import "@/app/ui/globals.css";
 import MainNav from "@/app/ui/structure/MainNav";
 import { headers } from "next/headers";
 
