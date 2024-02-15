@@ -1,14 +1,13 @@
 import {
-  Card,
-  Text,
-  Group,
-  Avatar,
-  Divider,
-  ThemeIcon,
-  Button,
   ActionIcon,
-  Center,
+  Avatar,
+  Button,
+  Card,
+  Divider,
+  Group,
   Stack,
+  Text,
+  ThemeIcon
 } from "@mantine/core";
 import {
   IconBrandGithub,
@@ -27,29 +26,19 @@ function ProjectCard() {
               Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error,
               qui.
             </Text>
-            <Group gap="xs" wrap="nowrap" mt="sm">
+            <Group gap="5px" wrap="nowrap" align="center" mt="sm">
               <ThemeIcon variant="white" color="green">
                 <IconRosetteFilled style={{ width: "60%", height: "60%" }} />
               </ThemeIcon>
-              <Text size="xs">Verified project</Text>
+              <Text size="xs" mr="5px">
+                Verified project
+              </Text>
               <ThemeIcon variant="white">
                 <IconRosetteFilled style={{ width: "60%", height: "60%" }} />
               </ThemeIcon>
               <Text size="xs">Used by people</Text>
             </Group>
           </div>
-          <Card withBorder p={0} miw={50} mih={50}>
-            <Center h="100%" w="100%">
-              <div>
-                <ThemeIcon size="xs" variant="white" color="gray">
-                  <IconStar style={{ width: "60%", height: "60%" }} />
-                </ThemeIcon>
-                <Text size="sm" ta="center">
-                  14
-                </Text>
-              </div>
-            </Center>
-          </Card>
         </Group>
         <Divider />
         <Group>
@@ -73,13 +62,23 @@ function ProjectCard() {
             Level: Advanced
           </Text>
         </div>
-        <Group justify="end" gap="xs">
-          <ActionIcon variant="default">
-            <IconBrandGithub style={{ width: "60%", height: "60%" }} />
-          </ActionIcon>
-          <Button size="xs" variant="default">
-            Details
-          </Button>
+        <Group justify="space-between">
+          <Group align="center" gap="2px">
+            <ThemeIcon variant="white" color="gray" size="sm">
+              <IconStar size={14} />
+            </ThemeIcon>
+            <Text size="sm">
+              14
+            </Text>
+          </Group>
+          <Group gap="xs">
+            <ActionIcon variant="default">
+              <IconBrandGithub style={{ width: "60%", height: "60%" }} />
+            </ActionIcon>
+            <Button size="xs" variant="default">
+              Details
+            </Button>
+          </Group>
         </Group>
       </Stack>
     </Card>

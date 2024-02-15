@@ -1,21 +1,31 @@
-import SortProjectsButton from "@/app/ui/SortProjectsButton";
-import { Select, Switch, TextInput } from "@mantine/core";
+import {
+  Checkbox,
+  CheckboxGroup,
+  Select,
+  Stack,
+  Switch,
+  TextInput,
+} from "@mantine/core";
 
 function ProjectFilters() {
   return (
     <>
-      <SortProjectsButton />
+      <Select
+        label="Sort"
+        defaultValue="Popular top"
+        data={["Popular top", "Least popular top", "Newest top", "Oldest top"]}
+      />
       <TextInput label="Search" placeholder="Search" />
-      <Select
-        label="Developer status"
-        defaultValue="Looking"
-        data={["Looking", "Open", "Busy"]}
-      />
-      <Select
-        label="Level"
-        defaultValue="All"
-        data={["All", "Basic", "Intermediate", "Advanced"]}
-      />
+      <CheckboxGroup
+        defaultValue={["Basic", "Intermediate", "Advanced"]}
+        label="Project level"
+      >
+        <Stack gap="5px" mt="xs">
+          <Checkbox value="Basic" label="Basic" color="dark" />
+          <Checkbox value="Intermediate" label="Intermediate" color="dark" />
+          <Checkbox value="Advanced" label="Advanced" color="dark" />
+        </Stack>
+      </CheckboxGroup>
       <TextInput label="Skills" placeholder="Skills" />
       <TextInput label="Tools" placeholder="Tools" />
       <Switch

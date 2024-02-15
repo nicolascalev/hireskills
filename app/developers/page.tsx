@@ -1,8 +1,5 @@
-import ProjectCard from "@/app/ui/ProjectCard";
-import { Container, Grid, GridCol, Stack } from "@mantine/core";
-import ProjectFilters from "../ui/ProjectFilters";
-import ProjectFiltersDrawer from "../ui/ProjectFiltersDrawer";
 import DevCard from "@/app/ui/DevCard";
+import { Container, Grid, GridCol, Stack } from "@mantine/core";
 import DevFilters from "../ui/DevFilters";
 import DevFiltersDrawer from "../ui/DevFiltersDrawer";
 

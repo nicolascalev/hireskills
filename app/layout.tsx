@@ -7,10 +7,11 @@ import {
   MantineProvider,
   createTheme,
 } from "@mantine/core";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "@/app/ui/globals.css";
 import MainNav from "@/app/ui/structure/MainNav";
+import { headers } from "next/headers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,6 +23,22 @@ export const metadata: Metadata = {
 const theme = createTheme({
   primaryColor: "indigo",
 });
+
+export function generateViewport(): Viewport {
+  const headersList = headers();
+  const userAgent = headersList.get("user-agent");
+
+  if (userAgent) {
+    const isIOS = /iPad|iPhone|iPod/.test(userAgent);
+    if (isIOS) {
+      return {
+        maximumScale: 1,
+      };
+    }
+  }
+
+  return {};
+}
 
 export default function RootLayout({
   children,
