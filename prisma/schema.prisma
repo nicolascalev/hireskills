@@ -26,6 +26,10 @@ model User {
   githubUsername                String?   @map("github_username")
   leetcodeUsername              String?   @map("leetcode_username")
   summary                       String?   @db.Text
+  displayJobSeeking             Boolean   @default(false) @map("display_job_seeking")
+  displayEmail                  Boolean   @default(false) @map("display_email")
+  displayPublicResume           Boolean   @default(false) @map("display_public_resume")
+  displayGithubActivity         Boolean   @default(false) @map("display_github_activity")
   // TODO: add more fields that may require structure like experience and achievements
 
   @@map("users")

@@ -20,8 +20,13 @@ export async function createUser() {
   const user = await currentUser();
 
   if (!user) {
-    throw new Error("You must be signed in to use this feature");
+    throw new Error("Something went wrong. Please try again.");
   }
+
+  // get github account if present
+  const githubAccount = user.externalAccounts.find(
+    (account) => account.provider === "oauth_github"
+  );
 
   const upsertUser = await prisma.user.upsert({
     where: {
@@ -32,6 +37,7 @@ export async function createUser() {
       id: user.id,
       email: user.emailAddresses[0].emailAddress,
       fullName: user.firstName + " " + user.lastName,
+      githubUsername: githubAccount?.username,
       // TODO: add image link if present and other fields
     },
   });
