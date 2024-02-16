@@ -1,0 +1,32 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                            String    @id
+  createdAt                     DateTime  @default(now()) @map(name: "created_at")
+  fullName                      String    @map("full_name")
+  company                       String?
+  role                          String?
+  email                         String    @unique
+  jobSeeking                    Boolean   @default(false) @map("job_seeking")
+  location                      String?
+  startedCoding                 DateTime? @map("started_coding")
+  startedProfessionalExperience DateTime? @map("started_professional_experience")
+  portfolioUrl                  String?   @map("portfolio_url")
+  linkedinUsername              String?   @map("linkedin_username")
+  githubUsername                String?   @map("github_username")
+  leetcodeUsername              String?   @map("leetcode_username")
+  summary                       String?   @db.Text
+  // TODO: add more fields that may require structure like experience and achievements
+
+  @@map("users")
+}
