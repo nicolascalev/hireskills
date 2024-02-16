@@ -1,6 +1,7 @@
 import "@mantine/core/styles.css";
 import "@mantine/carousel/styles.css";
 import "@/app/ui/globals.css";
+import { ClerkProvider } from "@clerk/nextjs";
 import {
   AppShell,
   AppShellHeader,
@@ -47,20 +48,22 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <head>
-        <ColorSchemeScript />
-      </head>
-      <body className={inter.className}>
-        <MantineProvider theme={theme}>
-          <AppShell header={{ height: 60 }}>
-            <AppShellHeader>
-              <MainNav />
-            </AppShellHeader>
-            <AppShellMain>{children}</AppShellMain>
-          </AppShell>
-        </MantineProvider>
-      </body>
-    </html>
+    <ClerkProvider afterSignUpUrl="/register">
+      <html lang="en">
+        <head>
+          <ColorSchemeScript />
+        </head>
+        <body className={inter.className}>
+          <MantineProvider theme={theme}>
+            <AppShell header={{ height: 60 }}>
+              <AppShellHeader>
+                <MainNav />
+              </AppShellHeader>
+              <AppShellMain>{children}</AppShellMain>
+            </AppShell>
+          </MantineProvider>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }

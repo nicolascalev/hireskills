@@ -15,6 +15,12 @@ import { useDisclosure } from "@mantine/hooks";
 import { SearchableSelect } from "../SearchableSelect";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import {
+  SignInButton,
+  SignOutButton,
+  SignedIn,
+  SignedOut,
+} from "@clerk/nextjs";
 
 type Link = {
   label: string;
@@ -68,7 +74,17 @@ function MainNav() {
         </Group>
         <Group align="center" justify="end" className="flex-grow-1">
           <SearchableSelect />
-          <Avatar visibleFrom="sm" />
+          <SignedOut>
+            <SignInButton>
+              <Button size="xs">Sign in</Button>
+            </SignInButton>
+          </SignedOut>
+          <SignedIn>
+            <SignOutButton>
+              <Button size="xs">Sign out</Button>
+            </SignOutButton>
+          </SignedIn>
+          {/* <Avatar visibleFrom="sm" /> */}
           <Burger
             hiddenFrom="sm"
             size="sm"

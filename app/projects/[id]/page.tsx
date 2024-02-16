@@ -34,7 +34,7 @@ function ProjectPage() {
       <Grid gutter={{ base: "md", sm: "xl" }}>
         <GridCol span={{ base: 12, sm: 3 }}>
           <Stack gap="sm" pos="sticky" top="76px">
-            <Text fw={500}>Project</Text>
+            <Text fw={500}>Circle Career</Text>
             <Group wrap="nowrap" gap="xs">
               <ThemeIcon variant="white" size="xs">
                 <IconCalendar />
@@ -102,7 +102,7 @@ function ProjectPage() {
           <Stack gap="xl">
             <div>
               <Text fw={500} mb="sm">
-                Circle Career
+                Summary
               </Text>
               <Text size="sm">
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro
