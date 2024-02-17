@@ -14,6 +14,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import MainNav from "@/app/ui/structure/MainNav";
 import { headers } from "next/headers";
+import { AuthContextProvider } from "@/lib/AuthContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -49,21 +50,23 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider afterSignUpUrl="/register">
-      <html lang="en">
-        <head>
-          <ColorSchemeScript />
-        </head>
-        <body className={inter.className}>
-          <MantineProvider theme={theme}>
-            <AppShell header={{ height: 60 }}>
-              <AppShellHeader>
-                <MainNav />
-              </AppShellHeader>
-              <AppShellMain>{children}</AppShellMain>
-            </AppShell>
-          </MantineProvider>
-        </body>
-      </html>
+      <AuthContextProvider>
+        <html lang="en">
+          <head>
+            <ColorSchemeScript />
+          </head>
+          <body className={inter.className}>
+            <MantineProvider theme={theme}>
+              <AppShell header={{ height: 60 }}>
+                <AppShellHeader>
+                  <MainNav />
+                </AppShellHeader>
+                <AppShellMain>{children}</AppShellMain>
+              </AppShell>
+            </MantineProvider>
+          </body>
+        </html>
+      </AuthContextProvider>
     </ClerkProvider>
   );
 }

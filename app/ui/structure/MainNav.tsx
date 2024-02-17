@@ -1,4 +1,11 @@
 "use client";
+import { AuthContext } from "@/lib/AuthContext";
+import {
+  SignInButton,
+  SignOutButton,
+  SignUpButton,
+  useSession
+} from "@clerk/nextjs";
 import {
   Avatar,
   Box,
@@ -7,20 +14,20 @@ import {
   Container,
   Drawer,
   Group,
+  Menu,
+  MenuDropdown,
+  MenuItem,
+  MenuTarget,
   NavLink,
   ScrollArea,
+  Stack,
   Text,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { SearchableSelect } from "../SearchableSelect";
-import { useEffect, useRef, useState } from "react";
+import { IconLogout, IconUser } from "@tabler/icons-react";
 import Link from "next/link";
-import {
-  SignInButton,
-  SignOutButton,
-  SignedIn,
-  SignedOut,
-} from "@clerk/nextjs";
+import { useContext, useEffect, useRef, useState } from "react";
+import { SearchableSelect } from "../SearchableSelect";
 
 type Link = {
   label: string;
@@ -52,6 +59,9 @@ function MainNav() {
     }
   }, [dummy, mobileNavbarFooter]);
 
+  const { isSignedIn } = useSession();
+  const { user } = useContext(AuthContext);
+
   return (
     <Container h="100%" size="xl">
       <Group h="100%" justify="space-between">
@@ -74,17 +84,37 @@ function MainNav() {
         </Group>
         <Group align="center" justify="end" className="flex-grow-1">
           <SearchableSelect />
-          <SignedOut>
-            <SignInButton>
-              <Button size="xs">Sign in</Button>
-            </SignInButton>
-          </SignedOut>
-          <SignedIn>
-            <SignOutButton>
-              <Button size="xs">Sign out</Button>
-            </SignOutButton>
-          </SignedIn>
-          {/* <Avatar visibleFrom="sm" /> */}
+          <Box visibleFrom="sm">
+            {!isSignedIn ? (
+              <SignInButton>
+                <Button size="xs">Sign in</Button>
+              </SignInButton>
+            ) : (
+              <Menu shadow="md" width={200} position="bottom-end">
+                <MenuTarget>
+                  <Avatar style={{ cursor: "pointer" }} />
+                </MenuTarget>
+
+                <MenuDropdown>
+                  <MenuItem
+                    component={Link}
+                    href="/profile"
+                    rightSection={<IconUser size={14} />}
+                  >
+                    Profile
+                  </MenuItem>
+                  <SignOutButton>
+                    <MenuItem
+                      color="red"
+                      rightSection={<IconLogout size={14} />}
+                    >
+                      Log out
+                    </MenuItem>
+                  </SignOutButton>
+                </MenuDropdown>
+              </Menu>
+            )}
+          </Box>
           <Burger
             hiddenFrom="sm"
             size="sm"
@@ -128,27 +158,34 @@ function MainNav() {
                 borderTop: "1px solid var(--mantine-color-default-border)",
               }}
             >
-              <Group mb="sm" style={{ overflow: "visible" }}>
-                <Avatar />
-                <div>
-                  <Text>Nicolas Guillen</Text>
-                  <Text size="sm" c="dimmed">
-                    nicolascalevg@gmail.com
-                  </Text>
-                </div>
-              </Group>
-              <NavLink
-                href="#required-for-focus"
-                label="Profile"
-                ml="-md"
-                w="calc(100% + 32px)"
-              />
-              <NavLink
-                href="#required-for-focus"
-                label="Sign out"
-                ml="-md"
-                w="calc(100% + 32px)"
-              />
+              {isSignedIn && user ? (
+                <>
+                  <Group mb="sm" style={{ overflow: "visible" }}>
+                    <Avatar />
+                    <div>
+                      <Text>{user.fullName}</Text>
+                      <Text size="sm" c="dimmed">
+                        {user.email}
+                      </Text>
+                    </div>
+                  </Group>
+                  <NavLink label="Profile" ml="-md" w="calc(100% + 32px)" />
+                  <SignOutButton>
+                    <NavLink label="Sign out" ml="-md" w="calc(100% + 32px)" />
+                  </SignOutButton>
+                </>
+              ) : (
+                <Stack gap="xs">
+                  <SignUpButton>
+                    <Button size="xs">Sign up</Button>
+                  </SignUpButton>
+                  <SignInButton>
+                    <Button size="xs" variant="white">
+                      Sign in
+                    </Button>
+                  </SignInButton>
+                </Stack>
+              )}
             </Box>
           </Drawer>
         </Group>
