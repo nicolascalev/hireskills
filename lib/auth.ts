@@ -28,6 +28,10 @@ export async function createUser() {
     (account) => account.provider === "oauth_github"
   );
 
+  // if the user does not have name and last name we use the email
+  let fullName = [user.firstName, " ", user.lastName].join("").trim();
+  let emailAddress = user.emailAddresses[0].emailAddress;
+
   const upsertUser = await prisma.user.upsert({
     where: {
       id: user.id,
@@ -35,8 +39,8 @@ export async function createUser() {
     update: {},
     create: {
       id: user.id,
-      email: user.emailAddresses[0].emailAddress,
-      fullName: user.firstName + " " + user.lastName,
+      email: emailAddress,
+      fullName: fullName ? fullName : emailAddress.split("@")[0],
       githubUsername: githubAccount?.username,
       // TODO: add image link if present and other fields
     },
