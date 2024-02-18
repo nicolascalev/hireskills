@@ -1,3 +1,4 @@
+import GitHubCalendarWrapper from "@/app/ui/GitHubCalendarWrapper";
 import ProjectCard from "@/app/ui/ProjectCard";
 import {
   Avatar,
@@ -22,7 +23,6 @@ import {
   IconMap,
   IconScript,
 } from "@tabler/icons-react";
-import GitHubCalendar from "react-github-calendar";
 
 export default function DeveloperPage() {
   return (
@@ -119,7 +119,7 @@ export default function DeveloperPage() {
               <Text fw={500} mb="sm">
                 GitHub activity
               </Text>
-              <GitHubCalendar username="nicolascalev" colorScheme="light" />
+              <GitHubCalendarWrapper />
             </div>
             <Divider />
             <div>

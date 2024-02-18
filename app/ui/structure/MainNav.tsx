@@ -4,7 +4,7 @@ import {
   SignInButton,
   SignOutButton,
   SignUpButton,
-  useSession
+  useSession,
 } from "@clerk/nextjs";
 import {
   Avatar,
@@ -69,16 +69,31 @@ function MainNav() {
           <Avatar color="indigo">HS</Avatar>
           <Group gap="xs" component="nav" visibleFrom="sm">
             {links.map((link) => (
-              <Button
-                component={Link}
-                key={link.href}
-                href={link.href}
-                size="sm"
-                variant="subtle"
-                color="dark"
-              >
-                {link.label}
-              </Button>
+              // one light version and one dark version
+              <>
+                <Button
+                  component={Link}
+                  key={link.href}
+                  href={link.href}
+                  size="sm"
+                  variant="subtle"
+                  color="gray"
+                  lightHidden
+                >
+                  {link.label}
+                </Button>
+                <Button
+                  component={Link}
+                  key={link.href}
+                  href={link.href}
+                  size="sm"
+                  variant="subtle"
+                  color="dark"
+                  darkHidden
+                >
+                  {link.label}
+                </Button>
+              </>
             ))}
           </Group>
         </Group>
