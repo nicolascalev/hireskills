@@ -36,7 +36,7 @@ function ProjectPage() {
           <Stack gap="sm" pos="sticky" top="76px">
             <Text fw={500}>Circle Career</Text>
             <Group wrap="nowrap" gap="xs">
-              <ThemeIcon variant="white" size="xs">
+              <ThemeIcon variant="transparent" size="xs">
                 <IconCalendar />
               </ThemeIcon>
               <div>
@@ -45,7 +45,7 @@ function ProjectPage() {
               </div>
             </Group>
             <Group wrap="nowrap" gap="xs">
-              <ThemeIcon variant="white" size="xs">
+              <ThemeIcon variant="transparent" size="xs">
                 <IconTimeDuration10 />
               </ThemeIcon>
               <div>
@@ -54,19 +54,19 @@ function ProjectPage() {
               </div>
             </Group>
             <Group wrap="nowrap" gap="xs">
-              <ThemeIcon variant="white" size="xs">
+              <ThemeIcon variant="transparent" size="xs">
                 <IconStackPop />
               </ThemeIcon>
               <Text size="sm">Advanced</Text>
             </Group>
             <Group wrap="nowrap" gap="xs">
-              <ThemeIcon variant="white" size="xs">
+              <ThemeIcon variant="transparent" size="xs">
                 <IconDiscountCheck />
               </ThemeIcon>
               <Text size="sm">Used by people</Text>
             </Group>
             <Group wrap="nowrap" gap="xs">
-              <ThemeIcon variant="white" size="xs" color="green">
+              <ThemeIcon variant="transparent" size="xs" color="green">
                 <IconDiscountCheck />
               </ThemeIcon>
               <Text size="sm">Verified project</Text>
@@ -78,19 +78,19 @@ function ProjectPage() {
               <Text size="sm">Full stack developer</Text>
             </div>
             <Group wrap="nowrap" gap="xs">
-              <ThemeIcon color="green" variant="white" size="xs">
+              <ThemeIcon color="green" variant="transparent" size="xs">
                 <IconGrowth />
               </ThemeIcon>
               <Text size="sm">Job seeking</Text>
             </Group>
             <Group wrap="nowrap" gap="xs">
-              <ThemeIcon variant="white" size="xs">
+              <ThemeIcon variant="transparent" size="xs">
                 <IconFolderCode />
               </ThemeIcon>
               <Text size="sm">5 projects</Text>
             </Group>
             <Group wrap="nowrap" gap="xs">
-              <ThemeIcon variant="white" size="xs">
+              <ThemeIcon variant="transparent" size="xs">
                 <IconClockCode />
               </ThemeIcon>
               <Text size="sm">5 years</Text>
@@ -113,28 +113,28 @@ function ProjectPage() {
               <Group mt="sm" gap="xs">
                 <Button
                   size="xs"
-                  variant="white"
+                  variant="transparent"
                   rightSection={<IconHeart size={14} />}
                 >
                   5
                 </Button>
                 <Button
                   size="xs"
-                  variant="white"
+                  variant="transparent"
                   rightSection={<IconMessageCircle size={14} />}
                 >
                   Comments
                 </Button>
                 <Button
                   size="xs"
-                  variant="white"
+                  variant="transparent"
                   rightSection={<IconExternalLink size={14} />}
                 >
                   Visit
                 </Button>
                 <Button
                   size="xs"
-                  variant="white"
+                  variant="transparent"
                   rightSection={<IconBrandGithub size={14} />}
                 >
                   Repo
@@ -255,12 +255,12 @@ function Comment({ children }: { children?: ReactNode }) {
         doloribus et nihil cupiditate alias similique ea.
       </Text>
       <Group align="center">
-        <Button size="xs" variant="white">
+        <Button size="xs" variant="transparent">
           5 replies
         </Button>
         <Button
           size="xs"
-          variant="white"
+          variant="transparent"
           rightSection={<IconArrowForward size={14} />}
         >
           Reply
@@ -304,12 +304,12 @@ function Comment2() {
         doloribus et nihil cupiditate alias similique ea.
       </Text>
       <Group align="center">
-        <Button size="xs" variant="white">
+        <Button size="xs" variant="transparent">
           5 replies
         </Button>
         <Button
           size="xs"
-          variant="white"
+          variant="transparent"
           rightSection={<IconArrowForward size={14} />}
         >
           Reply
@@ -344,12 +344,12 @@ function Comment2() {
             ducimus doloribus et nihil cupiditate alias similique ea.
           </Text>
           <Group align="center">
-            <Button size="xs" variant="white">
+            <Button size="xs" variant="transparent">
               5 replies
             </Button>
             <Button
               size="xs"
-              variant="white"
+              variant="transparent"
               rightSection={<IconArrowForward size={14} />}
             >
               Reply

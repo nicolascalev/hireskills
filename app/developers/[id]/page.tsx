@@ -38,14 +38,14 @@ export default function DeveloperPage() {
             </div>
             <Divider />
             <Group wrap="nowrap" gap="xs">
-              <ThemeIcon color="green" variant="white" size="xs">
+              <ThemeIcon color="green" variant="transparent" size="xs">
                 <IconGrowth />
               </ThemeIcon>
               <Text size="sm">Job seeking</Text>
             </Group>
             <Divider />
             <Group wrap="nowrap" gap="xs">
-              <ThemeIcon variant="white" size="xs">
+              <ThemeIcon variant="transparent" size="xs">
                 <IconCalendar />
               </ThemeIcon>
               <div>
@@ -54,7 +54,7 @@ export default function DeveloperPage() {
               </div>
             </Group>
             <Group wrap="nowrap" gap="xs">
-              <ThemeIcon variant="white" size="xs">
+              <ThemeIcon variant="transparent" size="xs">
                 <IconCalendar />
               </ThemeIcon>
               <div>
@@ -63,37 +63,37 @@ export default function DeveloperPage() {
               </div>
             </Group>
             <Group wrap="nowrap" gap="xs">
-              <ThemeIcon variant="white" size="xs">
+              <ThemeIcon variant="transparent" size="xs">
                 <IconMap />
               </ThemeIcon>
               <Text size="sm">Athens, GA</Text>
             </Group>
             <Group wrap="nowrap" gap="xs">
-              <ThemeIcon variant="white" size="xs">
+              <ThemeIcon variant="transparent" size="xs">
                 <IconLink />
               </ThemeIcon>
               <Text size="sm">https://nicolascalev.com</Text>
             </Group>
             <Group wrap="nowrap" gap="xs">
-              <ThemeIcon variant="white" size="xs">
+              <ThemeIcon variant="transparent" size="xs">
                 <IconBrandGithub />
               </ThemeIcon>
               <Text size="sm">nicolascalev</Text>
             </Group>
             <Group wrap="nowrap" gap="xs">
-              <ThemeIcon variant="white" size="xs">
+              <ThemeIcon variant="transparent" size="xs">
                 <IconBrandLeetcode />
               </ThemeIcon>
               <Text size="sm">nicolascalev</Text>
             </Group>
             <Group wrap="nowrap" gap="xs">
-              <ThemeIcon variant="white" size="xs">
+              <ThemeIcon variant="transparent" size="xs">
                 <IconBrandLinkedin />
               </ThemeIcon>
               <Text size="sm">nicolascalev</Text>
             </Group>
             <Group wrap="nowrap" gap="xs">
-              <ThemeIcon variant="white" size="xs">
+              <ThemeIcon variant="transparent" size="xs">
                 <IconScript />
               </ThemeIcon>
               <Text size="sm">Public resume</Text>

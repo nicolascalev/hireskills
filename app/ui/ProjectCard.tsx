@@ -27,13 +27,13 @@ function ProjectCard() {
               qui.
             </Text>
             <Group gap="5px" wrap="nowrap" align="center" mt="sm">
-              <ThemeIcon variant="white" color="green">
+              <ThemeIcon variant="transparent" color="green">
                 <IconRosetteFilled style={{ width: "60%", height: "60%" }} />
               </ThemeIcon>
               <Text size="xs" mr="5px">
                 Verified project
               </Text>
-              <ThemeIcon variant="white">
+              <ThemeIcon variant="transparent">
                 <IconRosetteFilled style={{ width: "60%", height: "60%" }} />
               </ThemeIcon>
               <Text size="xs">Used by people</Text>
@@ -64,7 +64,7 @@ function ProjectCard() {
         </div>
         <Group justify="space-between">
           <Group align="center" gap="2px">
-            <ThemeIcon variant="white" color="gray" size="sm">
+            <ThemeIcon variant="transparent" color="gray" size="sm">
               <IconStar size={14} />
             </ThemeIcon>
             <Text size="sm">

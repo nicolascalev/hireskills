@@ -180,7 +180,7 @@ function MainNav() {
                     <Button size="xs">Sign up</Button>
                   </SignUpButton>
                   <SignInButton>
-                    <Button size="xs" variant="white">
+                    <Button size="xs" variant="transparent">
                       Sign in
                     </Button>
                   </SignInButton>

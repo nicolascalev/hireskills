@@ -53,10 +53,10 @@ export default function RootLayout({
       <AuthContextProvider>
         <html lang="en">
           <head>
-            <ColorSchemeScript />
+            <ColorSchemeScript defaultColorScheme="auto" />
           </head>
           <body className={inter.className}>
-            <MantineProvider theme={theme}>
+            <MantineProvider theme={theme} defaultColorScheme="auto">
               <AppShell header={{ height: 60 }}>
                 <AppShellHeader>
                   <MainNav />
