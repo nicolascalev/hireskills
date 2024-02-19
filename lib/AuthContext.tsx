@@ -1,48 +1,13 @@
-"use client";
-import { createContext, useEffect, useState } from "react";
-import { User } from "@prisma/client";
+import AuthContextProvider from "./AuthContextProvider";
+import { getCurrentUser } from "./auth";
 
-export const AuthContext = createContext<{
-  isLoading: boolean;
-  user: User | null;
-  revalidateUser: () => void;
-}>({
-  isLoading: true,
-  user: null,
-  revalidateUser: () => {},
-});
-
-export function AuthContextProvider({
+// get session user in the server and pass it to a client component that creates the context
+// and sets the user. This is a workaround to avoid fetching on the client
+export default async function AuthContext({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const [user, setUser] = useState<null | User>(null);
-  const [isLoading, setIsLoading] = useState(true);
-
-  function fetchUser() {
-    fetch("/api/profile")
-      .then(async (res) => {
-        if (res.ok) {
-          setUser(await res.json());
-        }
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }
-  useEffect(() => {
-    fetchUser();
-  }, []);
-
-  function revalidateUser() {
-    setIsLoading(true);
-    fetchUser();
-  }
-
-  return (
-    <AuthContext.Provider value={{ user, isLoading, revalidateUser }}>
-      {children}
-    </AuthContext.Provider>
-  );
+  const user = await getCurrentUser();
+  return <AuthContextProvider user={user}>{children}</AuthContextProvider>;
 }

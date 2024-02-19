@@ -14,7 +14,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import MainNav from "@/app/ui/structure/MainNav";
 import { headers } from "next/headers";
-import { AuthContextProvider } from "@/lib/AuthContext";
+import AuthContext from "@/lib/AuthContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -50,7 +50,7 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider afterSignUpUrl="/register">
-      <AuthContextProvider>
+      <AuthContext>
         <html lang="en">
           <head>
             <ColorSchemeScript defaultColorScheme="auto" />
@@ -66,7 +66,7 @@ export default function RootLayout({
             </MantineProvider>
           </body>
         </html>
-      </AuthContextProvider>
+      </AuthContext>
     </ClerkProvider>
   );
 }

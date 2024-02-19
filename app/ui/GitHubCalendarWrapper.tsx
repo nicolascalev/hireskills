@@ -24,7 +24,7 @@ function GitHubCalendarWrapper() {
       <Box darkHidden>
         <GitHubCalendar
           theme={{
-            light: ["hsl(0, 0%, 92%)", theme.colors.green[5]],
+            light: ["hsl(0, 0%, 95%)", theme.colors.green[5]],
           }}
           username="nicolascalev"
           colorScheme="light"
