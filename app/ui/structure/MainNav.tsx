@@ -1,5 +1,5 @@
 "use client";
-import { AuthContext } from "@/lib/AuthContext";
+import { AuthContext } from "@/lib/AuthContextProvider";
 import {
   SignInButton,
   SignOutButton,
@@ -22,6 +22,7 @@ import {
   ScrollArea,
   Stack,
   Text,
+  useComputedColorScheme,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconLogout, IconUser } from "@tabler/icons-react";
@@ -44,6 +45,7 @@ function MainNav() {
   const [opened, { toggle }] = useDisclosure();
   const [mobileNavbarFooterOffsetHeight, setMobileNavbarFooterOffsetHeight] =
     useState(0);
+  const computedColorScheme = useComputedColorScheme("light");
 
   // we use this to force re-render of mobileNavbarFooter to get its offsetHeight
   // because it is not available on first render
@@ -69,31 +71,16 @@ function MainNav() {
           <Avatar color="indigo">HS</Avatar>
           <Group gap="xs" component="nav" visibleFrom="sm">
             {links.map((link) => (
-              // one light version and one dark version
-              <>
-                <Button
-                  component={Link}
-                  key={link.href}
-                  href={link.href}
-                  size="sm"
-                  variant="subtle"
-                  color="gray"
-                  lightHidden
-                >
-                  {link.label}
-                </Button>
-                <Button
-                  component={Link}
-                  key={link.href}
-                  href={link.href}
-                  size="sm"
-                  variant="subtle"
-                  color="dark"
-                  darkHidden
-                >
-                  {link.label}
-                </Button>
-              </>
+              <Button
+                component={Link}
+                key={link.href}
+                href={link.href}
+                size="sm"
+                variant="subtle"
+                color={computedColorScheme == "dark" ? "gray" : "dark"}
+              >
+                {link.label}
+              </Button>
             ))}
           </Group>
         </Group>
