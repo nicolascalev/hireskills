@@ -1,15 +1,12 @@
 import { getCurrentUser } from "@/lib/auth";
 import {
   ActionIcon,
-  Avatar,
   Button,
   Checkbox,
   CheckboxGroup,
   Container,
   Divider,
   Group,
-  List,
-  ListItem,
   Select,
   SimpleGrid,
   Stack,
@@ -29,9 +26,11 @@ import {
   IconTrash,
   IconUser,
 } from "@tabler/icons-react";
+import UpdateProfileForm from "./UpdateProfileForm";
+import { User } from "@prisma/client";
 
 async function ProfilePage() {
-  const user = await getCurrentUser();
+  const user = (await getCurrentUser()) as User;
   return (
     <Container size="xl" py="md">
       <Tabs orientation="horizontal" variant="outline" defaultValue="profile">
@@ -70,33 +69,7 @@ async function ProfilePage() {
                 Please fill this form to know more about your profile
               </Text>
             </div>
-            <form>
-              <Stack gap="xs">
-                <Group>
-                  <Avatar size="lg" />
-                  <Button variant="default" size="xs">
-                    Edit avatar
-                  </Button>
-                </Group>
-                <TextInput label="Full name" placeholder="Full name" />
-                <TextInput label="Email" placeholder="Email" disabled />
-                <TextInput label="Role" placeholder="Role" />
-                <TextInput label="Company" placeholder="Company" />
-                <TextInput label="Location" placeholder="Country, State" />
-                <TextInput
-                  label="Started coding"
-                  placeholder="Started coding"
-                />
-                <TextInput
-                  label="Started professional experience"
-                  placeholder="Started professional experience"
-                />
-                <TextInput label="Summary" placeholder="Summary" />
-                <Group justify="end">
-                  <Button size="xs">Save</Button>
-                </Group>
-              </Stack>
-            </form>
+            <UpdateProfileForm user={user} />
           </SimpleGrid>
           <Divider my="xl" />
           <SimpleGrid cols={{ base: 1, sm: 2 }}>

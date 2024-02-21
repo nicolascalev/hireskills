@@ -1,5 +1,6 @@
 import "@mantine/core/styles.css";
 import "@mantine/carousel/styles.css";
+import "@mantine/dates/styles.css";
 import "@/app/ui/globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import {
