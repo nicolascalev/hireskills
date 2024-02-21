@@ -26,12 +26,9 @@ export default async function updateProfile(
       where: { id: userId },
       data: validatedFields.data,
     });
-    console.log(updated)
+    revalidatePath("/profile");
+    return updated;
   } catch (err) {
-    // TODO: learn to manage errors with actions
-    console.log(err)
-    throw new Error("Failed to update profile.");
+    throw new Error("Failed to update profile");
   }
-
-  revalidatePath("/profile");
 }

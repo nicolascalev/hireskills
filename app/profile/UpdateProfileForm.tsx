@@ -11,12 +11,23 @@ import {
 } from "@mantine/core";
 import { DateInput } from "@mantine/dates";
 import { useForm } from "@mantine/form";
+import { showNotification } from "@mantine/notifications";
 import { User } from "@prisma/client";
 import { zodResolver } from "mantine-form-zod-resolver";
+import { useEffect } from "react";
 import { useFormState, useFormStatus } from "react-dom";
 
 function UpdateProfileForm({ user }: { user: User }) {
   const [state, formAction] = useFormState(updateProfile, null);
+  useEffect(() => {
+    if (state) {
+      showNotification({
+        title: "Profile updated",
+        message: "Your profile has been updated",
+        color: "teal",
+      });
+    }
+  }, [state]);
 
   const form = useForm({
     initialValues: {

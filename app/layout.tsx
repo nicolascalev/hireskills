@@ -1,6 +1,7 @@
 import "@mantine/core/styles.css";
 import "@mantine/carousel/styles.css";
 import "@mantine/dates/styles.css";
+import "@mantine/notifications/styles.css";
 import "@/app/ui/globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import {
@@ -11,6 +12,7 @@ import {
   MantineProvider,
   createTheme,
 } from "@mantine/core";
+import { Notifications } from "@mantine/notifications";
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import MainNav from "@/app/ui/structure/MainNav";
@@ -58,6 +60,7 @@ export default function RootLayout({
           </head>
           <body className={inter.className}>
             <MantineProvider theme={theme} defaultColorScheme="auto">
+              <Notifications />
               <AppShell header={{ height: 60 }}>
                 <AppShellHeader>
                   <MainNav />
