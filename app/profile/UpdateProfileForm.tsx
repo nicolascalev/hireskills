@@ -65,7 +65,7 @@ function UpdateProfileForm({ user }: { user: User }) {
     <form onSubmit={onSubmit}>
       <Stack gap="xs">
         <Group>
-          <Avatar size="lg" />
+          <Avatar size="lg" src={user.avatarUrl} />
           <Button variant="default" size="xs">
             Edit avatar
           </Button>

@@ -42,7 +42,7 @@ export async function createUser() {
       email: emailAddress,
       fullName: fullName ? fullName : emailAddress.split("@")[0],
       githubUsername: githubAccount?.username,
-      // TODO: add image link if present and other fields
+      avatarUrl: user.imageUrl || undefined,
     },
   });
 

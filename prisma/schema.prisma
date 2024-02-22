@@ -17,6 +17,7 @@ model User {
   company                       String?
   role                          String?
   email                         String    @unique
+  avatarUrl                     String?   @map("avatar_url") @db.Text
   jobSeeking                    Boolean   @default(false) @map("job_seeking")
   location                      String?
   startedCoding                 DateTime? @map("started_coding")
