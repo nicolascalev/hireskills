@@ -2,23 +2,24 @@
 import prisma from "@/lib/prisma";
 import { profileSchema } from "@/lib/zod";
 import { auth } from "@clerk/nextjs";
+import { Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 
-export default async function updateProfile(
-  prevState: any,
-  formData: FormData
-) {
+export default async function updateProfile(formData: Prisma.UserUpdateInput) {
   const { userId } = auth();
   if (!userId) {
-    throw new Error("You must be signed in to update your profile.");
+    return Promise.reject({
+      message: "Not authenticated",
+    });
   }
 
-  const rawFormData = Object.fromEntries(formData.entries());
-
-  const validatedFields = profileSchema.safeParse(rawFormData);
+  const validatedFields = profileSchema.safeParse(formData);
   if (!validatedFields.success) {
     const fieldErrors = validatedFields.error.flatten().fieldErrors;
-    return fieldErrors;
+    return Promise.reject({
+      message: "Validation error",
+      fieldErrors,
+    });
   }
 
   try {
@@ -29,6 +30,9 @@ export default async function updateProfile(
     revalidatePath("/profile");
     return updated;
   } catch (err) {
-    throw new Error("Failed to update profile");
+    return Promise.reject({
+      message: "Internal server error",
+      error: err,
+    });
   }
 }
