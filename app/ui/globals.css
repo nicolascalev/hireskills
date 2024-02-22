@@ -13,6 +13,23 @@
   flex-grow: 1;
 }
 
+.scrollable__tabs {
+  flex-wrap: nowrap;
+  max-width: 100vw;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.scrollable__tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollable__tabs .scrollable__tabs__tablist {
+  min-width: min-content;
+  flex-wrap: nowrap;
+}
+
 @media (min-width: 48em) {
   .navbar__search {
     max-width: 300px;
