@@ -21,8 +21,7 @@ import {
   NavLink,
   ScrollArea,
   Stack,
-  Text,
-  useComputedColorScheme,
+  Text
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconLogout, IconUser } from "@tabler/icons-react";
@@ -45,7 +44,6 @@ function MainNav() {
   const [opened, { toggle }] = useDisclosure();
   const [mobileNavbarFooterOffsetHeight, setMobileNavbarFooterOffsetHeight] =
     useState(0);
-  const computedColorScheme = useComputedColorScheme("light");
 
   // we use this to force re-render of mobileNavbarFooter to get its offsetHeight
   // because it is not available on first render
@@ -77,7 +75,7 @@ function MainNav() {
                 href={link.href}
                 size="sm"
                 variant="subtle"
-                color={computedColorScheme == "dark" ? "gray" : "dark"}
+                color="var(--mantine-color-text)"
               >
                 {link.label}
               </Button>
