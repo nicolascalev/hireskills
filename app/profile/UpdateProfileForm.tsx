@@ -14,7 +14,7 @@ import { useForm } from "@mantine/form";
 import { showNotification } from "@mantine/notifications";
 import { User } from "@prisma/client";
 import { zodResolver } from "mantine-form-zod-resolver";
-import { useState } from "react";
+import { useFormStatus } from "react-dom";
 
 function UpdateProfileForm({ user }: { user: User }) {
   const form = useForm({
@@ -31,9 +31,7 @@ function UpdateProfileForm({ user }: { user: User }) {
     validateInputOnChange: true,
   });
 
-  const [loading, setLoading] = useState(false);
-  function onSubmit(e: React.FormEvent) {
-    e.preventDefault();
+  async function onSubmit() {
     if (!form.isDirty()) {
       showNotification({
         title: "No changes to save",
@@ -42,27 +40,24 @@ function UpdateProfileForm({ user }: { user: User }) {
       });
       return;
     }
-    setLoading(true);
-    updateProfile(form.values)
-      .then(() => {
-        showNotification({
-          title: "Profile updated",
-          message: "Your profile has been updated successfully",
-          color: "teal",
-        });
-      })
-      .catch((err) => {
-        showNotification({
-          title: "Profile update failed",
-          message: err.message,
-          color: "red",
-        });
-      })
-      .finally(() => setLoading(false));
+    try {
+      await updateProfile(form.values);
+      showNotification({
+        title: "Profile updated",
+        message: "Your profile has been updated successfully",
+        color: "teal",
+      });
+    } catch (err) {
+      showNotification({
+        title: "Profile update failed",
+        message: "Please try again later",
+        color: "red",
+      });
+    }
   }
 
   return (
-    <form onSubmit={onSubmit}>
+    <form action={onSubmit}>
       <Stack gap="xs">
         <Group>
           <Avatar size="lg" src={user.avatarUrl} />
@@ -125,14 +120,7 @@ function UpdateProfileForm({ user }: { user: User }) {
           {...form.getInputProps("summary")}
         />
         <Group justify="end">
-          <Button
-            size="xs"
-            type="submit"
-            aria-disabled={loading}
-            loading={loading}
-          >
-            Save
-          </Button>
+          <SubmitButton />
         </Group>
       </Stack>
     </form>
@@ -140,3 +128,12 @@ function UpdateProfileForm({ user }: { user: User }) {
 }
 
 export default UpdateProfileForm;
+
+function SubmitButton() {
+  const { pending } = useFormStatus();
+  return (
+    <Button size="xs" type="submit" aria-disabled={pending} loading={pending}>
+      Save
+    </Button>
+  );
+}
