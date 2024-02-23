@@ -9,3 +9,10 @@ export const profileSchema = z.object({
   startedProfessionalExperience: z.date().nullish().optional(),
   summary: z.string().max(1000).optional(),
 });
+
+export const linksAndSocialsSchema = z.object({
+  portfolioUrl: z.string().url().optional().or(z.literal("")),
+  linkedinUsername: z.string().max(50).optional(),
+  githubUsername: z.string().max(50).optional(),
+  leetcodeUsername: z.string().max(50).optional(),
+});

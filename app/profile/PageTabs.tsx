@@ -30,6 +30,7 @@ import UpdateProfileForm from "./UpdateProfileForm";
 import { User } from "@prisma/client";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
+import UpdateLinksAndSocialsForm from "./UpdateLinksAndSocialsForm";
 
 function PageTabs({ user }: { user: User }) {
   const router = useRouter();
@@ -82,26 +83,7 @@ function PageTabs({ user }: { user: User }) {
               Show others your online presence and activity
             </Text>
           </div>
-          <form>
-            <Stack gap="xs">
-              <TextInput label="Portfolio url" placeholder="Portfolio url" />
-              <TextInput
-                label="Linkedin username"
-                placeholder="Linkedin username"
-              />
-              <TextInput
-                label="GitHub username"
-                placeholder="GitHub username"
-              />
-              <TextInput
-                label="Leetcode username"
-                placeholder="Leetcode username"
-              />
-              <Group justify="end">
-                <Button size="xs">Save</Button>
-              </Group>
-            </Stack>
-          </form>
+          <UpdateLinksAndSocialsForm user={user} />
         </SimpleGrid>
       </TabsPanel>
 

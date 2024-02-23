@@ -1,11 +1,11 @@
 "use server";
 import prisma from "@/lib/prisma";
-import { profileSchema } from "@/lib/zod";
+import { linksAndSocialsSchema, profileSchema } from "@/lib/zod";
 import { auth } from "@clerk/nextjs";
 import { Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 
-export default async function updateProfile(formData: Prisma.UserUpdateInput) {
+export async function updateProfile(formData: Prisma.UserUpdateInput) {
   const { userId } = auth();
   if (!userId) {
     return Promise.reject({
@@ -34,5 +34,43 @@ export default async function updateProfile(formData: Prisma.UserUpdateInput) {
       message: "Internal server error",
       error: err,
     });
+  }
+}
+
+export async function updateProfileLinksAndSocials(
+  formData: Prisma.UserUpdateInput
+) {
+  const { userId } = auth();
+  if (!userId) {
+    return {
+      error: "Not authenticated",
+    };
+  }
+
+  const validatedFields = linksAndSocialsSchema.safeParse(formData);
+  if (!validatedFields.success) {
+    const fieldErrors = validatedFields.error.flatten().fieldErrors;
+    console.log(fieldErrors)
+    return {
+      error: "Validation error",
+      details: fieldErrors,
+    };
+  }
+
+  try {
+    const updated = await prisma.user.update({
+      where: { id: userId },
+      data: validatedFields.data,
+    });
+    revalidatePath("/profile");
+    return {
+      error: "",
+      updated,
+    };
+  } catch (err) {
+    return {
+      error: "Internal server error",
+      details: err,
+    };
   }
 }

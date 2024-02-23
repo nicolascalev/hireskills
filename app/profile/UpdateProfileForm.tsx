@@ -1,5 +1,5 @@
 "use client";
-import updateProfile from "@/lib/actions/profile/updateProfile";
+import { updateProfile } from "@/lib/actions/profile/updateProfile";
 import uploadUserPhoto from "@/lib/actions/uploadUserPhoto";
 import { profileSchema } from "@/lib/zod";
 import {
