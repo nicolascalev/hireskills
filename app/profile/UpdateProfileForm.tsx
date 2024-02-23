@@ -1,9 +1,11 @@
 "use client";
 import updateProfile from "@/lib/actions/profile/updateProfile";
+import uploadUserPhoto from "@/lib/actions/uploadUserPhoto";
 import { profileSchema } from "@/lib/zod";
 import {
   Avatar,
   Button,
+  FileButton,
   Group,
   Stack,
   TextInput,
@@ -14,6 +16,7 @@ import { useForm } from "@mantine/form";
 import { showNotification } from "@mantine/notifications";
 import { User } from "@prisma/client";
 import { zodResolver } from "mantine-form-zod-resolver";
+import { useEffect, useState } from "react";
 import { useFormStatus } from "react-dom";
 
 function UpdateProfileForm({ user }: { user: User }) {
@@ -56,14 +59,76 @@ function UpdateProfileForm({ user }: { user: User }) {
     }
   }
 
+  const [uploadedFileUrl, setUploadedFileUrl] = useState("");
+  const [file, setFile] = useState<File | null>(null);
+
+  // on file change show the preview
+  useEffect(() => {
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setUploadedFileUrl(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setUploadedFileUrl("");
+    }
+  }, [file]);
+
+  const [loadingUpload, setLoadingUpload] = useState(false);
+  async function uploadFile() {
+    if (!file) {
+      return;
+    }
+    setLoadingUpload(true);
+    try {
+      const formData = new FormData();
+      formData.append("photo", file);
+      await uploadUserPhoto(formData);
+      showNotification({
+        title: "File uploaded",
+        message: "Your photo has been uploaded successfully",
+        color: "teal",
+      });
+      setFile(null);
+    } catch (err) {
+      showNotification({
+        title: "File upload failed",
+        message: "Please try again later",
+        color: "red",
+      });
+    } finally {
+      setLoadingUpload(false);
+    }
+  }
+
   return (
     <form action={onSubmit}>
       <Stack gap="xs">
         <Group>
-          <Avatar size="lg" src={user.avatarUrl} />
-          <Button variant="default" size="xs">
-            Edit avatar
-          </Button>
+          <Avatar size="lg" src={uploadedFileUrl || user.avatarUrl} />
+          {!file ? (
+            <FileButton onChange={setFile} accept="image/png,image/jpeg">
+              {(props) => (
+                <Button variant="default" size="xs" {...props}>
+                  Change avatar
+                </Button>
+              )}
+            </FileButton>
+          ) : (
+            <Group gap="xs">
+              <Button size="xs" variant="default" onClick={uploadFile} loading={loadingUpload}>Upload</Button>
+              <Button
+                size="xs"
+                onClick={() => setFile(null)}
+                color="red"
+                variant="light"
+                disabled={loadingUpload}
+              >
+                Cancel
+              </Button>
+            </Group>
+          )}
         </Group>
         <TextInput
           name="fullName"
