@@ -30,6 +30,10 @@
   flex-wrap: nowrap;
 }
 
+.custom__list__item:not(:last-child) {
+  border-bottom: 1px solid var(--_app-shell-border-color);
+}
+
 @media (min-width: 48em) {
   .navbar__search {
     max-width: 300px;

@@ -33,6 +33,18 @@ model User {
   displayPublicResume           Boolean   @default(false) @map("display_public_resume")
   displayActiveOpenSource       Boolean   @default(false) @map("display_active_open_source")
   // TODO: add more fields that may require structure like experience and achievements
+  resumes                       Resume[]
+  defaultResumeId               String?   @map("default_resume_id")
 
   @@map("users")
+}
+
+model Resume {
+  id               String   @id @default(uuid())
+  createdAt        DateTime @default(now()) @map(name: "created_at")
+  url              String   @db.Text
+  key              String   @db.Text
+  originalFilename String   @map("original_filename")
+  userId           String   @map("user_id")
+  user             User     @relation(fields: [userId], references: [id])
 }

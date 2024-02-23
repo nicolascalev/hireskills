@@ -1,39 +1,38 @@
 "use client";
+import { LoggedInUser } from "@/lib/types";
 import {
+  ActionIcon,
   Box,
-  Divider,
-  Tabs,
-  TabsList,
-  TabsTab,
-  TabsPanel,
-  SimpleGrid,
-  Text,
-  Stack,
-  TextInput,
-  Group,
   Button,
   Checkbox,
-  Textarea,
-  ActionIcon,
   CheckboxGroup,
+  Divider,
+  Group,
   Select,
+  SimpleGrid,
+  Stack,
+  Tabs,
+  TabsList,
+  TabsPanel,
+  TabsTab,
+  Text,
+  TextInput,
+  Textarea,
 } from "@mantine/core";
 import {
-  IconDotsVertical,
   IconRoute,
   IconScript,
   IconSettings,
   IconTrash,
   IconUser,
 } from "@tabler/icons-react";
-import UpdateProfileForm from "./UpdateProfileForm";
-import { User } from "@prisma/client";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import ResumesList from "./ResumesList";
 import UpdateLinksAndSocialsForm from "./UpdateLinksAndSocialsForm";
+import UpdateProfileForm from "./UpdateProfileForm";
 import UpdateProfilePreferencesForm from "./UpdateProfilePreferencesForm";
 
-function PageTabs({ user }: { user: User }) {
+function PageTabs({ user }: { user: LoggedInUser }) {
   const router = useRouter();
   const search = useSearchParams();
   const tab = ["Profile", "Settings", "Resumes", "Experience"].includes(
@@ -129,21 +128,7 @@ function PageTabs({ user }: { user: User }) {
               You can keep multiple resumes and choose which one to display
             </Text>
           </div>
-          <Stack gap={0}>
-            <Group py="sm" justify="space-between">
-              <Text size="sm">Frontend</Text>
-              <ActionIcon variant="transparent" size="sm">
-                <IconDotsVertical size={14} />
-              </ActionIcon>
-            </Group>
-            <Divider />
-            <Group py="sm" justify="space-between">
-              <Text size="sm">Frontend</Text>
-              <ActionIcon variant="transparent" size="sm">
-                <IconDotsVertical size={14} />
-              </ActionIcon>
-            </Group>
-          </Stack>
+          <ResumesList user={user} />
         </SimpleGrid>
       </TabsPanel>
 
