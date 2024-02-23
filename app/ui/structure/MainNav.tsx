@@ -21,7 +21,7 @@ import {
   NavLink,
   ScrollArea,
   Stack,
-  Text
+  Text,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconLogout, IconUser } from "@tabler/icons-react";
@@ -92,7 +92,10 @@ function MainNav() {
             ) : (
               <Menu shadow="md" width={200} position="bottom-end">
                 <MenuTarget>
-                  <Avatar style={{ cursor: "pointer" }} />
+                  <Avatar
+                    src={user?.avatarUrl || undefined}
+                    style={{ cursor: "pointer" }}
+                  />
                 </MenuTarget>
 
                 <MenuDropdown>
@@ -161,7 +164,7 @@ function MainNav() {
               {isSignedIn && user ? (
                 <>
                   <Group mb="sm" style={{ overflow: "visible" }}>
-                    <Avatar />
+                    <Avatar src={user?.avatarUrl || undefined} />
                     <div>
                       <Text>{user.fullName}</Text>
                       <Text size="sm" c="dimmed">
