@@ -1,6 +1,7 @@
 "use client";
 import { updateProfile } from "@/lib/actions/profile/updateProfile";
 import uploadUserPhoto from "@/lib/actions/uploadUserPhoto";
+import { LoggedInUser } from "@/lib/types";
 import { profileSchema } from "@/lib/zod";
 import {
   Avatar,
@@ -19,7 +20,7 @@ import { zodResolver } from "mantine-form-zod-resolver";
 import { useEffect, useState } from "react";
 import { useFormStatus } from "react-dom";
 
-function UpdateProfileForm({ user }: { user: User }) {
+function UpdateProfileForm({ user }: { user: LoggedInUser }) {
   const form = useForm({
     initialValues: {
       fullName: user.fullName,
@@ -125,7 +126,14 @@ function UpdateProfileForm({ user }: { user: User }) {
             </FileButton>
           ) : (
             <Group gap="xs">
-              <Button size="xs" variant="default" onClick={uploadFile} loading={loadingUpload}>Upload</Button>
+              <Button
+                size="xs"
+                variant="default"
+                onClick={uploadFile}
+                loading={loadingUpload}
+              >
+                Upload
+              </Button>
               <Button
                 size="xs"
                 onClick={() => setFile(null)}

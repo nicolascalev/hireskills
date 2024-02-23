@@ -1,13 +1,13 @@
 "use client";
 import { updateProfileLinksAndSocials } from "@/lib/actions/profile/updateProfile";
+import { LoggedInUser } from "@/lib/types";
 import { linksAndSocialsSchema } from "@/lib/zod";
 import { Button, Group, Stack, TextInput } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { showNotification } from "@mantine/notifications";
-import { User } from "@prisma/client";
 import { useFormStatus } from "react-dom";
 
-function UpdateLinksAndSocialsForm({ user }: { user: User }) {
+function UpdateLinksAndSocialsForm({ user }: { user: LoggedInUser }) {
   const form = useForm({
     initialValues: {
       portfolioUrl: user.portfolioUrl || "",

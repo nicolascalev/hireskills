@@ -11,6 +11,9 @@ export async function getCurrentUser() {
     where: {
       id: userId,
     },
+    include: {
+      resumes: true,
+    },
   });
 }
 

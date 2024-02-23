@@ -1,9 +1,9 @@
 "use client";
-import { User } from "@prisma/client";
 import React, { createContext } from "react";
+import { LoggedInUser } from "./types";
 
 export const AuthContext = createContext<{
-  user: User | null;
+  user: LoggedInUser | null;
 }>({
   user: null,
 });
@@ -13,7 +13,7 @@ function AuthContextProvider({
   user,
 }: {
   children: React.ReactNode;
-  user: User | null;
+  user: LoggedInUser | null;
 }) {
   return (
     <AuthContext.Provider value={{ user }}>{children}</AuthContext.Provider>

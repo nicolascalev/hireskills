@@ -1,13 +1,13 @@
 "use client";
 import { updateProfilePreferences } from "@/lib/actions/profile/updateProfile";
+import { LoggedInUser } from "@/lib/types";
 import { profilePreferences } from "@/lib/zod";
 import { Button, Checkbox, Group, Stack } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { showNotification } from "@mantine/notifications";
-import { User } from "@prisma/client";
 import { useFormStatus } from "react-dom";
 
-function UpdateProfilePreferencesForm({ user }: { user: User }) {
+function UpdateProfilePreferencesForm({ user }: { user: LoggedInUser }) {
   const form = useForm({
     initialValues: {
       jobSeeking: user.jobSeeking,
