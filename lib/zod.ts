@@ -25,3 +25,7 @@ export const profilePreferences = z.object({
   displayPublicResume: z.boolean().optional(),
   displayActiveOpenSource: z.boolean().optional(),
 });
+
+export const updateDefaultResumeSchema = z.object({
+  defaultResumeId: z.string().uuid().or(z.literal(null)),
+});

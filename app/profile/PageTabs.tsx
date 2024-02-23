@@ -31,6 +31,7 @@ import ResumesList from "./ResumesList";
 import UpdateLinksAndSocialsForm from "./UpdateLinksAndSocialsForm";
 import UpdateProfileForm from "./UpdateProfileForm";
 import UpdateProfilePreferencesForm from "./UpdateProfilePreferencesForm";
+import UpdateDefaultResumeForm from "./UpdateDefaultResumeForm";
 
 function PageTabs({ user }: { user: LoggedInUser }) {
   const router = useRouter();
@@ -107,18 +108,7 @@ function PageTabs({ user }: { user: LoggedInUser }) {
               You can choose what you want to display in your profile
             </Text>
           </div>
-          <form>
-            <Stack gap="xs">
-              <Select
-                label="Default resume"
-                placeholder="Pick one"
-                data={["Frontend", "Backend", "Full-stack"]}
-              />
-              <Group justify="end">
-                <Button size="xs">Save</Button>
-              </Group>
-            </Stack>
-          </form>
+          <UpdateDefaultResumeForm user={user} />
         </SimpleGrid>
         <Divider my="xl" />
         <SimpleGrid cols={{ base: 1, sm: 2 }}>
