@@ -84,7 +84,15 @@ function UpdateProfileForm({ user }: { user: User }) {
     try {
       const formData = new FormData();
       formData.append("photo", file);
-      await uploadUserPhoto(formData);
+      const res = await uploadUserPhoto(formData);
+      if (res.error) {
+        showNotification({
+          title: "File upload failed",
+          message: res.error,
+          color: "red",
+        });
+        return;
+      }
       showNotification({
         title: "File uploaded",
         message: "Your photo has been uploaded successfully",
@@ -94,7 +102,7 @@ function UpdateProfileForm({ user }: { user: User }) {
     } catch (err) {
       showNotification({
         title: "File upload failed",
-        message: "Please try again later",
+        message: "Internal server error",
         color: "red",
       });
     } finally {

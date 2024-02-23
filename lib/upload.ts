@@ -1,5 +1,4 @@
-import { S3, PutObjectCommand, ObjectCannedACL } from "@aws-sdk/client-s3";
-import fs from "fs";
+import { PutObjectCommand, S3 } from "@aws-sdk/client-s3";
 
 if (!process.env.DO_SPACES_KEY || !process.env.DO_SPACES_SECRET) {
   throw new Error("DO_SPACES_KEY or DO_SPACES_SECRET env variables missing");

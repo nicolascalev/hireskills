@@ -9,21 +9,21 @@ import uploadSingleFile from "../upload";
 export default async function updateProfile(formData: FormData) {
   const { userId } = auth();
   if (!userId) {
-    return Promise.reject({
-      message: "Not authenticated",
-    });
+    return {
+      error: "Not authenticated",
+    };
   }
 
   const file = formData.get("photo") as File;
 
   if (!file) {
-    return Promise.reject({
-      message: "No photo provided",
-    });
+    return {
+      error: "No photo provided",
+    };
   }
 
   if (file.size / 1024 / 1000 > 4) {
-    return Promise.reject({ message: "The file is bigger than " + 4 + "MB" });
+    return { error: "The file is bigger than " + 4 + "MB" };
   }
 
   try {
@@ -40,10 +40,14 @@ export default async function updateProfile(formData: FormData) {
       },
     });
     revalidatePath("/profile");
+    return {
+      error: "",
+      message: "Photo uploaded",
+    };
   } catch (err) {
-    return Promise.reject({
-      message: "Failed to upload photo",
-      error: err,
-    });
+    return {
+      error: "Failed to upload photo",
+      details: err,
+    };
   }
 }
