@@ -16,3 +16,12 @@ export const linksAndSocialsSchema = z.object({
   githubUsername: z.string().max(50).optional(),
   leetcodeUsername: z.string().max(50).optional(),
 });
+
+export const profilePreferences = z.object({
+  jobSeeking: z.boolean().optional(),
+  displayJobSeeking: z.boolean().optional(),
+  displayGithubActivity: z.boolean().optional(),
+  displayEmail: z.boolean().optional(),
+  displayPublicResume: z.boolean().optional(),
+  displayActiveOpenSource: z.boolean().optional(),
+});

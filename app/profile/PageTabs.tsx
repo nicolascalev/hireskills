@@ -31,6 +31,7 @@ import { User } from "@prisma/client";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import UpdateLinksAndSocialsForm from "./UpdateLinksAndSocialsForm";
+import UpdateProfilePreferencesForm from "./UpdateProfilePreferencesForm";
 
 function PageTabs({ user }: { user: User }) {
   const router = useRouter();
@@ -95,19 +96,7 @@ function PageTabs({ user }: { user: User }) {
               You can choose what you want to display in your profile
             </Text>
           </div>
-          <form>
-            <Stack gap="xs">
-              <Checkbox label="Job seeking" />
-              <Checkbox label="Display job seeking in profile" />
-              <Checkbox label="Display GitHub activity chart" />
-              <Checkbox label="Display email in profile" />
-              <Checkbox label="Display default resume in profile" />
-              <Checkbox label="Mark as active open source contributor" />
-              <Group justify="end">
-                <Button size="xs">Save</Button>
-              </Group>
-            </Stack>
-          </form>
+          <UpdateProfilePreferencesForm user={user} />
         </SimpleGrid>
       </TabsPanel>
 
