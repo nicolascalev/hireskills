@@ -1,10 +1,8 @@
 "use server";
 import prisma from "@/lib/prisma";
-import { profileSchema } from "@/lib/zod";
+import uploadSingleFile from "@/lib/upload";
 import { auth } from "@clerk/nextjs";
-import { Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
-import uploadSingleFile from "../upload";
 
 export default async function updateProfile(formData: FormData) {
   const { userId } = auth();
