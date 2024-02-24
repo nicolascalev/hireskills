@@ -1,21 +1,27 @@
 import { auth, currentUser } from "@clerk/nextjs";
 import prisma from "@/lib/prisma";
+import { Career, LoggedInUser } from "./types";
 
-// TODO: determine wether this needs noStore() or not
 export async function getCurrentUser() {
   const { userId } = auth();
   if (!userId) {
     return null;
   }
-  return await prisma.user.findUnique({
+  return (await prisma.user.findUnique({
     where: {
       id: userId,
     },
     include: {
       resumes: true,
     },
-  });
+  })) as LoggedInUser | null;
 }
+
+const defaultCareer: Career = {
+  experience: [],
+  education: [],
+  achievements: [],
+};
 
 // this function will only be called after signup
 // we use clerk user and add it to our database
@@ -46,6 +52,7 @@ export async function createUser() {
       fullName: fullName ? fullName : emailAddress.split("@")[0],
       githubUsername: githubAccount?.username,
       avatarUrl: user.imageUrl || undefined,
+      career: defaultCareer,
     },
   });
 

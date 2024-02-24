@@ -29,3 +29,28 @@ export const profilePreferences = z.object({
 export const updateDefaultResumeSchema = z.object({
   defaultResumeId: z.string().uuid().or(z.literal(null)),
 });
+
+export const experienceSchema = z.object({
+  company: z.string().max(50),
+  role: z.string().max(50),
+  startDate: z.string().max(50),
+  endDate: z.string().max(50),
+  description: z.string().max(1000).optional(),
+});
+
+export const educationSchema = z.object({
+  school: z.string().max(190),
+  degree: z.string().max(190),
+  fieldOfStudy: z.string().max(190),
+  startDate: z.string().max(50),
+  endDate: z.string().max(50),
+  description: z.string().max(1000).optional(),
+});
+
+export const achievementsSchema = z.array(z.string().max(190));
+
+export const careerSchema = z.object({
+  experience: z.array(experienceSchema),
+  education: z.array(educationSchema),
+  achievements: achievementsSchema,
+});

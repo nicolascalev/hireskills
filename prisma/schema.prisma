@@ -32,9 +32,9 @@ model User {
   displayEmail                  Boolean   @default(false) @map("display_email")
   displayPublicResume           Boolean   @default(false) @map("display_public_resume")
   displayActiveOpenSource       Boolean   @default(false) @map("display_active_open_source")
-  // TODO: add more fields that may require structure like experience and achievements
   resumes                       Resume[]
   defaultResumeId               String?   @map("default_resume_id")
+  career                        Json
 
   @@map("users")
 }
