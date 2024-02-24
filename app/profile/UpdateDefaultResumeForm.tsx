@@ -1,12 +1,12 @@
 "use client";
-import { Button, Group, Stack, Select } from "@mantine/core";
-import { LoggedInUser } from "@/lib/types";
-import { useFormStatus } from "react-dom";
-import { useForm, zodResolver } from "@mantine/form";
-import { updateDefaultResumeSchema } from "@/lib/zod";
-import { useState } from "react";
-import { showNotification } from "@mantine/notifications";
 import { updateDefaultResume } from "@/lib/actions/profile/updateProfile";
+import { LoggedInUser } from "@/lib/types";
+import { updateDefaultResumeSchema } from "@/lib/zod";
+import { Button, Group, Select, Stack } from "@mantine/core";
+import { useForm, zodResolver } from "@mantine/form";
+import { showNotification } from "@mantine/notifications";
+import { useEffect } from "react";
+import { useFormStatus } from "react-dom";
 
 function UpdateDefaultResumeForm({ user }: { user: LoggedInUser }) {
   const form = useForm({
@@ -16,6 +16,12 @@ function UpdateDefaultResumeForm({ user }: { user: LoggedInUser }) {
     validate: zodResolver(updateDefaultResumeSchema),
     validateInputOnChange: true,
   });
+
+  // this is important to update form values when user changes in session
+  useEffect(() => {
+    form.setFieldValue("defaultResumeId", user.defaultResumeId);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user.defaultResumeId]);
 
   async function onSubmit() {
     if (!form.isDirty()) {
