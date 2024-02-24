@@ -33,6 +33,7 @@ import UpdateProfileForm from "./UpdateProfileForm";
 import UpdateProfilePreferencesForm from "./UpdateProfilePreferencesForm";
 import UpdateDefaultResumeForm from "./UpdateDefaultResumeForm";
 import ExperienceList from "./ExperienceList";
+import EducationList from "./EducationList";
 
 function PageTabs({ user }: { user: LoggedInUser }) {
   const router = useRouter();
@@ -132,28 +133,7 @@ function PageTabs({ user }: { user: LoggedInUser }) {
               education.
             </Text>
           </div>
-          <Stack gap="0">
-            <Stack gap="xs">
-              <Group justify="space-between">
-                <Text fw={500}>Education 1</Text>
-                <ActionIcon size="sm" variant="transparent">
-                  <IconTrash size={14} />
-                </ActionIcon>
-              </Group>
-              <TextInput label="School" placeholder="School" />
-              <Group grow>
-                <TextInput label="Degree" placeholder="Degree" />
-                <TextInput
-                  label="Field of study"
-                  placeholder="Field of study"
-                />
-              </Group>
-              <Group grow>
-                <TextInput label="Start date" placeholder="Start date" />
-                <TextInput label="End date" placeholder="End date or present" />
-              </Group>
-            </Stack>
-          </Stack>
+          <EducationList user={user} />
         </SimpleGrid>
         <Divider my="xl" />
         <SimpleGrid cols={{ base: 1, sm: 2 }}>
