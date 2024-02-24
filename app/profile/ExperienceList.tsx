@@ -1,4 +1,5 @@
 "use client";
+import { updateExperience } from "@/lib/actions/profile/updateCareerFields";
 import { Experience, LoggedInUser } from "@/lib/types";
 import { experienceSchema, nestedExperienceFormSchema } from "@/lib/zod";
 import {
@@ -27,7 +28,7 @@ function ExperienceList({ user }: { user: LoggedInUser }) {
   useEffect(() => {
     form.initialize({ experience: user.career.experience });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
+  }, [user.career.experience]);
 
   function insertItem() {
     form.insertListItem("experience", {
@@ -39,7 +40,8 @@ function ExperienceList({ user }: { user: LoggedInUser }) {
     });
   }
 
-  function onSubmit() {
+  const [loading, setLoading] = useState(false);
+  async function onSubmit() {
     if (!form.isDirty()) {
       showNotification({
         title: "No changes to save",
@@ -57,7 +59,31 @@ function ExperienceList({ user }: { user: LoggedInUser }) {
       });
       return;
     }
-    console.log(form.values);
+    setLoading(true);
+    try {
+      const res = await updateExperience(form.values.experience);
+      if (res.error) {
+        showNotification({
+          title: "Failed to update experience",
+          message: res.error,
+          color: "red",
+        });
+        return;
+      }
+      showNotification({
+        title: "Experience updated",
+        message: "Your experience has been updated successfully",
+        color: "teal",
+      });
+    } catch (err) {
+      showNotification({
+        title: "Failed to update experience",
+        message: "Please try again later",
+        color: "red",
+      });
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -110,10 +136,15 @@ function ExperienceList({ user }: { user: LoggedInUser }) {
             ))}
           </Stack>
           <Group justify="space-between" wrap="nowrap" mt="md">
-            <Button size="xs" onClick={() => insertItem()} variant="light">
+            <Button
+              size="xs"
+              onClick={() => insertItem()}
+              variant="light"
+              disabled={loading}
+            >
               Add item
             </Button>
-            <Button size="xs" onClick={() => onSubmit()}>
+            <Button size="xs" onClick={() => onSubmit()} loading={loading}>
               Save changes
             </Button>
           </Group>
@@ -123,11 +154,16 @@ function ExperienceList({ user }: { user: LoggedInUser }) {
           <Group justify="space-between" wrap="nowrap">
             <Text size="sm">Your experience will be shown here</Text>
             <Group wrap="nowrap">
-              <Button size="xs" onClick={() => insertItem()} variant="light">
+              <Button
+                size="xs"
+                onClick={() => insertItem()}
+                variant="light"
+                disabled={loading}
+              >
                 Add item
               </Button>
               {form.isDirty() && (
-                <Button size="xs" onClick={() => onSubmit()}>
+                <Button size="xs" onClick={() => onSubmit()} loading={loading}>
                   Save changes
                 </Button>
               )}
