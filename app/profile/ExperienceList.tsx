@@ -1,22 +1,25 @@
 "use client";
 import { updateExperience } from "@/lib/actions/profile/updateCareerFields";
-import { Experience, LoggedInUser } from "@/lib/types";
-import { experienceSchema, nestedExperienceFormSchema } from "@/lib/zod";
+import { LoggedInUser } from "@/lib/types";
+import { nestedExperienceFormSchema } from "@/lib/zod";
 import {
-  Text,
-  Stack,
-  Group,
   ActionIcon,
+  Button,
+  Group,
+  Stack,
+  Text,
   TextInput,
   Textarea,
-  Button,
 } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { showNotification } from "@mantine/notifications";
 import { IconTrash } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
+import { useAutoAnimate } from "@formkit/auto-animate/react";
 
 function ExperienceList({ user }: { user: LoggedInUser }) {
+  const [animationParent] = useAutoAnimate();
+
   const form = useForm({
     initialValues: {
       experience: user.career.experience,
@@ -90,7 +93,7 @@ function ExperienceList({ user }: { user: LoggedInUser }) {
     <Stack>
       {form.values.experience.length > 0 ? (
         <form>
-          <Stack gap="0">
+          <Stack gap="0" ref={animationParent}>
             {form.values.experience.map((exp, index) => (
               <Stack key={index} gap="xs" className="custom__career__item">
                 <Group justify="space-between">
@@ -121,7 +124,7 @@ function ExperienceList({ user }: { user: LoggedInUser }) {
                   />
                   <TextInput
                     label="End date"
-                    placeholder="End date or present"
+                    placeholder="End date or 'present'"
                     {...form.getInputProps(`experience.${index}.endDate`)}
                   />
                 </Group>
