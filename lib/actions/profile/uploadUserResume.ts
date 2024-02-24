@@ -1,6 +1,6 @@
 "use server";
 import prisma from "@/lib/prisma";
-import uploadSingleFile from "@/lib/upload";
+import { uploadSingleFile } from "@/lib/storage";
 import { auth } from "@clerk/nextjs";
 import { revalidatePath } from "next/cache";
 

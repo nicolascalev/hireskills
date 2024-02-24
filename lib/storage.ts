@@ -1,4 +1,4 @@
-import { PutObjectCommand, S3 } from "@aws-sdk/client-s3";
+import { DeleteObjectCommand, PutObjectCommand, S3 } from "@aws-sdk/client-s3";
 
 if (!process.env.DO_SPACES_KEY || !process.env.DO_SPACES_SECRET) {
   throw new Error("DO_SPACES_KEY or DO_SPACES_SECRET env variables missing");
@@ -17,16 +17,18 @@ const s3Client = new S3({
 const UPLOAD_MAX_MB = 4;
 
 const path =
-  process.env.NODE_ENV === "production" ? "hireskills/prod/" : "hireskills/dev/";
+  process.env.NODE_ENV === "production"
+    ? "hireskills/prod/"
+    : "hireskills/dev/";
 
 type FileObject = {
   size: number;
   mimetype: string;
   originalFilename: string;
-  buffer: Buffer
+  buffer: Buffer;
 };
 
-const uploadSingleFile = async (file: FileObject) => {
+export const uploadSingleFile = async (file: FileObject) => {
   if (file.size / 1024 / 1000 > UPLOAD_MAX_MB) {
     return Promise.reject("The file is bigger than " + UPLOAD_MAX_MB + "MB");
   }
@@ -54,4 +56,15 @@ const uploadSingleFile = async (file: FileObject) => {
   }
 };
 
-export default uploadSingleFile;
+export const deleteFile = async (key: string) => {
+  try {
+    await s3Client.send(
+      new DeleteObjectCommand({
+        Bucket: "nicolascalev",
+        Key: key,
+      })
+    );
+  } catch (err) {
+    return Promise.reject(err);
+  }
+};

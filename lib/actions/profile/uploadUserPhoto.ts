@@ -1,6 +1,6 @@
 "use server";
 import prisma from "@/lib/prisma";
-import uploadSingleFile from "@/lib/upload";
+import { uploadSingleFile } from "@/lib/storage";
 import { auth } from "@clerk/nextjs";
 import { revalidatePath } from "next/cache";
 
@@ -17,6 +17,12 @@ export default async function updateProfile(formData: FormData) {
   if (!file) {
     return {
       error: "No photo provided",
+    };
+  }
+
+  if (!file.type.includes("image")) {
+    return {
+      error: "Only image files are allowed",
     };
   }
 
