@@ -32,6 +32,7 @@ import UpdateLinksAndSocialsForm from "./UpdateLinksAndSocialsForm";
 import UpdateProfileForm from "./UpdateProfileForm";
 import UpdateProfilePreferencesForm from "./UpdateProfilePreferencesForm";
 import UpdateDefaultResumeForm from "./UpdateDefaultResumeForm";
+import ExperienceList from "./ExperienceList";
 
 function PageTabs({ user }: { user: LoggedInUser }) {
   const router = useRouter();
@@ -162,28 +163,7 @@ function PageTabs({ user }: { user: LoggedInUser }) {
               List your work experience, including internships.
             </Text>
           </div>
-          <Stack gap="0">
-            <Stack gap="xs">
-              <Group justify="space-between">
-                <Text fw={500}>Experience 1</Text>
-                <ActionIcon size="sm" variant="transparent">
-                  <IconTrash size={14} />
-                </ActionIcon>
-              </Group>
-              <TextInput label="Company" placeholder="Company" />
-              <TextInput label="Role" placeholder="Role" />
-              <Group grow>
-                <TextInput label="Start date" placeholder="Start date" />
-                <TextInput label="End date" placeholder="End date or present" />
-              </Group>
-              <Textarea
-                label="Description"
-                placeholder="Description"
-                autosize
-                minRows={2}
-              />
-            </Stack>
-          </Stack>
+          <ExperienceList user={user} />
         </SimpleGrid>
         <Divider my="xl" />
         <SimpleGrid cols={{ base: 1, sm: 2 }}>

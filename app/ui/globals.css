@@ -34,6 +34,12 @@
   border-bottom: 1px solid var(--_app-shell-border-color);
 }
 
+.custom__career__item:not(:last-child) {
+  border-bottom: 1px solid var(--_app-shell-border-color);
+  padding-bottom: var(--mantine-spacing-md);
+  margin-bottom: var(--mantine-spacing-md);
+}
+
 @media (min-width: 48em) {
   .navbar__search {
     max-width: 300px;

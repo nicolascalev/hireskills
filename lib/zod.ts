@@ -31,26 +31,30 @@ export const updateDefaultResumeSchema = z.object({
 });
 
 export const experienceSchema = z.object({
-  company: z.string().max(50),
-  role: z.string().max(50),
-  startDate: z.string().max(50),
-  endDate: z.string().max(50),
+  company: z.string().min(1).max(50),
+  role: z.string().min(1).max(50),
+  startDate: z.string().min(1).max(50),
+  endDate: z.string().min(1).max(50),
   description: z.string().max(1000).optional(),
 });
 
 export const educationSchema = z.object({
-  school: z.string().max(190),
-  degree: z.string().max(190),
-  fieldOfStudy: z.string().max(190),
-  startDate: z.string().max(50),
-  endDate: z.string().max(50),
+  school: z.string().min(1).max(190),
+  degree: z.string().min(1).max(190),
+  fieldOfStudy: z.string().min(1).max(190),
+  startDate: z.string().min(1).max(50),
+  endDate: z.string().min(1).max(50),
   description: z.string().max(1000).optional(),
 });
 
-export const achievementsSchema = z.array(z.string().max(190));
+export const achievementsSchema = z.array(z.string().min(1).max(190));
 
 export const careerSchema = z.object({
   experience: z.array(experienceSchema),
   education: z.array(educationSchema),
   achievements: achievementsSchema,
+});
+
+export const nestedExperienceFormSchema = z.object({
+  experience: z.array(experienceSchema),
 });
