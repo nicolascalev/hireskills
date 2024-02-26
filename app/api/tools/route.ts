@@ -16,7 +16,7 @@ export async function GET(request: NextRequest) {
           },
         },
       },
-      take: 10,
+      take: 5,
     });
     return Response.json(tools);
   } catch (err) {
