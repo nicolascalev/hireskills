@@ -134,3 +134,37 @@ export async function updateAchievements(formAchievements: string[]) {
     };
   }
 }
+
+export async function updateUserTools(formTools: string[]) {
+  const { userId } = auth();
+  if (!userId) {
+    return {
+      error: "Not authenticated",
+    };
+  }
+
+  // we don't need to validate tool format because we are not adding it to the database
+
+  try {
+    const user = (await getCurrentUser()) as LoggedInUser;
+    await prisma.user.update({
+      where: { id: user.id },
+      data: {
+        tools: {
+          set: formTools.map((tool) => ({
+            name: tool,
+          })),
+        },
+      },
+    });
+    return {
+      error: "",
+      message: "Tools updated",
+    };
+  } catch (err) {
+    return {
+      error: "Internal server error",
+      details: err,
+    };
+  }
+}

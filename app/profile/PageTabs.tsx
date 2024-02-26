@@ -1,43 +1,33 @@
 "use client";
 import { LoggedInUser } from "@/lib/types";
 import {
-  ActionIcon,
   Box,
-  Button,
-  Checkbox,
-  CheckboxGroup,
   Divider,
-  Group,
-  Select,
   SimpleGrid,
-  Stack,
   Tabs,
   TabsList,
   TabsPanel,
   TabsTab,
   Text,
-  TextInput,
-  Textarea,
 } from "@mantine/core";
 import {
   IconRoute,
   IconScript,
   IconSettings,
-  IconTrash,
   IconUser,
 } from "@tabler/icons-react";
 import { useRouter, useSearchParams } from "next/navigation";
+import AchievementsList from "./AchievementsList";
+import EducationList from "./EducationList";
+import ExperienceList from "./ExperienceList";
 import ResumesList from "./ResumesList";
+import ToolsForm from "./ToolsForm";
+import UpdateDefaultResumeForm from "./UpdateDefaultResumeForm";
 import UpdateLinksAndSocialsForm from "./UpdateLinksAndSocialsForm";
 import UpdateProfileForm from "./UpdateProfileForm";
 import UpdateProfilePreferencesForm from "./UpdateProfilePreferencesForm";
-import UpdateDefaultResumeForm from "./UpdateDefaultResumeForm";
-import ExperienceList from "./ExperienceList";
-import EducationList from "./EducationList";
-import AchievementsList from "./AchievementsList";
-import ToolsForm from "./ToolsForm";
 
-function PageTabs({ user }: { user: LoggedInUser }) {
+function PageTabs({ user, tools }: { user: LoggedInUser; tools: string[] }) {
   const router = useRouter();
   const search = useSearchParams();
   const tab = ["Profile", "Settings", "Resumes", "Experience"].includes(
@@ -166,7 +156,7 @@ function PageTabs({ user }: { user: LoggedInUser }) {
               Frameworks, libraries, and other tools you are familiar with.
             </Text>
           </div>
-          <ToolsForm />
+          <ToolsForm tools={tools} />
         </SimpleGrid>
       </TabsPanel>
     </Tabs>

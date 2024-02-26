@@ -1,10 +1,13 @@
 "use client";
-import { createTool } from "@/lib/actions/profile/createTool";
+import { createTool } from "@/lib/actions/profile/manageTools";
+import { updateUserTools } from "@/lib/actions/profile/updateCareerFields";
 import { fetcherWithConfig } from "@/lib/api";
 import {
+  Button,
   Checkbox,
   CheckboxGroup,
   Combobox,
+  Group,
   Loader,
   Stack,
   TextInput,
@@ -16,9 +19,55 @@ import { Tool } from "@prisma/client";
 import { useState } from "react";
 import useSWR from "swr";
 
-function ToolsForm() {
-  const [visibleTools, setVisibleTools] = useState<string[]>([]);
-  const [selectedTools, setSelectedTools] = useState<string[]>([]);
+function arraysAreEqual(arr1: string[], arr2: string[]) {
+  if (arr1.length !== arr2.length) {
+    return false;
+  }
+
+  return arr1.every((value) => arr2.includes(value));
+}
+
+function ToolsForm({ tools }: { tools: string[] }) {
+  const [visibleTools, setVisibleTools] = useState<string[]>(tools);
+  const [selectedTools, setSelectedTools] = useState<string[]>(tools);
+
+  const [loading, setLoading] = useState(false);
+  async function saveUserTools() {
+    if (arraysAreEqual(tools, selectedTools)) {
+      showNotification({
+        title: "No changes to save",
+        message: "Make changes and save your tools",
+        color: "blue",
+      });
+      return;
+    }
+    setLoading(true);
+    try {
+      const res = await updateUserTools(selectedTools);
+      if (res.error) {
+        showNotification({
+          title: res.error,
+          message: "Could not update your tools. Please try again later",
+          color: "red",
+        });
+        return;
+      }
+      showNotification({
+        title: "Success",
+        message: "Your tools have been updated",
+        color: "teal",
+      });
+    } catch (err) {
+      showNotification({
+        title: "Error",
+        message: "Could not update your tools. Please try again later",
+        color: "red",
+      });
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
     <Stack>
       <ToolsCombobox
@@ -34,13 +83,25 @@ function ToolsForm() {
         }}
         creatable
       />
-      <CheckboxGroup value={selectedTools} onChange={setSelectedTools}>
-        <Stack gap="xs">
-          {visibleTools.map((tool) => (
-            <Checkbox label={tool} value={tool} key={tool} />
-          ))}
-        </Stack>
-      </CheckboxGroup>
+      {visibleTools.length > 0 && (
+        <CheckboxGroup value={selectedTools} onChange={setSelectedTools}>
+          <Stack gap="xs">
+            {visibleTools.map((tool) => (
+              <Checkbox
+                label={tool}
+                value={tool}
+                key={tool}
+                disabled={loading}
+              />
+            ))}
+          </Stack>
+        </CheckboxGroup>
+      )}
+      <Group justify="end">
+        <Button size="xs" onClick={() => saveUserTools()} loading={loading}>
+          Save changes
+        </Button>
+      </Group>
     </Stack>
   );
 }
@@ -169,13 +230,20 @@ export function ToolsCombobox({
       <Combobox.Dropdown hidden={availableTools === null}>
         <Combobox.Options>
           {options}
-          {(!availableTools || availableTools.length == 0) && !creatable && (
-            <Combobox.Empty>No results found</Combobox.Empty>
-          )}
-          {(!availableTools || availableTools.length == 0) && creatable && (
-            <Combobox.Option value="$create">
-              Create: {searchString}
+          {availableToolsLoading ? (
+            <Combobox.Option value="loading" disabled>
+              Loading...
             </Combobox.Option>
+          ) : (
+            <>
+              {(!availableTools || availableTools.length == 0) &&
+                !creatable && <Combobox.Empty>No results found</Combobox.Empty>}
+              {(!availableTools || availableTools.length == 0) && creatable && (
+                <Combobox.Option value="$create">
+                  Create: {searchString}
+                </Combobox.Option>
+              )}
+            </>
           )}
         </Combobox.Options>
       </Combobox.Dropdown>

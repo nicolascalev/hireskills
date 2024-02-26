@@ -48,3 +48,34 @@ export async function createTool(name: string) {
     };
   }
 }
+
+export async function findAllTools() {
+  const { userId } = auth();
+  if (!userId) {
+    return {
+      error: "Not authenticated",
+    };
+  }
+
+  try {
+    const tools = await prisma.tool.findMany({
+      where: {
+        users: {
+          some: {
+            id: userId,
+          },
+        },
+      },
+    });
+
+    return {
+      error: "",
+      tools,
+    };
+  } catch (err) {
+    return {
+      error: "Internal server error",
+      details: err,
+    };
+  }
+}
