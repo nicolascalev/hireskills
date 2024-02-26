@@ -1,7 +1,11 @@
 "use server";
 
 import { Career, Education, Experience, LoggedInUser } from "@/lib/types";
-import { educationSchema, experienceSchema } from "@/lib/zod";
+import {
+  achievementsSchema,
+  educationSchema,
+  experienceSchema,
+} from "@/lib/zod";
 import { auth } from "@clerk/nextjs";
 import prisma from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth";
@@ -71,6 +75,47 @@ export async function updateEducation(formEducation: Education[]) {
     const updatedCareer = {
       ...(user.career as Career),
       education: formEducation,
+    };
+    await prisma.user.update({
+      where: { id: user.id },
+      data: {
+        career: updatedCareer,
+      },
+    });
+    revalidatePath("/profile");
+    return {
+      error: "",
+    };
+  } catch (err) {
+    return {
+      error: "Internal server error",
+      details: err,
+    };
+  }
+}
+
+export async function updateAchievements(formAchievements: string[]) {
+  const { userId } = auth();
+  if (!userId) {
+    return {
+      error: "Not authenticated",
+    };
+  }
+
+  const validatedFields = achievementsSchema.safeParse(formAchievements);
+  if (!validatedFields.success) {
+    const fieldErrors = validatedFields.error.flatten().fieldErrors;
+    return {
+      error: "Validation error",
+      fieldErrors,
+    };
+  }
+
+  try {
+    const user = (await getCurrentUser()) as LoggedInUser;
+    const updatedCareer = {
+      ...(user.career as Career),
+      achievements: formAchievements,
     };
     await prisma.user.update({
       where: { id: user.id },

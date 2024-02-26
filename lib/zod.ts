@@ -62,3 +62,7 @@ export const nestedExperienceFormSchema = z.object({
 export const nestedEducationFormSchema = z.object({
   education: z.array(educationSchema),
 });
+
+export const nestedAchievementsFormSchema = z.object({
+  achievements: achievementsSchema,
+});

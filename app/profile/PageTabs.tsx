@@ -34,6 +34,7 @@ import UpdateProfilePreferencesForm from "./UpdateProfilePreferencesForm";
 import UpdateDefaultResumeForm from "./UpdateDefaultResumeForm";
 import ExperienceList from "./ExperienceList";
 import EducationList from "./EducationList";
+import AchievementsList from "./AchievementsList";
 
 function PageTabs({ user }: { user: LoggedInUser }) {
   const router = useRouter();
@@ -144,6 +145,16 @@ function PageTabs({ user }: { user: LoggedInUser }) {
             </Text>
           </div>
           <ExperienceList user={user} />
+        </SimpleGrid>
+        <Divider my="xl" />
+        <SimpleGrid cols={{ base: 1, sm: 2 }}>
+          <div>
+            <Text fw="500">Achievements</Text>
+            <Text size="sm" c="dimmed" maw="500">
+              List your achievements, including examples of exceptional performance in extracurricular activities.
+            </Text>
+          </div>
+          <AchievementsList user={user} />
         </SimpleGrid>
         <Divider my="xl" />
         <SimpleGrid cols={{ base: 1, sm: 2 }}>
