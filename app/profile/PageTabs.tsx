@@ -35,6 +35,7 @@ import UpdateDefaultResumeForm from "./UpdateDefaultResumeForm";
 import ExperienceList from "./ExperienceList";
 import EducationList from "./EducationList";
 import AchievementsList from "./AchievementsList";
+import ToolsForm from "./ToolsForm";
 
 function PageTabs({ user }: { user: LoggedInUser }) {
   const router = useRouter();
@@ -151,7 +152,8 @@ function PageTabs({ user }: { user: LoggedInUser }) {
           <div>
             <Text fw="500">Achievements</Text>
             <Text size="sm" c="dimmed" maw="500">
-              List your achievements, including examples of exceptional performance in extracurricular activities.
+              List your achievements, including examples of exceptional
+              performance in extracurricular activities.
             </Text>
           </div>
           <AchievementsList user={user} />
@@ -159,40 +161,12 @@ function PageTabs({ user }: { user: LoggedInUser }) {
         <Divider my="xl" />
         <SimpleGrid cols={{ base: 1, sm: 2 }}>
           <div>
-            <Text fw="500">Tools</Text>
+            <Text fw="500">Languages and Tools</Text>
             <Text size="sm" c="dimmed">
               Frameworks, libraries, and other tools you are familiar with.
             </Text>
           </div>
-          <Stack>
-            <TextInput label="Search or add tools" placeholder="Search..." />
-            <CheckboxGroup defaultValue={["Auth0"]}>
-              <Stack gap="xs">
-                <Checkbox label="Next js" value="Next js" />
-                <Checkbox label="Auth0" value="Auth0" />
-                <Checkbox label="Prisma" value="Prisma" />
-              </Stack>
-            </CheckboxGroup>
-          </Stack>
-        </SimpleGrid>
-        <Divider my="xl" />
-        <SimpleGrid cols={{ base: 1, sm: 2 }}>
-          <div>
-            <Text fw="500">Languages</Text>
-            <Text size="sm" c="dimmed">
-              Select the programming languages you are familiar with.
-            </Text>
-          </div>
-          <Stack>
-            <TextInput label="Search or add language" placeholder="Search..." />
-            <CheckboxGroup defaultValue={["Auth0"]}>
-              <Stack gap="xs">
-                <Checkbox label="Next js" value="Next js" />
-                <Checkbox label="Auth0" value="Auth0" />
-                <Checkbox label="Prisma" value="Prisma" />
-              </Stack>
-            </CheckboxGroup>
-          </Stack>
+          <ToolsForm />
         </SimpleGrid>
       </TabsPanel>
     </Tabs>
