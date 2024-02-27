@@ -114,13 +114,16 @@ export default function ToolsCombobox({
             </Combobox.Option>
           ) : (
             <>
-              {(!availableTools || availableTools.length == 0) &&
-                !creatable && <Combobox.Empty>No results found</Combobox.Empty>}
-              {(!availableTools || availableTools.length == 0) && creatable && (
-                <Combobox.Option value="$create">
-                  Create: {searchString}
-                </Combobox.Option>
+              {(!availableTools || availableTools.length == 0) && (
+                <Combobox.Empty>No results found</Combobox.Empty>
               )}
+              {(!availableTools || availableTools.length == 0) &&
+                creatable &&
+                searchString.trim() && (
+                  <Combobox.Option value="$create">
+                    Create: {searchString}
+                  </Combobox.Option>
+                )}
             </>
           )}
         </Combobox.Options>
