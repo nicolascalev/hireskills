@@ -2,6 +2,11 @@ import { z } from "zod";
 
 export const profileSchema = z.object({
   fullName: z.string().min(1).max(50),
+  username: z
+    .string()
+    .min(1)
+    .max(50)
+    .regex(/^[a-zA-Z0-9_]+$/, "Invalid characters in username"),
   company: z.string().max(50).optional(),
   role: z.string().max(50).optional(),
   location: z.string().max(50).optional(),

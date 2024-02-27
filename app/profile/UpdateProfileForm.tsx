@@ -24,6 +24,7 @@ function UpdateProfileForm({ user }: { user: LoggedInUser }) {
   const form = useForm({
     initialValues: {
       fullName: user.fullName,
+      username: user.username,
       role: user.role || "",
       company: user.company || "",
       location: user.location || "",
@@ -45,19 +46,36 @@ function UpdateProfileForm({ user }: { user: LoggedInUser }) {
       return;
     }
     try {
-      await updateProfile(form.values);
+      const res = await updateProfile(form.values);
+      if (res.error) {
+        handleUpdateError(res);
+        return;
+      }
       showNotification({
         title: "Profile updated",
         message: "Your profile has been updated successfully",
         color: "teal",
       });
     } catch (err) {
+      handleUpdateError(err);
+    }
+  }
+
+  function handleUpdateError(error: any) {
+    if (error.code === "P2002") {
+      form.setFieldError("username", "Username already taken");
       showNotification({
-        title: "Profile update failed",
-        message: "Please try again later",
+        title: error.error,
+        message: "Please try again",
         color: "red",
       });
+      return
     }
+    showNotification({
+      title: "Profile update failed",
+      message: "Please try again later",
+      color: "red",
+    });
   }
 
   const [uploadedFileUrl, setUploadedFileUrl] = useState("");
@@ -151,6 +169,12 @@ function UpdateProfileForm({ user }: { user: LoggedInUser }) {
           label="Full name"
           placeholder="Full name"
           {...form.getInputProps("fullName")}
+        />
+        <TextInput
+          name="username"
+          label="Username"
+          placeholder="Username"
+          {...form.getInputProps("username")}
         />
         <TextInput
           label="Email"

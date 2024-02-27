@@ -13,32 +13,41 @@ import { revalidatePath } from "next/cache";
 export async function updateProfile(formData: Prisma.UserUpdateInput) {
   const { userId } = auth();
   if (!userId) {
-    return Promise.reject({
-      message: "Not authenticated",
-    });
+    return {
+      error: "Not authenticated",
+    };
   }
 
   const validatedFields = profileSchema.safeParse(formData);
   if (!validatedFields.success) {
     const fieldErrors = validatedFields.error.flatten().fieldErrors;
-    return Promise.reject({
-      message: "Validation error",
+    return {
+      error: "Validation error",
       fieldErrors,
-    });
+    };
   }
 
   try {
-    const updated = await prisma.user.update({
+    await prisma.user.update({
       where: { id: userId },
       data: validatedFields.data,
     });
     revalidatePath("/profile");
-    return updated;
+    return {
+      error: "",
+      message: "Profile updated",
+    };
   } catch (err) {
-    return Promise.reject({
-      message: "Internal server error",
-      error: err,
-    });
+    const error: any = err;
+    if (error.code === "P2002") {
+      return {
+        error: "Username already taken",
+        code: "P2002",
+      };
+    }
+    return {
+      error: "Internal server error",
+    };
   }
 }
 
