@@ -7,7 +7,7 @@ import GitHubCalendar from "react-github-calendar";
 // useColorScheme() does not always return the correct color scheme that's being rendered because it returns window.matchMedia("(prefers-color-scheme: dark)")
 // this also gets rid of flickering when the color scheme changes and loads data
 
-function GitHubCalendarWrapper() {
+function GitHubCalendarWrapper({ username }: { username: string }) {
   const theme = useMantineTheme();
 
   return (
@@ -17,7 +17,7 @@ function GitHubCalendarWrapper() {
           theme={{
             dark: [theme.colors.dark[5], theme.colors.green[5]],
           }}
-          username="nicolascalev"
+          username={username}
           colorScheme="dark"
         />
       </Box>
@@ -26,7 +26,7 @@ function GitHubCalendarWrapper() {
           theme={{
             light: ["hsl(0, 0%, 95%)", theme.colors.green[5]],
           }}
-          username="nicolascalev"
+          username={username}
           colorScheme="light"
         />
       </Box>

@@ -1,6 +1,10 @@
 import GitHubCalendarWrapper from "@/app/ui/GitHubCalendarWrapper";
 import ProjectCard from "@/app/ui/ProjectCard";
+import { monthAndYear, onlyTimeAgo } from "@/lib/moment";
+import prisma from "@/lib/prisma";
+import { DeveloperPage } from "@/lib/types";
 import {
+  Anchor,
   Avatar,
   Container,
   Divider,
@@ -13,7 +17,9 @@ import {
   Text,
   ThemeIcon,
 } from "@mantine/core";
+import { Resume } from "@prisma/client";
 import {
+  IconAt,
   IconBrandGithub,
   IconBrandLeetcode,
   IconBrandLinkedin,
@@ -23,82 +29,162 @@ import {
   IconMap,
   IconScript,
 } from "@tabler/icons-react";
+import { notFound } from "next/navigation";
+import { ReactNode } from "react";
 
-export default function DeveloperPage() {
+export default async function DeveloperPage({
+  params,
+}: {
+  params: { id: string };
+}) {
+  const user = (await prisma.user.findUnique({
+    where: {
+      id: params.id,
+    },
+    include: {
+      tools: true,
+      skills: true,
+    },
+  })) as DeveloperPage | null;
+
+  if (!user) {
+    return notFound();
+  }
+
+  let defaultResume: Resume | null = null;
+  if (user.defaultResumeId) {
+    defaultResume = await prisma.resume.findFirst({
+      where: {
+        id: user.defaultResumeId,
+      },
+    });
+  }
+
   return (
     <Container py="md" size="xl">
       <Grid gutter={{ base: "md", sm: "xl" }}>
         <GridCol span={{ base: 12, sm: 3 }}>
           <Stack gap="sm">
-            <Avatar size="xl" />
+            <Avatar size="xl" src={user.avatarUrl} />
             <div>
-              <Text fw={500}>Nicolas Guillen</Text>
-              <Text size="sm">Full stack developer</Text>
-              <Text size="sm">Open to opportunities</Text>
+              <Text fw={500}>{user.fullName}</Text>
+              {user.role && <Text size="sm">{user.role}</Text>}
+              {user.company && <Text size="sm">{user.company}</Text>}
             </div>
-            <Divider />
-            <Group wrap="nowrap" gap="xs">
-              <ThemeIcon color="green" variant="transparent" size="xs">
-                <IconGrowth />
-              </ThemeIcon>
-              <Text size="sm">Job seeking</Text>
-            </Group>
-            <Divider />
-            <Group wrap="nowrap" gap="xs">
-              <ThemeIcon variant="transparent" size="xs">
-                <IconCalendar />
-              </ThemeIcon>
-              <div>
-                <Text size="sm">Started coding</Text>
-                <Text size="sm">Feb 18th, 2022 (2 years)</Text>
-              </div>
-            </Group>
-            <Group wrap="nowrap" gap="xs">
-              <ThemeIcon variant="transparent" size="xs">
-                <IconCalendar />
-              </ThemeIcon>
-              <div>
-                <Text size="sm">Started professional experience</Text>
-                <Text size="sm">Feb 18th, 2022 (2 years)</Text>
-              </div>
-            </Group>
-            <Group wrap="nowrap" gap="xs">
-              <ThemeIcon variant="transparent" size="xs">
-                <IconMap />
-              </ThemeIcon>
-              <Text size="sm">Athens, GA</Text>
-            </Group>
-            <Group wrap="nowrap" gap="xs">
-              <ThemeIcon variant="transparent" size="xs">
-                <IconLink />
-              </ThemeIcon>
-              <Text size="sm">https://nicolascalev.com</Text>
-            </Group>
-            <Group wrap="nowrap" gap="xs">
-              <ThemeIcon variant="transparent" size="xs">
-                <IconBrandGithub />
-              </ThemeIcon>
-              <Text size="sm">nicolascalev</Text>
-            </Group>
-            <Group wrap="nowrap" gap="xs">
-              <ThemeIcon variant="transparent" size="xs">
-                <IconBrandLeetcode />
-              </ThemeIcon>
-              <Text size="sm">nicolascalev</Text>
-            </Group>
-            <Group wrap="nowrap" gap="xs">
-              <ThemeIcon variant="transparent" size="xs">
-                <IconBrandLinkedin />
-              </ThemeIcon>
-              <Text size="sm">nicolascalev</Text>
-            </Group>
-            <Group wrap="nowrap" gap="xs">
-              <ThemeIcon variant="transparent" size="xs">
-                <IconScript />
-              </ThemeIcon>
-              <Text size="sm">Public resume</Text>
-            </Group>
-            {/* TODO: show email? */}
+            {user.jobSeeking && user.displayJobSeeking && (
+              <>
+                <Divider />
+                <Group wrap="nowrap" gap="xs">
+                  <ThemeIcon color="green" variant="transparent" size="xs">
+                    <IconGrowth />
+                  </ThemeIcon>
+                  <Text size="sm">Job seeking</Text>
+                </Group>
+                <Divider />
+              </>
+            )}
+            {user.startedCoding && (
+              <Group wrap="nowrap" gap="xs">
+                <ThemeIcon variant="transparent" size="xs">
+                  <IconCalendar />
+                </ThemeIcon>
+                <div>
+                  <Text size="sm">Started coding</Text>
+                  <Text size="sm">
+                    {monthAndYear(user.startedCoding)} (
+                    {onlyTimeAgo(user.startedCoding)})
+                  </Text>
+                </div>
+              </Group>
+            )}
+            {user.startedProfessionalExperience && (
+              <Group wrap="nowrap" gap="xs">
+                <ThemeIcon variant="transparent" size="xs">
+                  <IconCalendar />
+                </ThemeIcon>
+                <div>
+                  <Text size="sm">Started professional experience</Text>
+                  <Text size="sm">
+                    {monthAndYear(user.startedProfessionalExperience)} (
+                    {onlyTimeAgo(user.startedProfessionalExperience)})
+                  </Text>
+                </div>
+              </Group>
+            )}
+            {user.location && (
+              <Group wrap="nowrap" gap="xs">
+                <ThemeIcon variant="transparent" size="xs">
+                  <IconMap />
+                </ThemeIcon>
+                <Text size="sm" lineClamp={2}>
+                  {user.location}
+                </Text>
+              </Group>
+            )}
+            {user.portfolioUrl && (
+              <Group wrap="nowrap" gap="xs">
+                <ThemeIcon variant="transparent" size="xs">
+                  <IconLink />
+                </ThemeIcon>
+                <AnchorExternal href={user.portfolioUrl}>
+                  {user.portfolioUrl}
+                </AnchorExternal>
+              </Group>
+            )}
+            {user.githubUsername && (
+              <Group wrap="nowrap" gap="xs">
+                <ThemeIcon variant="transparent" size="xs">
+                  <IconBrandGithub />
+                </ThemeIcon>
+                <AnchorExternal
+                  href={`https://github.com/${user.githubUsername}`}
+                >
+                  {user.githubUsername}
+                </AnchorExternal>
+              </Group>
+            )}
+            {user.leetcodeUsername && (
+              <Group wrap="nowrap" gap="xs">
+                <ThemeIcon variant="transparent" size="xs">
+                  <IconBrandLeetcode />
+                </ThemeIcon>
+                <AnchorExternal
+                  href={`https://leetcode.com/${user.leetcodeUsername}`}
+                >
+                  {user.leetcodeUsername}
+                </AnchorExternal>
+              </Group>
+            )}
+            {user.linkedinUsername && (
+              <Group wrap="nowrap" gap="xs">
+                <ThemeIcon variant="transparent" size="xs">
+                  <IconBrandLinkedin />
+                </ThemeIcon>
+                <AnchorExternal
+                  href={`https://linkedin.com/in/${user.linkedinUsername}`}
+                >
+                  {user.linkedinUsername}
+                </AnchorExternal>
+              </Group>
+            )}
+            {user.displayPublicResume && defaultResume && (
+              <Group wrap="nowrap" gap="xs">
+                <ThemeIcon variant="transparent" size="xs">
+                  <IconScript />
+                </ThemeIcon>
+                <AnchorExternal href={defaultResume.url}>
+                  Public resume
+                </AnchorExternal>
+              </Group>
+            )}
+            {user.displayEmail && (
+              <Group wrap="nowrap" gap="xs">
+                <ThemeIcon variant="transparent" size="xs">
+                  <IconAt />
+                </ThemeIcon>
+                <Text size="sm">{user.email}</Text>
+              </Group>
+            )}
           </Stack>
         </GridCol>
         <GridCol span={{ base: 12, sm: 9 }} pb="xl">
@@ -108,20 +194,22 @@ export default function DeveloperPage() {
               <Text fw={500} mb="sm">
                 Summary
               </Text>
-              <Text size="sm">
-                Full stack developer with 2 years of experience. Open to
-                opportunities, looking for a company where I can grow and
-                contribute to meaningful projects.
+              <Text size="sm" style={{ whiteSpace: "pre-wrap" }}>
+                {user.summary || "No summary provided by the user."}
               </Text>
             </div>
             <Divider />
-            <div>
-              <Text fw={500} mb="sm">
-                GitHub activity
-              </Text>
-              <GitHubCalendarWrapper />
-            </div>
-            <Divider />
+            {user.displayGithubActivity && user.githubUsername && (
+              <>
+                <div>
+                  <Text fw={500} mb="sm">
+                    GitHub activity
+                  </Text>
+                  <GitHubCalendarWrapper username={user.githubUsername} />
+                </div>
+                <Divider />
+              </>
+            )}
             <div>
               <Text fw={500} mb="sm">
                 Projects
@@ -140,54 +228,60 @@ export default function DeveloperPage() {
               <Text fw={500} mb="sm">
                 Achievements
               </Text>
-              <List size="sm">
-                <ListItem>Clone or download repository from GitHub</ListItem>
-                <ListItem>Install dependencies with yarn</ListItem>
-                <ListItem>
-                  To start development server run npm start command
-                </ListItem>
-                <ListItem>
-                  Run tests to make sure your changes do not break the build
-                </ListItem>
-                <ListItem>Submit a pull request once you are done</ListItem>
-              </List>
+              {user.career.achievements.length === 0 ? (
+                <Text size="sm">No achievements listed by the user.</Text>
+              ) : (
+                <List size="sm">
+                  {user.career.achievements.map((achievement, i) => (
+                    <ListItem key={i}>{achievement}</ListItem>
+                  ))}
+                </List>
+              )}
             </div>
             <Divider />
             <div>
               <Text fw={500} mb="sm">
                 Experience
               </Text>
-              <div>
-                <Text size="sm" mb="xs">
-                  Full stack developer
-                  <Text size="sm" fw={600} component="span" mx="sm">
-                    Google
-                  </Text>
-                  Feb 2020 - Jan 2023
-                </Text>
-                <List size="sm">
-                  <ListItem>Clone or download repository from GitHub</ListItem>
-                  <ListItem>Install dependencies with yarn</ListItem>
-                  <ListItem>
-                    To start development server run npm start command
-                  </ListItem>
-                  <ListItem>
-                    Run tests to make sure your changes do not break the build
-                  </ListItem>
-                  <ListItem>Submit a pull request once you are done</ListItem>
-                </List>
-              </div>
+              {user.career.experience.length === 0 ? (
+                <Text size="sm">No experience listed by the user.</Text>
+              ) : (
+                user.career.experience.map((experience, i) => (
+                  <div key={i}>
+                    <Text size="sm" mb="xs">
+                      {experience.role}
+                      <Text size="sm" fw={600} component="span" mx="sm">
+                        {experience.company}
+                      </Text>
+                      {experience.startDate} - {experience.endDate}
+                    </Text>
+                    <Text size="sm" style={{ whiteSpace: "pre-wrap" }}>
+                      {experience.description}
+                    </Text>
+                  </div>
+                ))
+              )}
             </div>
             <Divider />
             <div>
               <Text fw={500} mb="xs">
                 Education
               </Text>
-              <div>
-                <Text size="sm">Universidad de Costa Rica</Text>
-                <Text size="sm">Bachillerato en ingeniría de sistemas</Text>
-                <Text size="sm">Jan 2020 - Dec 2023</Text>
-              </div>
+              {user.career.education.length === 0 ? (
+                <Text size="sm">No education listed by the user.</Text>
+              ) : (
+                user.career.education.map((education, i) => (
+                  <div key={i}>
+                    <Text size="sm">{education.school}</Text>
+                    <Text size="sm">
+                      {education.degree} in {education.fieldOfStudy}
+                    </Text>
+                    <Text size="sm">
+                      {education.startDate} - {education.endDate}
+                    </Text>
+                  </div>
+                ))
+              )}
             </div>
             <Divider />
             <div>
@@ -195,14 +289,41 @@ export default function DeveloperPage() {
                 Skills and tools
               </Text>
               <div>
-                <Text size="sm">Skills: Full stack, Frontend, Backend, DevOps, ML</Text>
-                <Text size="sm">Programming languages: JavaScript, TypeScript, SQL, C#</Text>
-                <Text size="sm">Tools: Prisma, Auth0, Chrome Dev Tools, Vercel, Terraform</Text>
+                <Text size="sm">
+                  Skills:{" "}
+                  {user.skills.map((skill) => skill.name).join(", ") ||
+                    "No skills listed by the user."}
+                </Text>
+                <Text size="sm">
+                  Programming languages and tools:{" "}
+                  {user.tools.map((tool) => tool.name).join(", ") ||
+                    "No tools listed by the user."}
+                </Text>
               </div>
             </div>
           </Stack>
         </GridCol>
       </Grid>
     </Container>
+  );
+}
+
+function AnchorExternal({
+  href,
+  children,
+}: {
+  href: string;
+  children: ReactNode;
+}) {
+  return (
+    <Anchor
+      size="sm"
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      c="inherit"
+    >
+      {children}
+    </Anchor>
   );
 }

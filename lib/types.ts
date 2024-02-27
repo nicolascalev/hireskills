@@ -30,3 +30,12 @@ export type LoggedInUser = Prisma.UserGetPayload<{
 }> & {
   career: Career;
 };
+
+export type DeveloperPage = Prisma.UserGetPayload<{
+  include: {
+    skills: true;
+    tools: true;
+  };
+}> & {
+  career: Career;
+};
