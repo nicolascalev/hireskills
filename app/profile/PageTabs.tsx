@@ -26,8 +26,17 @@ import UpdateDefaultResumeForm from "./UpdateDefaultResumeForm";
 import UpdateLinksAndSocialsForm from "./UpdateLinksAndSocialsForm";
 import UpdateProfileForm from "./UpdateProfileForm";
 import UpdateProfilePreferencesForm from "./UpdateProfilePreferencesForm";
+import SkillsForm from "./SkillsForm";
 
-function PageTabs({ user, tools }: { user: LoggedInUser; tools: string[] }) {
+function PageTabs({
+  user,
+  tools,
+  skills,
+}: {
+  user: LoggedInUser;
+  tools: string[];
+  skills: string[];
+}) {
   const router = useRouter();
   const search = useSearchParams();
   const tab = ["Profile", "Settings", "Resumes", "Experience"].includes(
@@ -157,6 +166,16 @@ function PageTabs({ user, tools }: { user: LoggedInUser; tools: string[] }) {
             </Text>
           </div>
           <ToolsForm tools={tools} />
+        </SimpleGrid>
+        <Divider my="xl" />
+        <SimpleGrid cols={{ base: 1, sm: 2 }}>
+          <div>
+            <Text fw="500">Skills and roles</Text>
+            <Text size="sm" c="dimmed">
+              For example: Frontend, Backend, Machine Learning, DevOps...
+            </Text>
+          </div>
+          <SkillsForm skills={skills} />
         </SimpleGrid>
       </TabsPanel>
     </Tabs>

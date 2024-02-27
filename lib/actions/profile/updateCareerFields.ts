@@ -169,3 +169,38 @@ export async function updateUserTools(formTools: string[]) {
     };
   }
 }
+
+export async function updateUserSkills(formSkills: string[]) {
+  const { userId } = auth();
+  if (!userId) {
+    return {
+      error: "Not authenticated",
+    };
+  }
+
+  // we don't need to validate skill format because we are not adding it to the database
+
+  try {
+    const user = (await getCurrentUser()) as LoggedInUser;
+    await prisma.user.update({
+      where: { id: user.id },
+      data: {
+        skills: {
+          set: formSkills.map((skill) => ({
+            name: skill,
+          })),
+        },
+      },
+    });
+    revalidatePath("/profile");
+    return {
+      error: "",
+      message: "Skills updated",
+    };
+  } catch (err) {
+    return {
+      error: "Internal server error",
+      details: err,
+    };
+  }
+}
