@@ -23,6 +23,7 @@ import {
   IconBrandGithub,
   IconBrandLeetcode,
   IconBrandLinkedin,
+  IconBrandOpenSource,
   IconCalendar,
   IconGrowth,
   IconLink,
@@ -39,7 +40,7 @@ export default async function DeveloperPage({
 }) {
   const user = (await prisma.user.findUnique({
     where: {
-      id: params.id,
+      username: params.id,
     },
     include: {
       tools: true,
@@ -175,6 +176,14 @@ export default async function DeveloperPage({
                 <AnchorExternal href={defaultResume.url}>
                   Public resume
                 </AnchorExternal>
+              </Group>
+            )}
+            {user.displayActiveOpenSource && (
+              <Group wrap="nowrap" gap="xs">
+                <ThemeIcon variant="transparent" size="xs">
+                  <IconBrandOpenSource />
+                </ThemeIcon>
+                <Text size="sm">Open source contributor</Text>
               </Group>
             )}
             {user.displayEmail && (
