@@ -40,6 +40,7 @@ export async function createUser() {
   // if the user does not have name and last name we use the email
   let fullName = [user.firstName, " ", user.lastName].join("").trim();
   let emailAddress = user.emailAddresses[0].emailAddress;
+  let username = emailAddress.split("@")[0] + Math.floor(Math.random() * 1000);
 
   const upsertUser = await prisma.user.upsert({
     where: {
@@ -48,6 +49,7 @@ export async function createUser() {
     update: {},
     create: {
       id: user.id,
+      username,
       email: emailAddress,
       fullName: fullName ? fullName : emailAddress.split("@")[0],
       githubUsername: githubAccount?.username,

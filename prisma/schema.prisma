@@ -12,6 +12,7 @@ datasource db {
 
 model User {
   id                            String    @id
+  username                      String    @unique
   createdAt                     DateTime  @default(now()) @map(name: "created_at")
   fullName                      String    @map("full_name")
   company                       String?
@@ -37,6 +38,7 @@ model User {
   career                        Json
   tools                         Tool[]
   skills                        Skill[]
+
   @@map("users")
 }
 
