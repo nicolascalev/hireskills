@@ -4,9 +4,9 @@ export default authMiddleware({
   publicRoutes: [
     "/",
     "/developers",
-    "/developers/[id]",
+    "/developers/:id",
     "/projects",
-    "/projects/[id]",
+    "/projects/:id",
     "/api/tools",
   ],
   afterAuth(auth, req) {
