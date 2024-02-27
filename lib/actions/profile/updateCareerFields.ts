@@ -157,6 +157,7 @@ export async function updateUserTools(formTools: string[]) {
         },
       },
     });
+    revalidatePath("/profile");
     return {
       error: "",
       message: "Tools updated",
