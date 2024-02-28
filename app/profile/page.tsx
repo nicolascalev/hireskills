@@ -6,10 +6,12 @@ import { findAllTools } from "@/lib/actions/profile/manageTools";
 import { findAllSkills } from "@/lib/actions/profile/manageSkills";
 
 async function ProfilePage() {
-  const user = (await getCurrentUser()) as LoggedInUser;
-  const toolsResponse = await findAllTools();
+  const [user, toolsResponse, skillsResponse] = await Promise.all([
+    getCurrentUser() as Promise<LoggedInUser>,
+    findAllTools(),
+    findAllSkills(),
+  ]);
   const formattedTools = toolsResponse.tools?.map((tool) => tool.name) || [];
-  const skillsResponse = await findAllSkills();
   const formattedSkills =
     skillsResponse.skills?.map((skill) => skill.name) || [];
 
