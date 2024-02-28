@@ -44,7 +44,7 @@ function DeveloperPageContent({
     <Container py="md" size="xl">
       <Grid gutter={{ base: "md", sm: "xl" }}>
         <GridCol span={{ base: 12, sm: 3 }}>
-          <Stack gap="sm">
+          <Stack gap="sm" pos="sticky" top="76px">
             <Avatar size="xl" src={user.avatarUrl} />
             <div>
               <Text fw={500}>{user.fullName}</Text>
