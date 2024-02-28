@@ -2,9 +2,9 @@
 import { AuthContext } from "@/lib/AuthContextProvider";
 import {
   SignInButton,
-  SignOutButton,
   SignUpButton,
-  useSession,
+  useClerk,
+  useSession
 } from "@clerk/nextjs";
 import {
   Avatar,
@@ -24,8 +24,9 @@ import {
   Text,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { IconLogout, IconUser } from "@tabler/icons-react";
+import { IconCode, IconLogout, IconUser } from "@tabler/icons-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useContext, useEffect, useRef, useState } from "react";
 import { SearchableSelect } from "../SearchableSelect";
 
@@ -61,6 +62,8 @@ function MainNav() {
 
   const { isSignedIn } = useSession();
   const { user } = useContext(AuthContext);
+  const { signOut } = useClerk();
+  const router = useRouter();
 
   return (
     <Container h="100%" size="xl">
@@ -90,7 +93,7 @@ function MainNav() {
                 <Button size="xs">Sign in</Button>
               </SignInButton>
             ) : (
-              <Menu shadow="md" width={200} position="bottom-end">
+              <Menu shadow="md" width={250} position="bottom-end">
                 <MenuTarget>
                   <Avatar
                     src={user?.avatarUrl || undefined}
@@ -99,6 +102,14 @@ function MainNav() {
                 </MenuTarget>
 
                 <MenuDropdown>
+                  <Box p="sm">
+                    <Text size="sm" lineClamp={1}>
+                      {user?.fullName}
+                    </Text>
+                    <Text size="xs" lineClamp={1} c="dimmed">
+                      {user?.email}
+                    </Text>
+                  </Box>
                   <MenuItem
                     component={Link}
                     href="/profile"
@@ -106,14 +117,20 @@ function MainNav() {
                   >
                     Profile
                   </MenuItem>
-                  <SignOutButton>
-                    <MenuItem
-                      color="red"
-                      rightSection={<IconLogout size={14} />}
-                    >
-                      Log out
-                    </MenuItem>
-                  </SignOutButton>
+                  <MenuItem
+                    component={Link}
+                    href="/profile/projects"
+                    rightSection={<IconCode size={14} />}
+                  >
+                    My projects
+                  </MenuItem>
+                  <MenuItem
+                    color="red"
+                    rightSection={<IconLogout size={14} />}
+                    onClick={() => signOut(() => router.push("/"))}
+                  >
+                    Log out
+                  </MenuItem>
                 </MenuDropdown>
               </Menu>
             )}
@@ -150,6 +167,14 @@ function MainNav() {
                   py="md"
                 />
               ))}
+              {isSignedIn && (
+                <NavLink
+                  component={Link}
+                  href="/profile/projects"
+                  label="My projects"
+                  py="md"
+                />
+              )}
             </ScrollArea>
             <Box
               ref={mobileNavbarFooter}
@@ -173,9 +198,12 @@ function MainNav() {
                     </div>
                   </Group>
                   <NavLink label="Profile" ml="-md" w="calc(100% + 32px)" />
-                  <SignOutButton>
-                    <NavLink label="Sign out" ml="-md" w="calc(100% + 32px)" />
-                  </SignOutButton>
+                  <NavLink
+                    label="Sign out"
+                    ml="-md"
+                    w="calc(100% + 32px)"
+                    onClick={() => signOut(() => router.push("/"))}
+                  />
                 </>
               ) : (
                 <Stack gap="xs">
