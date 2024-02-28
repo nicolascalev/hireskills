@@ -50,7 +50,7 @@ function PageTabs({
       orientation="horizontal"
       variant="outline"
       value={tab}
-      onChange={(value) => router.push(`/profile?tab=${value}`)}
+      onChange={(value) => router.push(`/profile/edit?tab=${value}`)}
     >
       <Box mx={{ base: "-md", sm: 0 }} className="scrollable__tabs">
         <TabsList className="scrollable__tabs__tablist">

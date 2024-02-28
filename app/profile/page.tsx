@@ -1,24 +1,50 @@
-import { getCurrentUser } from "@/lib/auth";
-import { LoggedInUser } from "@/lib/types";
-import { Container } from "@mantine/core";
-import PageTabs from "./PageTabs";
-import { findAllTools } from "@/lib/actions/profile/manageTools";
-import { findAllSkills } from "@/lib/actions/profile/manageSkills";
+import prisma from "@/lib/prisma";
+import { DeveloperPage } from "@/lib/types";
+import { auth } from "@clerk/nextjs";
+import { Button } from "@mantine/core";
+import { Resume } from "@prisma/client";
+import Link from "next/link";
+import DeveloperPageContent from "../ui/DeveloperPageContent";
+import { IconEdit } from "@tabler/icons-react";
 
 async function ProfilePage() {
-  const [user, toolsResponse, skillsResponse] = await Promise.all([
-    getCurrentUser() as Promise<LoggedInUser>,
-    findAllTools(),
-    findAllSkills(),
-  ]);
-  const formattedTools = toolsResponse.tools?.map((tool) => tool.name) || [];
-  const formattedSkills =
-    skillsResponse.skills?.map((skill) => skill.name) || [];
+  const { userId } = auth();
+  const user = (await prisma.user.findUnique({
+    where: {
+      id: userId as string,
+    },
+    include: {
+      tools: true,
+      skills: true,
+    },
+  })) as DeveloperPage;
+
+  let defaultResume: Resume | null = null;
+  if (user.defaultResumeId) {
+    defaultResume = await prisma.resume.findFirst({
+      where: {
+        id: user.defaultResumeId,
+      },
+    });
+  }
 
   return (
-    <Container size="xl" py="md">
-      <PageTabs user={user} tools={formattedTools} skills={formattedSkills} />
-    </Container>
+    <DeveloperPageContent
+      user={user}
+      defaultResume={defaultResume}
+      action={
+        <Button
+          size="xs"
+          variant="default"
+          fullWidth
+          component={Link}
+          href="/profile/edit"
+          leftSection={<IconEdit size={14} />}
+        >
+          Edit profile
+        </Button>
+      }
+    />
   );
 }
 
