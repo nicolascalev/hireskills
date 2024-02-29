@@ -38,6 +38,7 @@ model User {
   career                        Json
   tools                         Tool[]
   skills                        Skill[]
+  projects                      Project[]
 
   @@map("users")
 }
@@ -50,14 +51,52 @@ model Resume {
   originalFilename String   @map("original_filename")
   userId           String   @map("user_id")
   user             User     @relation(fields: [userId], references: [id])
+
+  @@map("resumes")
 }
 
 model Tool {
-  name  String @id
-  users User[]
+  name     String    @id
+  users    User[]
+  projects Project[]
+
+  @@map("tools")
 }
 
 model Skill {
-  name  String @id
-  users User[]
+  name     String    @id
+  users    User[]
+  projects Project[]
+
+  @@map("skills")
+}
+
+enum LEVEL {
+  basic
+  intermediate
+  advanced
+}
+
+model Project {
+  id               String   @id @default(uuid())
+  createdAt        DateTime @default(now()) @map(name: "created_at")
+  label            String
+  publishDate      DateTime @map("publish_date")
+  timeSpent        String   @map("time_spent")
+  url              String?
+  codeRepository   String?  @map("code_repository")
+  level            LEVEL
+  isPublic         Boolean  @default(true) @map("is_public")
+  isUsedByPeople   Boolean  @default(false) @map("is_used_by_people")
+  isVerified       Boolean  @default(false) @map("is_verified")
+  summary          String
+  problem          String?  @db.Text
+  solution         String?  @db.Text
+  challengeExample String?  @map("challenge_example") @db.Text
+  tools            Tool[]
+  skills           Skill[]
+  developerId      String   @map("developer_id")
+  developer        User     @relation(fields: [developerId], references: [id])
+
+  @@map("projects")
 }

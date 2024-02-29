@@ -71,3 +71,22 @@ export const nestedEducationFormSchema = z.object({
 export const nestedAchievementsFormSchema = z.object({
   achievements: achievementsSchema,
 });
+
+export const projectSchema = z.object({
+  label: z.string().min(1).max(190),
+  publishDate: z.date().max(new Date()),
+  timeSpent: z.string().min(1).max(30),
+  url: z.string().url().optional().or(z.literal("")),
+  codeRepository: z.string().url().optional().or(z.literal("")),
+  level: z.enum(["basic", "intermediate", "advanced"]),
+  isPublic: z.boolean(),
+  isUsedByPeople: z.boolean(),
+  summary: z.string().min(30).max(190),
+  problem: z.string().max(2000).optional(),
+  solution: z.string().max(2000).optional(),
+  challengeExample: z.string().max(2000).optional(),
+  tools: z.array(z.string().min(1).max(190)),
+  skills: z.array(z.string().min(1).max(190)),
+});
+
+export type projectSchemaType = z.infer<typeof projectSchema>;
