@@ -13,6 +13,7 @@ import {
   createTheme,
 } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
+import { ModalsProvider } from "@mantine/modals";
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import MainNav from "@/app/ui/structure/MainNav";
@@ -61,12 +62,14 @@ export default function RootLayout({
           <body className={inter.className}>
             <MantineProvider theme={theme} defaultColorScheme="auto">
               <Notifications />
-              <AppShell header={{ height: 60 }}>
-                <AppShellHeader>
-                  <MainNav />
-                </AppShellHeader>
-                <AppShellMain>{children}</AppShellMain>
-              </AppShell>
+              <ModalsProvider>
+                <AppShell header={{ height: 60 }}>
+                  <AppShellHeader>
+                    <MainNav />
+                  </AppShellHeader>
+                  <AppShellMain>{children}</AppShellMain>
+                </AppShell>
+              </ModalsProvider>
             </MantineProvider>
           </body>
         </html>
