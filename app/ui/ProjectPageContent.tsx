@@ -91,7 +91,7 @@ function ProjectPageContent({
             underline="never"
             c="inherit"
             component={Link}
-            href={`/developers/${project.developerId}`}
+            href={`/developers/${project.developer.username}`}
           >
             <Avatar mb="xs" src={project.developer.avatarUrl} />
             <Text fw={500}>{project.developer.fullName}</Text>

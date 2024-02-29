@@ -37,7 +37,7 @@ function AddProjectPage() {
 
   return (
     <Container size="xl" py="md">
-      <ProjectForm onSubmit={sendCreateProject} />
+      <ProjectForm label="Add project" onSubmit={sendCreateProject} />
     </Container>
   );
 }

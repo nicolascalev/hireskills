@@ -25,31 +25,37 @@ import { useFormStatus } from "react-dom";
 import { showNotification } from "@mantine/notifications";
 
 function ProjectForm({
+  label,
   onSubmit,
+  project,
 }: {
+  label: string;
   onSubmit: (values: projectSchemaType) => void;
+  project?: projectSchemaType;
 }) {
-  const [visibleTools, setVisibleTools] = useState<string[]>([]);
-  const [selectedTools, setSelectedTools] = useState<string[]>([]);
-  const [visibleSkills, setVisibleSkills] = useState<string[]>([]);
-  const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
+  const [visibleTools, setVisibleTools] = useState<string[]>(
+    project?.tools || []
+  );
+  const [visibleSkills, setVisibleSkills] = useState<string[]>(
+    project?.skills || []
+  );
 
   const form = useForm<projectSchemaType>({
     initialValues: {
-      label: "",
-      publishDate: new Date(),
-      timeSpent: "",
-      url: "",
-      codeRepository: "",
-      level: "basic",
-      isPublic: true,
-      isUsedByPeople: false,
-      summary: "",
-      problem: "",
-      solution: "",
-      challengeExample: "",
-      tools: [],
-      skills: [],
+      label: project?.label || "",
+      publishDate: project?.publishDate || new Date(),
+      timeSpent: project?.timeSpent || "",
+      url: project?.url || "",
+      codeRepository: project?.codeRepository || "",
+      level: project?.level || "basic",
+      isPublic: project?.isPublic || true,
+      isUsedByPeople: project?.isUsedByPeople || false,
+      summary: project?.summary || "",
+      problem: project?.problem || "",
+      solution: project?.solution || "",
+      challengeExample: project?.challengeExample || "",
+      tools: project?.tools || [],
+      skills: project?.skills || [],
     },
     validate: zodResolver(projectSchema),
     validateInputOnChange: true,
@@ -72,8 +78,6 @@ function ProjectForm({
       });
       return;
     }
-    form.setFieldValue("tools", selectedTools);
-    form.setFieldValue("skills", selectedSkills);
 
     onSubmit(form.values);
   }
@@ -83,7 +87,7 @@ function ProjectForm({
       <Stack gap="xl">
         <SimpleGrid cols={{ base: 1, sm: 2 }}>
           <div>
-            <Text fw={500}>Add project</Text>
+            <Text fw={500}>{label}</Text>
             <Text size="sm" c="dimmed">
               Please fill as many fields as possible
             </Text>
@@ -206,21 +210,25 @@ function ProjectForm({
               value={visibleTools}
               onChange={(newItem) => {
                 setVisibleTools([newItem, ...visibleTools]);
-                setSelectedTools([newItem, ...selectedTools]);
+                form.setFieldValue("tools", [newItem, ...form.values.tools]);
               }}
               onCreateError={(newItem) => {
                 // remove from visible tools and selected tools
                 setVisibleTools(
                   visibleTools.filter((tool) => tool !== newItem)
                 );
-                setSelectedTools(
-                  selectedTools.filter((tool) => tool !== newItem)
+                form.setFieldValue(
+                  "tools",
+                  form.values.tools.filter((tool) => tool !== newItem)
                 );
               }}
               creatable
             />
             {visibleTools.length > 0 && (
-              <CheckboxGroup value={selectedTools} onChange={setSelectedTools}>
+              <CheckboxGroup
+                value={form.values.tools}
+                onChange={(newTools) => form.setFieldValue("tools", newTools)}
+              >
                 <Stack gap="xs">
                   {visibleTools.map((tool) => (
                     <Checkbox label={tool} value={tool} key={tool} />
@@ -234,23 +242,26 @@ function ProjectForm({
               value={visibleSkills}
               onChange={(newItem) => {
                 setVisibleSkills([newItem, ...visibleSkills]);
-                setSelectedSkills([newItem, ...selectedSkills]);
+                form.setFieldValue("skills", [newItem, ...form.values.skills]);
               }}
               onCreateError={(newItem) => {
                 // remove from visible skills and selected skills
                 setVisibleSkills(
                   visibleSkills.filter((skill) => skill !== newItem)
                 );
-                setSelectedSkills(
-                  selectedSkills.filter((skill) => skill !== newItem)
+                form.setFieldValue(
+                  "skills",
+                  form.values.skills.filter((skill) => skill !== newItem)
                 );
               }}
               creatable
             />
             {visibleSkills.length > 0 && (
               <CheckboxGroup
-                value={selectedSkills}
-                onChange={setSelectedSkills}
+                value={form.values.skills}
+                onChange={(newSkills) =>
+                  form.setFieldValue("skills", newSkills)
+                }
               >
                 <Stack gap="xs">
                   {visibleSkills.map((skill) => (
