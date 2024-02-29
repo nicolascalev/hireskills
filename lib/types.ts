@@ -39,3 +39,23 @@ export type DeveloperPage = Prisma.UserGetPayload<{
 }> & {
   career: Career;
 };
+
+export type ProjectPage = Prisma.ProjectGetPayload<{
+  include: {
+    developer: {
+      include: {
+        _count: {
+          select: {
+            projects: {
+              where: {
+                isPublic: true;
+              }
+            };
+          };
+        };
+      };
+    };
+    skills: true;
+    tools: true;
+  };
+}>;

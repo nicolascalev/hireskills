@@ -11,3 +11,11 @@ export function timeAgo(date: MomentInput) {
 export function onlyTimeAgo(date: MomentInput) {
   return moment(date).fromNow().replace(" ago", "");
 }
+
+export function dateFormat(date: MomentInput) {
+  return moment(date).format("MMM Do YY");
+}
+
+export function dateLongFormat(date: MomentInput) {
+  return moment(date).format("MMMM Do YYYY, h:mm:ss a");
+}
