@@ -30,7 +30,7 @@ export async function GET(request: NextRequest, params: { id: string }) {
         },
       },
       skip: cursor ? 1 : 0,
-      take: 1,
+      take: 20,
       cursor: cursor
         ? {
             id: cursor,

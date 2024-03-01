@@ -8,9 +8,11 @@ import {
   Avatar,
   Modal,
   Textarea,
+  Loader,
+  Anchor,
 } from "@mantine/core";
 import { IconArrowForward } from "@tabler/icons-react";
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { timeAgo } from "@/lib/moment";
 import { useDisclosure, useToggle } from "@mantine/hooks";
 import { CommentWithUser } from "@/lib/types";
@@ -20,27 +22,40 @@ import { useAuth } from "@clerk/nextjs";
 import { showNotification } from "@mantine/notifications";
 import { postComment } from "@/lib/actions/project/manageComments";
 import { useFormStatus } from "react-dom";
+import useComments from "@/lib/hooks/useComments";
+import Link from "next/link";
 
 export default function Comment({
   comment,
   projectId,
+  level,
 }: {
   comment: CommentWithUser;
   projectId: string;
+  level: number;
 }) {
   const { isSignedIn } = useAuth();
   const [openedReplyModal, { open: openReplyModal, close: closeReplyModal }] =
     useDisclosure(false);
-  const [
-    showReplies,
-    {
-      open: openShowReplies,
-      toggle: toggleShowReplies,
-    },
-  ] = useDisclosure(false);
+  const [showReplies, { open: openShowReplies, toggle: toggleShowReplies }] =
+    useDisclosure(false);
   const [replies, setReplies] = useState<CommentWithUser[]>([]);
+  const [justPosted, setJustPosted] = useState<CommentWithUser[]>([]);
   const [count, setCount] = useState(comment._count.replies);
   const [cursor, setCursor] = useState<string | undefined>(undefined);
+
+  const {
+    comments: loadedReplies,
+    commentsLoading,
+    commentsError,
+    commentsNextCursor,
+  } = useComments(projectId, comment.id, cursor);
+
+  useEffect(() => {
+    if (loadedReplies) {
+      setReplies((prev) => [...prev, ...loadedReplies]);
+    }
+  }, [loadedReplies]);
 
   const form = useForm({
     initialValues: {
@@ -78,7 +93,7 @@ export default function Comment({
         return;
       }
       openShowReplies();
-      setReplies([res.comment as any, ...replies]);
+      setJustPosted((prev) => [res.comment as any, ...prev]);
       setCount(count + 1);
       form.reset();
       closeReplyModal();
@@ -94,11 +109,24 @@ export default function Comment({
   return (
     <Box>
       <Group wrap="nowrap" gap="xs">
-        <Avatar size="sm" src={comment.user.avatarUrl} />
+        <Avatar
+          size="sm"
+          src={comment.user.avatarUrl}
+          component={Link}
+          href={`/developers/${comment.user.username}`}
+        />
         <Group gap={0} align="end">
-          <Text size="sm" fw="500" mr="xs">
+          <Anchor
+            size="sm"
+            fw="500"
+            mr="xs"
+            c="inherit"
+            underline="never"
+            component={Link}
+            href={`/developers/${comment.user.username}`}
+          >
             {comment.user.fullName}
-          </Text>
+          </Anchor>
           <Text size="xs" c="dimmed">
             {timeAgo(comment.createdAt)}
           </Text>
@@ -107,23 +135,26 @@ export default function Comment({
       <Text size="sm" my="xs" style={{ whiteSpace: "pre-wrap" }}>
         {comment.content}
       </Text>
-      <Group align="center">
-        <Button
-          size="xs"
-          variant="transparent"
-          onClick={() => toggleShowReplies()}
-        >
-          {count} replies
-        </Button>
-        <Button
-          size="xs"
-          variant="transparent"
-          rightSection={<IconArrowForward size={14} />}
-          onClick={() => openReplyModal()}
-        >
-          Reply
-        </Button>
-      </Group>
+      {level < 4 && (
+        <Group align="center">
+          <Button
+            size="xs"
+            variant="transparent"
+            onClick={() => toggleShowReplies()}
+          >
+            {count} replies
+          </Button>
+          <Button
+            size="xs"
+            variant="transparent"
+            rightSection={<IconArrowForward size={14} />}
+            onClick={() => openReplyModal()}
+          >
+            Reply
+          </Button>
+        </Group>
+      )}
+
       {showReplies && (
         <Stack
           pl="xl"
@@ -132,9 +163,49 @@ export default function Comment({
             borderLeft: "1px solid var(--mantine-color-default-border)",
           }}
         >
-          {replies.map((reply, i) => (
-            <Comment key={i} comment={reply} projectId={projectId} />
+          {/* if the user posts a comment we add it on top in a separate list because
+        if we add it to the comments list, every comment's index will increase and they will
+        get the child comments from the previous index */}
+          {justPosted.map((comment, i) => (
+            <Comment
+              key={i}
+              projectId={projectId}
+              comment={comment}
+              level={1}
+            />
           ))}
+          {replies.map((reply, i) => (
+            <Comment
+              key={i}
+              comment={reply}
+              projectId={projectId}
+              level={level + 1}
+            />
+          ))}
+          {!commentsLoading && replies.length === 0 && (
+            <Text size="sm" c="dimmed">
+              No replies yet
+            </Text>
+          )}
+          {commentsLoading && (
+            <Group>
+              <Loader size="xs" />
+              <Text size="sm">Loading...</Text>
+            </Group>
+          )}
+          {commentsNextCursor && (
+            <div>
+              <Button
+                size="xs"
+                onClick={() => setCursor(commentsNextCursor)}
+                loading={commentsLoading}
+                variant="default"
+                maw={400}
+              >
+                Load more replies
+              </Button>
+            </div>
+          )}
         </Stack>
       )}
 

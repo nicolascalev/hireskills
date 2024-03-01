@@ -3,7 +3,7 @@ import { postComment } from "@/lib/actions/project/manageComments";
 import useComments from "@/lib/hooks/useComments";
 import { commentSchema } from "@/lib/zod";
 import { useAuth } from "@clerk/nextjs";
-import { Button, Group, Stack, Text, Textarea } from "@mantine/core";
+import { Button, Group, Loader, Stack, Text, Textarea } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { showNotification } from "@mantine/notifications";
 import { useEffect, useState } from "react";
@@ -20,6 +20,7 @@ function ProjectComments({
 }) {
   const { isSignedIn } = useAuth();
   const [comments, setComments] = useState<CommentWithUser[]>([]);
+  const [justPosted, setJustPosted] = useState<CommentWithUser[]>([]);
   const [count, setCount] = useState(commentCount);
   const [cursor, setCursor] = useState<string | undefined>(undefined);
   const {
@@ -70,7 +71,7 @@ function ProjectComments({
         });
         return;
       }
-      setComments([res.comment as any, ...comments]);
+      setJustPosted((prev) => [res.comment as any, ...prev]);
       setCount(count + 1);
       form.reset();
     } catch (err) {
@@ -101,9 +102,36 @@ function ProjectComments({
         </Group>
       </form>
       <Stack>
-        {comments.map((comment, i) => (
-          <ProjectComment key={i} projectId={projectId} comment={comment} />
+        {/* if the user posts a comment we add it on top in a separate list because
+        if we add it to the comments list, every comment's index will increase and they will
+        get the child comments from the previous index */}
+        {justPosted.map((comment, i) => (
+          <ProjectComment
+            key={i}
+            projectId={projectId}
+            comment={comment}
+            level={1}
+          />
         ))}
+        {comments.map((comment, i) => (
+          <ProjectComment
+            key={i}
+            projectId={projectId}
+            comment={comment}
+            level={1}
+          />
+        ))}
+        {!commentsLoading && comments.length === 0 && (
+          <Text size="sm" c="dimmed">
+            No comments yet
+          </Text>
+        )}
+        {commentsLoading && (
+          <Group>
+            <Loader size="xs" />
+            <Text size="sm">Loading comments...</Text>
+          </Group>
+        )}
         {commentsNextCursor && (
           <Group justify="center" grow>
             <Button
@@ -113,7 +141,7 @@ function ProjectComments({
               variant="default"
               maw={400}
             >
-              Load more
+              Load more comments
             </Button>
           </Group>
         )}
