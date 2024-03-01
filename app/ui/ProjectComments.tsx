@@ -1,12 +1,14 @@
 "use client";
 import { postComment } from "@/lib/actions/project/manageComments";
+import useComments from "@/lib/hooks/useComments";
 import { commentSchema } from "@/lib/zod";
 import { useAuth } from "@clerk/nextjs";
-import { Text, Textarea, Button, Group } from "@mantine/core";
+import { Button, Group, Stack, Text, Textarea } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { showNotification } from "@mantine/notifications";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useFormStatus } from "react-dom";
+import ProjectComment from "./ProjectComment";
 
 function ProjectComments({
   projectId,
@@ -18,6 +20,19 @@ function ProjectComments({
   const { isSignedIn } = useAuth();
   const [comments, setComments] = useState<any[]>([]);
   const [count, setCount] = useState(commentCount);
+  const [cursor, setCursor] = useState<string | undefined>(undefined);
+  const {
+    comments: loadedComments,
+    commentsLoading,
+    commentsError,
+    commentsNextCursor,
+  } = useComments(projectId, null, cursor);
+
+  useEffect(() => {
+    if (loadedComments) {
+      setComments((prev) => [...prev, ...loadedComments]);
+    }
+  }, [loadedComments]);
 
   const form = useForm({
     initialValues: {
@@ -84,7 +99,24 @@ function ProjectComments({
           <SubmitButton />
         </Group>
       </form>
-      <pre>{JSON.stringify(comments, null, 2)}</pre>
+      <Stack>
+        {comments.map((comment, i) => (
+          <ProjectComment key={i} projectId={projectId} comment={comment} />
+        ))}
+        {commentsNextCursor && (
+          <Group justify="center" grow>
+            <Button
+              size="xs"
+              onClick={() => setCursor(commentsNextCursor)}
+              loading={commentsLoading}
+              variant="default"
+              maw={400}
+            >
+              Load more
+            </Button>
+          </Group>
+        )}
+      </Stack>
     </div>
   );
 }

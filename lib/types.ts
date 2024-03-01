@@ -64,3 +64,16 @@ export type ProjectPage = Prisma.ProjectGetPayload<{
     };
   };
 }>;
+
+export type CommentWithUser = Prisma.ProjectCommentGetPayload<{
+  include: {
+    user: {
+      select: {
+        id: true;
+        username: true;
+        fullName: true;
+        avatarUrl: true;
+      };
+    };
+  };
+}>;
