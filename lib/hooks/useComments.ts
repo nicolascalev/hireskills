@@ -3,20 +3,23 @@ import { fetcherWithConfig } from "../api";
 import { CommentWithUser } from "../types";
 
 export default function useComments(
+  shouldFetch: boolean,
   projectId: string,
   replyToId: string | null,
   cursor: string | undefined
 ) {
   const { data, isLoading, error } = useSWR(
-    [
-      `/api/projects/${projectId}/comments`,
-      {
-        params: {
-          replyToId,
-          cursor,
-        },
-      },
-    ],
+    shouldFetch
+      ? [
+          `/api/projects/${projectId}/comments`,
+          {
+            params: {
+              replyToId,
+              cursor,
+            },
+          },
+        ]
+      : null,
     fetcherWithConfig
   );
 

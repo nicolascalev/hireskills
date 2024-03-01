@@ -1,10 +1,14 @@
 import prisma from "@/lib/prisma";
 import { NextRequest } from "next/server";
 
-export async function GET(request: NextRequest, params: { id: string }) {
+export async function GET(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
   const searchParams = request.nextUrl.searchParams;
   const cursor = searchParams.get("cursor");
   const replyToId = searchParams.get("replyToId");
+
   try {
     const comments = await prisma.projectComment.findMany({
       where: {
@@ -37,6 +41,7 @@ export async function GET(request: NextRequest, params: { id: string }) {
           }
         : undefined,
     });
+
     return Response.json(comments);
   } catch (err) {
     return new Response("Internal server error", { status: 500 });

@@ -28,7 +28,7 @@ function ProjectComments({
     commentsLoading,
     commentsError,
     commentsNextCursor,
-  } = useComments(projectId, null, cursor);
+  } = useComments(true, projectId, null, cursor);
 
   useEffect(() => {
     if (loadedComments) {
@@ -121,11 +121,13 @@ function ProjectComments({
             level={1}
           />
         ))}
-        {!commentsLoading && comments.length === 0 && (
-          <Text size="sm" c="dimmed">
-            No comments yet
-          </Text>
-        )}
+        {!commentsLoading &&
+          comments.length === 0 &&
+          justPosted.length == 0 && (
+            <Text size="sm" c="dimmed">
+              No comments yet
+            </Text>
+          )}
         {commentsLoading && (
           <Group>
             <Loader size="xs" />

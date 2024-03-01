@@ -49,7 +49,7 @@ export default function Comment({
     commentsLoading,
     commentsError,
     commentsNextCursor,
-  } = useComments(projectId, comment.id, cursor);
+  } = useComments(showReplies, projectId, comment.id, cursor);
 
   useEffect(() => {
     if (loadedReplies) {
@@ -182,11 +182,13 @@ export default function Comment({
               level={level + 1}
             />
           ))}
-          {!commentsLoading && replies.length === 0 && (
-            <Text size="sm" c="dimmed">
-              No replies yet
-            </Text>
-          )}
+          {!commentsLoading &&
+            replies.length === 0 &&
+            justPosted.length == 0 && (
+              <Text size="sm" c="dimmed">
+                No replies yet
+              </Text>
+            )}
           {commentsLoading && (
             <Group>
               <Loader size="xs" />
