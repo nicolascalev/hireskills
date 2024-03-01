@@ -23,6 +23,11 @@ export async function GET(request: NextRequest, params: { id: string }) {
             avatarUrl: true,
           },
         },
+        _count: {
+          select: {
+            replies: true,
+          },
+        },
       },
       skip: cursor ? 1 : 0,
       take: 1,

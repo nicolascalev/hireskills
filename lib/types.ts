@@ -75,5 +75,10 @@ export type CommentWithUser = Prisma.ProjectCommentGetPayload<{
         avatarUrl: true;
       };
     };
+    _count: {
+      select: {
+        replies: true;
+      };
+    };
   };
 }>;

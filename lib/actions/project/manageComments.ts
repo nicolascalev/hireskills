@@ -85,6 +85,11 @@ export async function postComment(
             avatarUrl: true,
           },
         },
+        _count: {
+          select: {
+            replies: true,
+          },
+        },
       },
     });
 

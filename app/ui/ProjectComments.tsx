@@ -9,6 +9,7 @@ import { showNotification } from "@mantine/notifications";
 import { useEffect, useState } from "react";
 import { useFormStatus } from "react-dom";
 import ProjectComment from "./ProjectComment";
+import { CommentWithUser } from "@/lib/types";
 
 function ProjectComments({
   projectId,
@@ -18,7 +19,7 @@ function ProjectComments({
   commentCount: number;
 }) {
   const { isSignedIn } = useAuth();
-  const [comments, setComments] = useState<any[]>([]);
+  const [comments, setComments] = useState<CommentWithUser[]>([]);
   const [count, setCount] = useState(commentCount);
   const [cursor, setCursor] = useState<string | undefined>(undefined);
   const {
