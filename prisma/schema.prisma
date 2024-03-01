@@ -11,34 +11,36 @@ datasource db {
 }
 
 model User {
-  id                            String    @id
-  username                      String    @unique
-  createdAt                     DateTime  @default(now()) @map(name: "created_at")
-  fullName                      String    @map("full_name")
+  id                            String           @id
+  username                      String           @unique
+  createdAt                     DateTime         @default(now()) @map(name: "created_at")
+  fullName                      String           @map("full_name")
   company                       String?
   role                          String?
-  email                         String    @unique
-  avatarUrl                     String?   @map("avatar_url") @db.Text
+  email                         String           @unique
+  avatarUrl                     String?          @map("avatar_url") @db.Text
   location                      String?
-  startedCoding                 DateTime? @map("started_coding")
-  startedProfessionalExperience DateTime? @map("started_professional_experience")
-  portfolioUrl                  String?   @map("portfolio_url")
-  linkedinUsername              String?   @map("linkedin_username")
-  githubUsername                String?   @map("github_username")
-  leetcodeUsername              String?   @map("leetcode_username")
-  summary                       String?   @db.Text
-  jobSeeking                    Boolean   @default(false) @map("job_seeking")
-  displayJobSeeking             Boolean   @default(false) @map("display_job_seeking")
-  displayGithubActivity         Boolean   @default(false) @map("display_github_activity")
-  displayEmail                  Boolean   @default(false) @map("display_email")
-  displayPublicResume           Boolean   @default(false) @map("display_public_resume")
-  displayActiveOpenSource       Boolean   @default(false) @map("display_active_open_source")
+  startedCoding                 DateTime?        @map("started_coding")
+  startedProfessionalExperience DateTime?        @map("started_professional_experience")
+  portfolioUrl                  String?          @map("portfolio_url")
+  linkedinUsername              String?          @map("linkedin_username")
+  githubUsername                String?          @map("github_username")
+  leetcodeUsername              String?          @map("leetcode_username")
+  summary                       String?          @db.Text
+  jobSeeking                    Boolean          @default(false) @map("job_seeking")
+  displayJobSeeking             Boolean          @default(false) @map("display_job_seeking")
+  displayGithubActivity         Boolean          @default(false) @map("display_github_activity")
+  displayEmail                  Boolean          @default(false) @map("display_email")
+  displayPublicResume           Boolean          @default(false) @map("display_public_resume")
+  displayActiveOpenSource       Boolean          @default(false) @map("display_active_open_source")
   resumes                       Resume[]
-  defaultResumeId               String?   @map("default_resume_id")
+  defaultResumeId               String?          @map("default_resume_id")
   career                        Json
   tools                         Tool[]
   skills                        Skill[]
   projects                      Project[]
+  projectsLiked                 ProjectLike[]
+  postedComments                ProjectComment[]
 
   @@map("users")
 }
@@ -78,25 +80,54 @@ enum LEVEL {
 }
 
 model Project {
-  id               String   @id @default(uuid())
-  createdAt        DateTime @default(now()) @map(name: "created_at")
+  id               String           @id @default(uuid())
+  createdAt        DateTime         @default(now()) @map(name: "created_at")
   label            String
-  publishDate      DateTime @map("publish_date")
-  timeSpent        String   @map("time_spent")
+  publishDate      DateTime         @map("publish_date")
+  timeSpent        String           @map("time_spent")
   url              String?
-  codeRepository   String?  @map("code_repository")
+  codeRepository   String?          @map("code_repository")
   level            LEVEL
-  isPublic         Boolean  @default(true) @map("is_public")
-  isUsedByPeople   Boolean  @default(false) @map("is_used_by_people")
-  isVerified       Boolean  @default(false) @map("is_verified")
+  isPublic         Boolean          @default(true) @map("is_public")
+  isUsedByPeople   Boolean          @default(false) @map("is_used_by_people")
+  isVerified       Boolean          @default(false) @map("is_verified")
   summary          String
-  problem          String?  @db.Text
-  solution         String?  @db.Text
-  challengeExample String?  @map("challenge_example") @db.Text
+  problem          String?          @db.Text
+  solution         String?          @db.Text
+  challengeExample String?          @map("challenge_example") @db.Text
   tools            Tool[]
   skills           Skill[]
-  developerId      String   @map("developer_id")
-  developer        User     @relation(fields: [developerId], references: [id])
+  developerId      String           @map("developer_id")
+  developer        User             @relation(fields: [developerId], references: [id])
+  likes            ProjectLike[]
+  likeCount        Int              @default(0) @map("like_count")
+  comments         ProjectComment[]
 
   @@map("projects")
+}
+
+model ProjectLike {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  projectId String   @map("project_id")
+  userId    String   @map("user_id")
+  project   Project  @relation(fields: [projectId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@map("project_likes")
+}
+
+model ProjectComment {
+  id          String           @id @default(uuid())
+  createdAt   DateTime         @default(now()) @map(name: "created_at")
+  projectId   String           @map("project_id")
+  userId      String           @map("user_id")
+  content     String           @db.Text
+  project     Project          @relation(fields: [projectId], references: [id])
+  user        User             @relation(fields: [userId], references: [id])
+  replies     ProjectComment[] @relation("ProjectCommentToProjectComment")
+  repliedToId String?          @map("replied_to_id")
+  repliedTo   ProjectComment?  @relation("ProjectCommentToProjectComment", fields: [repliedToId], references: [id])
+
+  @@map("project_comments")
 }

@@ -90,3 +90,9 @@ export const projectSchema = z.object({
 });
 
 export type projectSchemaType = z.infer<typeof projectSchema>;
+
+export const commentSchema = z.object({
+  content: z.string().min(1).max(1000),
+});
+
+export type commentSchemaType = z.infer<typeof commentSchema>;

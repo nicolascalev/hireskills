@@ -28,6 +28,7 @@ import {
 } from "@tabler/icons-react";
 import Link from "next/link";
 import { ReactNode } from "react";
+import ProjectComments from "./ProjectComments";
 
 function firstUpperCase(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1);
@@ -223,23 +224,10 @@ function ProjectPageContent({
             </Text>
           </div>
           <Divider />
-          <div>
-            <Text fw={500} mb="sm">
-              Comments 65
-            </Text>
-            <Textarea
-              size="sm"
-              placeholder="Type comment..."
-              autosize
-              minRows={2}
-              mb="sm"
-            />
-            <Group justify="end">
-              <Button size="xs" disabled>
-                Post
-              </Button>
-            </Group>
-          </div>
+          <ProjectComments
+            projectId={project.id}
+            commentCount={project._count.comments}
+          />
         </Stack>
       </GridCol>
     </Grid>

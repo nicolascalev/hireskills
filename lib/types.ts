@@ -49,7 +49,7 @@ export type ProjectPage = Prisma.ProjectGetPayload<{
             projects: {
               where: {
                 isPublic: true;
-              }
+              };
             };
           };
         };
@@ -57,5 +57,10 @@ export type ProjectPage = Prisma.ProjectGetPayload<{
     };
     skills: true;
     tools: true;
+    _count: {
+      select: {
+        comments: true;
+      };
+    };
   };
 }>;

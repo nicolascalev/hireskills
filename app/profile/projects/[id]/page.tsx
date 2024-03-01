@@ -27,6 +27,11 @@ async function ProfileProjectPage({ params }: { params: { id: string } }) {
       },
       skills: true,
       tools: true,
+      _count: {
+        select: {
+          comments: true,
+        },
+      },
     },
   });
 
