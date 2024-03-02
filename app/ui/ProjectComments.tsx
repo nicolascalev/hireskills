@@ -1,15 +1,15 @@
 "use client";
+import { AuthContext } from "@/lib/AuthContextProvider";
 import { postComment } from "@/lib/actions/project/manageComments";
 import useComments from "@/lib/hooks/useComments";
+import { CommentWithUser } from "@/lib/types";
 import { commentSchema } from "@/lib/zod";
-import { useAuth } from "@clerk/nextjs";
 import { Button, Group, Loader, Stack, Text, Textarea } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { showNotification } from "@mantine/notifications";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { useFormStatus } from "react-dom";
 import ProjectComment from "./ProjectComment";
-import { CommentWithUser } from "@/lib/types";
 
 function ProjectComments({
   projectId,
@@ -18,7 +18,8 @@ function ProjectComments({
   projectId: string;
   commentCount: number;
 }) {
-  const { isSignedIn } = useAuth();
+  const { user } = useContext(AuthContext);
+  const isSignedIn = useMemo(() => !!user, [user]);
   const [comments, setComments] = useState<CommentWithUser[]>([]);
   const [justPosted, setJustPosted] = useState<CommentWithUser[]>([]);
   const [count, setCount] = useState(commentCount);

@@ -1,29 +1,29 @@
 "use client";
+import { AuthContext } from "@/lib/AuthContextProvider";
+import { postComment } from "@/lib/actions/project/manageComments";
+import useComments from "@/lib/hooks/useComments";
+import { timeAgo } from "@/lib/moment";
+import { CommentWithUser } from "@/lib/types";
+import { commentSchema } from "@/lib/zod";
 import {
+  Anchor,
+  Avatar,
   Box,
   Button,
   Group,
+  Loader,
+  Modal,
   Stack,
   Text,
-  Avatar,
-  Modal,
   Textarea,
-  Loader,
-  Anchor,
 } from "@mantine/core";
-import { IconArrowForward } from "@tabler/icons-react";
-import { ReactNode, useEffect, useState } from "react";
-import { timeAgo } from "@/lib/moment";
-import { useDisclosure, useToggle } from "@mantine/hooks";
-import { CommentWithUser } from "@/lib/types";
 import { useForm, zodResolver } from "@mantine/form";
-import { commentSchema } from "@/lib/zod";
-import { useAuth } from "@clerk/nextjs";
+import { useDisclosure } from "@mantine/hooks";
 import { showNotification } from "@mantine/notifications";
-import { postComment } from "@/lib/actions/project/manageComments";
-import { useFormStatus } from "react-dom";
-import useComments from "@/lib/hooks/useComments";
+import { IconArrowForward } from "@tabler/icons-react";
 import Link from "next/link";
+import { useContext, useEffect, useMemo, useState } from "react";
+import { useFormStatus } from "react-dom";
 
 export default function Comment({
   comment,
@@ -34,7 +34,8 @@ export default function Comment({
   projectId: string;
   level: number;
 }) {
-  const { isSignedIn } = useAuth();
+  const { user } = useContext(AuthContext);
+  const isSignedIn = useMemo(() => !!user, [user]);
   const [openedReplyModal, { open: openReplyModal, close: closeReplyModal }] =
     useDisclosure(false);
   const [showReplies, { open: openShowReplies, toggle: toggleShowReplies }] =

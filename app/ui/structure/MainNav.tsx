@@ -4,7 +4,7 @@ import {
   SignInButton,
   SignUpButton,
   useClerk,
-  useSession
+  useSession,
 } from "@clerk/nextjs";
 import {
   Avatar,
@@ -27,7 +27,7 @@ import { useDisclosure } from "@mantine/hooks";
 import { IconCode, IconLogout, IconUser } from "@tabler/icons-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { SearchableSelect } from "../SearchableSelect";
 
 type Link = {
@@ -60,8 +60,8 @@ function MainNav() {
     }
   }, [dummy, mobileNavbarFooter]);
 
-  const { isSignedIn } = useSession();
   const { user } = useContext(AuthContext);
+  const isSignedIn = useMemo(() => !!user, [user]);
   const { signOut } = useClerk();
   const router = useRouter();
 
