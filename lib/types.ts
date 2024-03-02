@@ -69,11 +69,6 @@ export type ProfileProjectCard = Prisma.ProjectGetPayload<{
   include: {
     skills: true;
     tools: true;
-    _count: {
-      select: {
-        likes: true;
-      };
-    };
   };
 }>;
 

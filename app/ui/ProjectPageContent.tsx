@@ -29,6 +29,7 @@ import {
 import Link from "next/link";
 import { ReactNode } from "react";
 import ProjectComments from "./ProjectComments";
+import ProjectLikeButton from "./ProjectLikeButton";
 
 function firstUpperCase(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1);
@@ -136,17 +137,14 @@ function ProjectPageContent({
               {project.summary}
             </Text>
             <Group mt="sm" gap="xs">
-              <Button
-                size="xs"
-                variant="transparent"
-                rightSection={<IconHeart size={14} />}
-              >
-                5
-              </Button>
+              <ProjectLikeButton projectId={project.id} />
               <Button
                 size="xs"
                 variant="transparent"
                 rightSection={<IconMessageCircle size={14} />}
+                color="var(--mantine-color-text)"
+                component="a"
+                href="#comments"
               >
                 Comments
               </Button>
@@ -158,6 +156,7 @@ function ProjectPageContent({
                   component="a"
                   href={project.url}
                   target="_blank"
+                  color="var(--mantine-color-text)"
                 >
                   Visit
                 </Button>
@@ -170,6 +169,7 @@ function ProjectPageContent({
                   component="a"
                   href={project.codeRepository}
                   target="_blank"
+                  color="var(--mantine-color-text)"
                 >
                   Repo
                 </Button>
@@ -223,7 +223,7 @@ function ProjectPageContent({
               {project.challengeExample || "Challenge not specified."}
             </Text>
           </div>
-          <Divider />
+          <Divider id="comments" />
           <ProjectComments
             projectId={project.id}
             commentCount={project._count.comments}

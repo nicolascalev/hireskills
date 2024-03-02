@@ -25,11 +25,6 @@ async function ProfileProjectsPage() {
     include: {
       skills: true,
       tools: true,
-      _count: {
-        select: {
-          likes: true,
-        },
-      },
     },
     orderBy: {
       createdAt: "desc",

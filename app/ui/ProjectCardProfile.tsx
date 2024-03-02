@@ -68,7 +68,7 @@ function ProjectCardProfile({ project }: { project: ProfileProjectCard }) {
             <ThemeIcon variant="transparent" color="gray" size="sm">
               <IconStar size={14} />
             </ThemeIcon>
-            <Text size="sm">{project._count.likes}</Text>
+            <Text size="sm">{project.likeCount}</Text>
           </Group>
           <Group gap="xs">
             <Button
