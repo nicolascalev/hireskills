@@ -41,6 +41,9 @@ const links: Link[] = [
 ];
 
 function MainNav() {
+  const { user } = useContext(AuthContext);
+  const isSignedIn = useMemo(() => !!user, [user]);
+
   const mobileNavbarFooter = useRef<HTMLDivElement>(null);
   const [opened, { toggle }] = useDisclosure();
   const [mobileNavbarFooterOffsetHeight, setMobileNavbarFooterOffsetHeight] =
@@ -60,8 +63,6 @@ function MainNav() {
     }
   }, [dummy, mobileNavbarFooter]);
 
-  const { user } = useContext(AuthContext);
-  const isSignedIn = useMemo(() => !!user, [user]);
   const { signOut } = useClerk();
   const router = useRouter();
 
