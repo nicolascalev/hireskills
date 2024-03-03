@@ -98,7 +98,11 @@ export default function ToolsCombobox({
             combobox.openDropdown();
           }}
           onBlur={() => combobox.closeDropdown()}
-          rightSection={availableToolsLoading && <Loader size={18} />}
+          rightSection={
+            availableToolsLoading && (
+              <Loader size={18} color="var(--mantine-color-text)" />
+            )
+          }
           error={
             searchString.length > 50
               ? "The tool name is longer than 50 characters"

@@ -98,7 +98,11 @@ export default function SkillsCombobox({
             combobox.openDropdown();
           }}
           onBlur={() => combobox.closeDropdown()}
-          rightSection={availableSkillsLoading && <Loader size={18} />}
+          rightSection={
+            availableSkillsLoading && (
+              <Loader size={18} color="var(--mantine-color-text)" />
+            )
+          }
           error={
             searchString.length > 50
               ? "The skill name is longer than 50 characters"
