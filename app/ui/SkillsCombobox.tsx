@@ -12,11 +12,13 @@ export default function SkillsCombobox({
   onChange,
   creatable,
   onCreateError,
+  label,
 }: {
   value: string[];
   onChange: (newItem: string) => void;
   creatable?: boolean;
   onCreateError?: (newItem: string) => void;
+  label?: string;
 }) {
   if (creatable && !onCreateError) {
     throw new Error(
@@ -84,7 +86,7 @@ export default function SkillsCombobox({
     >
       <Combobox.Target>
         <TextInput
-          label="Search and add skills"
+          label={label || "Search and add skills"}
           placeholder="Search..."
           value={searchString}
           onChange={(event) => {
