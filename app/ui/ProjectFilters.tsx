@@ -12,25 +12,12 @@ import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import SkillsCombobox from "./SkillsCombobox";
 import ToolsCombobox from "./ToolsCombobox";
-
-const SORT_OPTIONS = {
-  "Popular top": '{"likeCount": "desc"}',
-  "Least popular top": '{"likeCount": "asc"}',
-  "Newest top": '{"createdAt": "desc"}',
-  "Oldest top": '{"createdAt": "asc"}',
-};
-const DEFAULT_SORT = SORT_OPTIONS["Popular top"];
-const SORT_INPUT_OPTIONS = Object.entries(SORT_OPTIONS).map(
-  ([label, value]) => ({
-    label,
-    value,
-  })
-);
-function isValidSortOrDefault(value: string | null) {
-  if (!value) return DEFAULT_SORT;
-  return value in SORT_OPTIONS ? value : DEFAULT_SORT;
-}
-const DEFAULT_LEVEL = ["basic", "intermediate", "advanced"];
+import {
+  PROJECT_DEFAULT_LEVEL,
+  PROJECT_DEFAULT_SORT,
+  PROJECT_SORT_INPUT_OPTIONS,
+  isValidProjectSortOrDefault,
+} from "@/lib/utils";
 
 function ProjectFilters() {
   const searchParams = useSearchParams();
@@ -38,13 +25,13 @@ function ProjectFilters() {
   const { replace } = useRouter();
 
   const [sort, setSort] = useState(
-    isValidSortOrDefault(searchParams.get("sort"))
+    isValidProjectSortOrDefault(searchParams.get("sort"))
   );
   const [search, setSearch] = useState(searchParams.get("search") || "");
   const [debouncedSearch] = useDebouncedValue(search, 500);
   const [level, setLevel] = useState(
     searchParams.getAll("level").length == 0
-      ? DEFAULT_LEVEL
+      ? PROJECT_DEFAULT_LEVEL
       : searchParams.getAll("level")
   );
   const [visibleSkills, setVisibleSkills] = useState<string[]>(
@@ -84,10 +71,10 @@ function ProjectFilters() {
     <>
       <Select
         label="Sort"
-        data={SORT_INPUT_OPTIONS}
+        data={PROJECT_SORT_INPUT_OPTIONS}
         value={sort}
         onChange={(value) => {
-          setSort(value || DEFAULT_SORT);
+          setSort(value || PROJECT_DEFAULT_SORT);
         }}
       />
       <TextInput
