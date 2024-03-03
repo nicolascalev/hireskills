@@ -89,3 +89,19 @@ export type CommentWithUser = Prisma.ProjectCommentGetPayload<{
     };
   };
 }>;
+
+export type ProjectCardType = Prisma.ProjectGetPayload<{
+  include: {
+    skills: true;
+    tools: true;
+    developer: {
+      select: {
+        id: true;
+        username: true;
+        fullName: true;
+        avatarUrl: true;
+        role: true;
+      };
+    };
+  };
+}>;
