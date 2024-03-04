@@ -199,7 +199,7 @@ function DeveloperPageContent({
                 <Divider />
               </>
             )}
-            <div>
+            {/* <div>
               <Text fw={500} mb="sm">
                 Projects
               </Text>
@@ -212,7 +212,7 @@ function DeveloperPageContent({
                 </GridCol>
               </Grid>
             </div>
-            <Divider />
+            <Divider /> */}
             <div>
               <Text fw={500} mb="sm">
                 Achievements

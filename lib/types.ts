@@ -105,3 +105,27 @@ export type ProjectCardType = Prisma.ProjectGetPayload<{
     };
   };
 }>;
+
+export type DeveloperCardType = Prisma.UserGetPayload<{
+  select: {
+    id: true;
+    username: true;
+    fullName: true;
+    avatarUrl: true;
+    role: true;
+    githubUsername: true;
+    linkedinUsername: true;
+    startedCoding: true;
+    jobSeeking: true;
+    displayJobSeeking: true;
+    _count: {
+      select: {
+        projects: {
+          where: {
+            isPublic: true;
+          };
+        };
+      };
+    };
+  };
+}>;

@@ -1,35 +1,74 @@
 import {
+  Anchor,
   Avatar,
   Card,
   Divider,
   Group,
   Stack,
-  Text
+  Text,
+  ActionIcon,
 } from "@mantine/core";
-import DevCardActions from "./DevCardActions";
+import { IconBrandLinkedin, IconBrandGithub } from "@tabler/icons-react";
+import { DeveloperCardType } from "@/lib/types";
+import Link from "next/link";
+import { onlyTimeAgo } from "@/lib/moment";
 
-function DevCard() {
+function DevCard({ developer }: { developer: DeveloperCardType }) {
   return (
     <Card withBorder>
       <Stack gap="sm">
-        <Group wrap="nowrap" align="center">
-          <Avatar />
-          <div>
-            <Text fw={500}>Nicolas Guillen</Text>
-            <Text size="sm" c="dimmed">
-              Web Developer
-            </Text>
-          </div>
-        </Group>
+        <Anchor
+          underline="never"
+          c="inherit"
+          component={Link}
+          href={`/developers/${developer.username}`}
+        >
+          <Group wrap="nowrap" align="center">
+            <Avatar src={developer.avatarUrl} />
+            <div>
+              <Text fw={500}>{developer.fullName}</Text>
+              {developer.role && (
+                <Text size="sm" c="dimmed">
+                  {developer.role}
+                </Text>
+              )}
+            </div>
+          </Group>
+        </Anchor>
         <Divider mx="-md" />
         <Group justify="space-between" align="center" gap="xs">
           <Group>
-            <Text size="sm">6 years</Text>
-            <Text size="sm">5 projects</Text>
-            <Text size="sm">Job seeking</Text>
+            {developer.startedCoding && (
+              <Text size="sm">{onlyTimeAgo(developer.startedCoding)}</Text>
+            )}
+            <Text size="sm">{developer._count.projects} projects</Text>
+            {developer.jobSeeking && developer.displayJobSeeking && (
+              <Text size="sm">Job seeking</Text>
+            )}
           </Group>
           <Group gap="xs" justify="end" className="flex-grow-1">
-            <DevCardActions />
+            {developer.linkedinUsername && (
+              <ActionIcon
+                variant="default"
+                onClick={(e) => e.stopPropagation()}
+                component="a"
+                href={`https://linkedin.com/in/${developer.linkedinUsername}`}
+                target="_blank"
+              >
+                <IconBrandLinkedin style={{ width: "60%", height: "60%" }} />
+              </ActionIcon>
+            )}
+            {developer.githubUsername && (
+              <ActionIcon
+                variant="default"
+                onClick={(e) => e.stopPropagation()}
+                component="a"
+                href={`https://github.com/${developer.githubUsername}`}
+                target="_blank"
+              >
+                <IconBrandGithub style={{ width: "60%", height: "60%" }} />
+              </ActionIcon>
+            )}
           </Group>
         </Group>
       </Stack>
