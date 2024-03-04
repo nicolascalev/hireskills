@@ -30,16 +30,22 @@ export async function GET(request: NextRequest) {
     const projects = await prisma.project.findMany({
       where: {
         isPublic: true,
-        label: !search
-          ? undefined
-          : {
-              contains: search,
-            },
-        summary: !search
-          ? undefined
-          : {
-              contains: search,
-            },
+        OR: [
+          {
+            label: !search
+              ? undefined
+              : {
+                  contains: search,
+                },
+          },
+          {
+            summary: !search
+              ? undefined
+              : {
+                  contains: search,
+                },
+          },
+        ],
         level:
           level.length === 0
             ? undefined
@@ -91,6 +97,7 @@ export async function GET(request: NextRequest) {
         },
       },
     });
+
     return Response.json(projects);
   } catch (err) {
     return new Response("Internal server error", { status: 500 });
