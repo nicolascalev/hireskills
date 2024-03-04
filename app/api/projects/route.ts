@@ -5,7 +5,7 @@ import {
   PROJECT_SORT_OPTIONS,
   isValidProjectSortOrDefault,
 } from "@/lib/utils";
-import { LEVEL, Prisma } from "@prisma/client";
+import { LEVEL } from "@prisma/client";
 import { NextRequest } from "next/server";
 
 export async function GET(request: NextRequest) {
@@ -23,10 +23,8 @@ export async function GET(request: NextRequest) {
     searchParams.get("isVerified") === "true" ? true : undefined;
 
   const parsedSort = PROJECT_SORT_OPTIONS.has(sort)
-    ? (PROJECT_SORT_OPTIONS.get(sort) as Prisma.ProjectOrderByWithRelationInput)
-    : (PROJECT_SORT_OPTIONS.get(
-        PROJECT_DEFAULT_SORT
-      ) as Prisma.ProjectOrderByWithRelationInput);
+    ? PROJECT_SORT_OPTIONS.get(sort)
+    : PROJECT_SORT_OPTIONS.get(PROJECT_DEFAULT_SORT);
 
   try {
     const projects = await prisma.project.findMany({

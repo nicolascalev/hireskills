@@ -8,6 +8,9 @@ export default authMiddleware({
     "/projects",
     "/projects/:id",
     "/api/tools",
+    "/api/skills",
+    "/api/projects",
+    "/api/developers",
   ],
   afterAuth(auth, req) {
     // handle users who aren't authenticated

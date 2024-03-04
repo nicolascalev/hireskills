@@ -1,3 +1,5 @@
+import { Prisma } from "@prisma/client";
+
 export function stringArraysAreEqual(arr1: string[], arr2: string[]) {
   if (arr1.length !== arr2.length) {
     return false;
@@ -12,7 +14,10 @@ export function firstUpperCase(str: string) {
 
 export const DEFAULT_PAGE_SIZE = 15;
 
-export const PROJECT_SORT_OPTIONS = new Map([
+export const PROJECT_SORT_OPTIONS = new Map<
+  string,
+  Prisma.ProjectOrderByWithRelationInput
+>([
   ["Popular top", { likeCount: "desc" }],
   ["Least popular top", { likeCount: "asc" }],
   ["Newest top", { createdAt: "desc" }],
