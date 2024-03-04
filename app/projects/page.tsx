@@ -47,7 +47,7 @@ export default function ProjectsPage() {
       <Grid gutter={{ base: "md", sm: "xl" }}>
         <GridCol span={{ base: 12, sm: 3 }}>
           <ProjectFiltersDrawer />
-          <Stack gap="sm" visibleFrom="sm">
+          <Stack gap="sm" visibleFrom="sm" pos="sticky" top="76px">
             <ProjectFilters />
           </Stack>
         </GridCol>
