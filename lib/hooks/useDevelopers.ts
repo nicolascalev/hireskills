@@ -7,7 +7,7 @@ export default function useDevelopers(
   searchParams: ReadonlyURLSearchParams,
   cursor?: string
 ) {
-  const { data, error, isLoading } = useSWR(
+  const { data, error, isLoading, mutate } = useSWR(
     `/api/developers?${searchParams.toString()}${
       cursor ? `&cursor=${cursor}` : ""
     }`,
@@ -18,5 +18,6 @@ export default function useDevelopers(
     developers: data as DeveloperCardType[] | undefined,
     developersError: error,
     developersLoading: isLoading,
+    developersRevalidate: mutate,
   };
 }

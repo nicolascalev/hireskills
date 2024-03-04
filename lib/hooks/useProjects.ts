@@ -7,7 +7,7 @@ export default function useProjects(
   searchParams: ReadonlyURLSearchParams,
   cursor?: string
 ) {
-  const { data, error, isLoading } = useSWR(
+  const { data, error, isLoading, mutate } = useSWR(
     `/api/projects?${searchParams.toString()}${
       cursor ? `&cursor=${cursor}` : ""
     }`,
@@ -18,5 +18,6 @@ export default function useProjects(
     projects: data as ProjectCardType[] | undefined,
     projectsError: error,
     projectsLoading: isLoading,
+    projectsRevalidate: mutate,
   };
 }

@@ -8,6 +8,8 @@ import { useEffect, useMemo, useState } from "react";
 import useProjects from "@/lib/hooks/useProjects";
 import { ProjectCardType } from "@/lib/types";
 import { DEFAULT_PAGE_SIZE } from "@/lib/utils";
+import MessageCard from "../ui/MessageCard";
+import { IconFolderQuestion, IconMoodSad } from "@tabler/icons-react";
 
 export default function ProjectsPage() {
   const searchParams = useSearchParams();
@@ -25,10 +27,8 @@ export default function ProjectsPage() {
   }, [searchParams]);
 
   // fetch projects and pass the right search params and cursor
-  const { projects, projectsError, projectsLoading } = useProjects(
-    searchParams,
-    cursor
-  );
+  const { projects, projectsError, projectsLoading, projectsRevalidate } =
+    useProjects(searchParams, cursor);
 
   // when projects change, add them to displayed projects
   useEffect(() => {
@@ -56,6 +56,32 @@ export default function ProjectsPage() {
             {displayedProjects.map((project) => (
               <ProjectCard key={project.id} project={project} />
             ))}
+            {!projectsLoading && projectsError && (
+              <MessageCard
+                icon={<IconMoodSad />}
+                title="There was an error fetching projects"
+                message="We are working on fixing this issue, please try again later"
+                action={
+                  <Button onClick={() => projectsRevalidate()} size="xs">
+                    Refresh
+                  </Button>
+                }
+              />
+            )}
+            {!projectsLoading &&
+              !projectsError &&
+              displayedProjects.length === 0 && (
+                <MessageCard
+                  icon={<IconFolderQuestion />}
+                  title="No projects found"
+                  message="Try adjusting search filters"
+                  action={
+                    <Button onClick={() => projectsRevalidate()} size="xs">
+                      Refresh
+                    </Button>
+                  }
+                />
+              )}
             {projectsLoading && <div>Loading...</div>}
             {!projectsLoading && nextCursor && (
               <Group justify="center" grow>

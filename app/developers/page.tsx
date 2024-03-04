@@ -1,13 +1,15 @@
 "use client";
 import DevCard from "@/app/ui/DevCard";
+import useDevelopers from "@/lib/hooks/useDevelopers";
+import { DeveloperCardType } from "@/lib/types";
+import { DEFAULT_PAGE_SIZE } from "@/lib/utils";
 import { Button, Container, Grid, GridCol, Group, Stack } from "@mantine/core";
-import DevFilters from "../ui/DevFilters";
-import DevFiltersDrawer from "../ui/DevFiltersDrawer";
+import { IconMoodSad, IconUserQuestion } from "@tabler/icons-react";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { DEFAULT_PAGE_SIZE } from "@/lib/utils";
-import { DeveloperCardType } from "@/lib/types";
-import useDevelopers from "@/lib/hooks/useDevelopers";
+import DevFilters from "../ui/DevFilters";
+import DevFiltersDrawer from "../ui/DevFiltersDrawer";
+import MessageCard from "../ui/MessageCard";
 
 export default function DevelopersPage() {
   const searchParams = useSearchParams();
@@ -25,10 +27,12 @@ export default function DevelopersPage() {
   }, [searchParams]);
 
   // fetch developers and pass the right search params and cursor
-  const { developers, developersError, developersLoading } = useDevelopers(
-    searchParams,
-    cursor
-  );
+  const {
+    developers,
+    developersError,
+    developersLoading,
+    developersRevalidate,
+  } = useDevelopers(searchParams, cursor);
 
   // when developers change, add them to displayed developers
   useEffect(() => {
@@ -56,6 +60,32 @@ export default function DevelopersPage() {
             {displayedDevelopers.map((developer) => (
               <DevCard key={developer.id} developer={developer} />
             ))}
+            {!developersLoading && developersError && (
+              <MessageCard
+                icon={<IconMoodSad />}
+                title="There was an error fetching users"
+                message="We are working on fixing this issue, please try again later"
+                action={
+                  <Button onClick={() => developersRevalidate()} size="xs">
+                    Refresh
+                  </Button>
+                }
+              />
+            )}
+            {!developersLoading &&
+              !developersError &&
+              displayedDevelopers.length === 0 && (
+                <MessageCard
+                  icon={<IconUserQuestion />}
+                  title="No developers found"
+                  message="Try adjusting search filters"
+                  action={
+                    <Button onClick={() => developersRevalidate()} size="xs">
+                      Refresh
+                    </Button>
+                  }
+                />
+              )}
             {developersLoading && <div>Loading...</div>}
             {!developersLoading && nextCursor && (
               <Group justify="center" grow>
