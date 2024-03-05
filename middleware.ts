@@ -3,6 +3,7 @@ import { authMiddleware, redirectToSignUp } from "@clerk/nextjs";
 export default authMiddleware({
   publicRoutes: [
     "/",
+    "/search",
     "/developers",
     "/developers/:id",
     "/projects",
