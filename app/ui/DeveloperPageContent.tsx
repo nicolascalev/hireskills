@@ -1,5 +1,4 @@
 import GitHubCalendarWrapper from "@/app/ui/GitHubCalendarWrapper";
-import ProjectCard from "@/app/ui/ProjectCard";
 import { monthAndYear, onlyTimeAgo } from "@/lib/moment";
 import { DeveloperPage } from "@/lib/types";
 import {
@@ -29,7 +28,8 @@ import {
   IconMap,
   IconScript,
 } from "@tabler/icons-react";
-import { ReactNode } from "react";
+import { ReactNode, Suspense } from "react";
+import DeveloperProjectsGrid from "./DeveloperProjectsGridWrapper";
 
 function DeveloperPageContent({
   user,
@@ -199,20 +199,15 @@ function DeveloperPageContent({
                 <Divider />
               </>
             )}
-            {/* <div>
+            <div>
               <Text fw={500} mb="sm">
                 Projects
               </Text>
-              <Grid>
-                <GridCol span={{ base: 12, sm: 6 }}>
-                  <ProjectCard />
-                </GridCol>
-                <GridCol span={{ base: 12, sm: 6 }}>
-                  <ProjectCard />
-                </GridCol>
-              </Grid>
+              <Suspense fallback="Loading projects...">
+                <DeveloperProjectsGrid developerId={user.id} />
+              </Suspense>
             </div>
-            <Divider /> */}
+            <Divider />
             <div>
               <Text fw={500} mb="sm">
                 Achievements
