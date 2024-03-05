@@ -50,7 +50,6 @@ function DevCard({ developer }: { developer: DeveloperCardType }) {
             {developer.linkedinUsername && (
               <ActionIcon
                 variant="default"
-                onClick={(e) => e.stopPropagation()}
                 component="a"
                 href={`https://linkedin.com/in/${developer.linkedinUsername}`}
                 target="_blank"
@@ -61,7 +60,6 @@ function DevCard({ developer }: { developer: DeveloperCardType }) {
             {developer.githubUsername && (
               <ActionIcon
                 variant="default"
-                onClick={(e) => e.stopPropagation()}
                 component="a"
                 href={`https://github.com/${developer.githubUsername}`}
                 target="_blank"
