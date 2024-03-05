@@ -30,22 +30,20 @@ export async function GET(request: NextRequest) {
     const projects = await prisma.project.findMany({
       where: {
         isPublic: true,
-        OR: [
-          {
-            label: !search
-              ? undefined
-              : {
+        OR: !search
+          ? undefined
+          : [
+              {
+                label: {
                   contains: search,
                 },
-          },
-          {
-            summary: !search
-              ? undefined
-              : {
+              },
+              {
+                summary: {
                   contains: search,
                 },
-          },
-        ],
+              },
+            ],
         level:
           level.length === 0
             ? undefined
