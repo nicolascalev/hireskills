@@ -70,7 +70,9 @@ function MainNav() {
     <Container h="100%" size="xl">
       <Group h="100%" justify="space-between">
         <Group align="center">
-          <Avatar color="indigo">HS</Avatar>
+          <Avatar color="indigo" component={Link} href="/">
+            HS
+          </Avatar>
           <Group gap="xs" component="nav" visibleFrom="sm">
             {links.map((link) => (
               <Button

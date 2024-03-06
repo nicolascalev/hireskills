@@ -6,9 +6,18 @@
   --mantine-breakpoint-xl: 88em;
 }
 
+:root[data-mantine-color-scheme="dark"] {
+  --mantine-color-border: #424242;
+}
+
+:root[data-mantine-color-scheme="light"] {
+  --mantine-color-border: #dee2e6;
+}
+
 .flex-grow-1 {
   flex-grow: 1;
 }
+
 .navbar__search {
   flex-grow: 1;
 }
@@ -48,4 +57,8 @@
   .md-flex-grow-0 {
     flex-grow: 0;
   }
+}
+
+footer {
+  border-top: calc(0.0625rem* var(--mantine-scale)) solid var(--mantine-color-border);
 }

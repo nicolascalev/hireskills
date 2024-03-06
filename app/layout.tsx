@@ -6,6 +6,7 @@ import "@/app/ui/globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import {
   AppShell,
+  AppShellFooter,
   AppShellHeader,
   AppShellMain,
   ColorSchemeScript,
@@ -19,6 +20,7 @@ import { Inter } from "next/font/google";
 import MainNav from "@/app/ui/structure/MainNav";
 import { headers } from "next/headers";
 import AuthContext from "@/lib/AuthContext";
+import Footer from "@/app/ui/structure/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -69,6 +71,7 @@ export default function RootLayout({
                   </AppShellHeader>
                   <AppShellMain>{children}</AppShellMain>
                 </AppShell>
+                <Footer />
               </ModalsProvider>
             </MantineProvider>
           </body>
