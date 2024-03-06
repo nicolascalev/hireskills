@@ -1,7 +1,12 @@
 import { Box, Button, Container, Divider, Group, Text } from "@mantine/core";
 import ProjectsSection from "@/app/ui/home/ProjectsSection";
+import DevelopersSection from "./ui/home/DevelopersSection";
+import Link from "next/link";
+import { SignUpButton, auth } from "@clerk/nextjs";
 
 export default function HomePage() {
+  const { userId } = auth();
+
   return (
     <>
       <Container py="xl" size="xl">
@@ -15,8 +20,17 @@ export default function HomePage() {
               hired
             </Text>
             <Group justify="center">
-              <Button size="xs">Sign Up</Button>
-              <Button size="xs" variant="default">
+              {userId ? null : (
+                <SignUpButton>
+                  <Button size="xs">Sign Up</Button>
+                </SignUpButton>
+              )}
+              <Button
+                size="xs"
+                variant="default"
+                component={Link}
+                href="/developers"
+              >
                 Developers
               </Button>
             </Group>
@@ -39,11 +53,39 @@ export default function HomePage() {
       </Container>
       <Divider />
       <Container py="3rem" size="xl">
+        <DevelopersSection
+          title="Frontend developers"
+          description="Developers with experience in building user interfaces"
+          url={{
+            pathname: "/developers",
+            query: { skills: ["Frontend"] },
+          }}
+          where={{
+            skills: { some: { name: { contains: "Frontend" } } },
+          }}
+        />
+      </Container>
+      <Divider />
+      <Container py="3rem" size="xl">
         <ProjectsSection
           title="Projects added recently"
           description="Check the latest projects added to the platform"
           url={"/projects"}
           where={{}}
+        />
+      </Container>
+      <Divider />
+      <Container py="3rem" size="xl">
+        <DevelopersSection
+          title="Developers using JavaScript"
+          description="Developers with experience in JavaScript"
+          url={{
+            pathname: "/developers",
+            query: { tools: ["JavaScript"] },
+          }}
+          where={{
+            tools: { some: { name: { contains: "JavaScript" } } },
+          }}
         />
       </Container>
       <Divider />

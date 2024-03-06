@@ -1,4 +1,4 @@
-import { getProjectsSample } from "@/lib/data";
+import { getDevelopersSample } from "@/lib/data";
 import { Anchor, Button, Group, SimpleGrid, Text } from "@mantine/core";
 import { Prisma } from "@prisma/client";
 import { IconChevronRight, IconFolderExclamation } from "@tabler/icons-react";
@@ -6,9 +6,9 @@ import { Url } from "next/dist/shared/lib/router/router";
 import Link from "next/link";
 import { Suspense } from "react";
 import MessageCard from "../MessageCard";
-import ProjectCard from "../ProjectCard";
+import DevCard from "../DevCard";
 
-function ProjectsSection({
+function DevelopersSection({
   title,
   description,
   url,
@@ -17,11 +17,11 @@ function ProjectsSection({
   title: string;
   description: string;
   url: Url;
-  where: Prisma.ProjectWhereInput;
+  where: Prisma.UserWhereInput;
 }) {
   return (
     <div>
-      <Group justify="space-between" align="center">
+      <Group justify="space-between">
         <Text fw={500}>
           {title}
         </Text>
@@ -36,44 +36,44 @@ function ProjectsSection({
         {description}
       </Text>
       <Suspense fallback={<div>Loading...</div>}>
-        <ProjectsSectionGrid where={where} />
+        <DevelopersSectionGrid where={where} />
       </Suspense>
     </div>
   );
 }
 
-export default ProjectsSection;
+export default DevelopersSection;
 
-async function ProjectsSectionGrid({
+async function DevelopersSectionGrid({
   where,
 }: {
-  where: Prisma.ProjectWhereInput;
+  where: Prisma.UserWhereInput;
 }) {
-  const res = await getProjectsSample(where);
+  const res = await getDevelopersSample(where);
 
-  if (res.error || !res.projects) {
+  if (res.error || !res.developers) {
     return (
       <MessageCard
         icon={<IconFolderExclamation />}
-        title="Could not fetch projects"
-        message="An error occurred while fetching the projects. Please try again."
+        title="Could not fetch developers"
+        message="An error occurred while fetching the developers. Please try again."
       />
     );
   }
 
-  if (res.projects.length == 0) {
+  if (res.developers.length == 0) {
     return (
       <MessageCard
         icon={<IconFolderExclamation />}
-        title="No projects published"
-        message="When there are public projects they will be shown here."
+        title="No developers published"
+        message="When there are developers matching that criteria, they will be shown here."
       />
     );
   }
   return (
     <SimpleGrid cols={{ base: 1, sm: 2 }}>
-      {res.projects.map((project) => (
-        <ProjectCard key={project.id} project={project} />
+      {res.developers.map((developer) => (
+        <DevCard key={developer.id} developer={developer} />
       ))}
     </SimpleGrid>
   );
