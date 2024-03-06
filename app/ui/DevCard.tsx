@@ -1,17 +1,16 @@
+import { onlyTimeAgo } from "@/lib/moment";
+import { DeveloperCardType } from "@/lib/types";
 import {
+  ActionIcon,
   Anchor,
   Avatar,
   Card,
-  Divider,
   Group,
   Stack,
-  Text,
-  ActionIcon,
+  Text
 } from "@mantine/core";
-import { IconBrandLinkedin, IconBrandGithub } from "@tabler/icons-react";
-import { DeveloperCardType } from "@/lib/types";
+import { IconBrandGithub, IconBrandLinkedin } from "@tabler/icons-react";
 import Link from "next/link";
-import { onlyTimeAgo } from "@/lib/moment";
 
 function DevCard({ developer }: { developer: DeveloperCardType }) {
   return (
@@ -23,19 +22,16 @@ function DevCard({ developer }: { developer: DeveloperCardType }) {
           component={Link}
           href={`/developers/${developer.username}`}
         >
-          <Group wrap="nowrap" align="center">
-            <Avatar src={developer.avatarUrl} />
-            <div>
-              <Text fw={500}>{developer.fullName}</Text>
-              {developer.role && (
-                <Text size="sm" c="dimmed">
-                  {developer.role}
-                </Text>
-              )}
-            </div>
-          </Group>
+          <Avatar src={developer.avatarUrl} mb="xs" />
+          <div>
+            <Text fw={500}>{developer.fullName}</Text>
+            {developer.role && (
+              <Text size="sm" c="dimmed">
+                {developer.role}
+              </Text>
+            )}
+          </div>
         </Anchor>
-        <Divider mx="-md" />
         <Group justify="space-between" align="center" gap="xs">
           <Group>
             {developer.startedCoding && (
