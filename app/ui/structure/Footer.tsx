@@ -67,7 +67,7 @@ function Footer() {
             size="sm"
             c="dimmed"
             underline="hover"
-            href=""
+            href="https://github.com/nicolascalev/hireskills"
             target="_blank"
           >
             Code
@@ -76,7 +76,7 @@ function Footer() {
             size="sm"
             c="dimmed"
             underline="hover"
-            href=""
+            href="https://linkedin.com/in/nicolascalev"
             target="_blank"
           >
             LinkedIn
@@ -85,7 +85,7 @@ function Footer() {
             size="sm"
             c="dimmed"
             underline="hover"
-            href=""
+            href="https://github.com/nicolascalev"
             target="_blank"
           >
             GitHub
@@ -94,7 +94,7 @@ function Footer() {
             size="sm"
             c="dimmed"
             underline="hover"
-            href=""
+            href="https://twitter.com/nicolascalev"
             target="_blank"
           >
             X
