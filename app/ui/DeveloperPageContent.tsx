@@ -29,6 +29,7 @@ import {
   IconScript,
 } from "@tabler/icons-react";
 import { ReactNode, Suspense } from "react";
+import DeveloperAISummary from "./DeveloperAISummary";
 import DeveloperProjectsGrid from "./DeveloperProjectsGridWrapper";
 
 function DeveloperPageContent({
@@ -179,6 +180,8 @@ function DeveloperPageContent({
         <GridCol span={{ base: 12, sm: 9 }} pb="xl">
           <Divider my="xl" mx="-md" hiddenFrom="sm" />
           <Stack gap="xl">
+            <DeveloperAISummary developerId={user.id} />
+            <Divider />
             <div>
               <Text fw={500} mb="sm">
                 Summary
@@ -223,8 +226,8 @@ function DeveloperPageContent({
               )}
             </div>
             <Divider />
-            <div>
-              <Text fw={500} mb="sm">
+            <Stack>
+              <Text fw={500}>
                 Experience
               </Text>
               {user.career.experience.length === 0 ? (
@@ -245,10 +248,10 @@ function DeveloperPageContent({
                   </div>
                 ))
               )}
-            </div>
+            </Stack>
             <Divider />
-            <div>
-              <Text fw={500} mb="xs">
+            <Stack>
+              <Text fw={500}>
                 Education
               </Text>
               {user.career.education.length === 0 ? (
@@ -266,7 +269,7 @@ function DeveloperPageContent({
                   </div>
                 ))
               )}
-            </div>
+            </Stack>
             <Divider />
             <div>
               <Text fw={500} mb="xs">
