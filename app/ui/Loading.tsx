@@ -4,7 +4,7 @@ function Loading() {
   return (
     <Container py="md" size="xl">
       <Group align="center" wrap="nowrap">
-        <Loader size="sm" color="gray" />
+        <Loader size="xs" color="gray" />
         <Text c="dimmed">Loading...</Text>
       </Group>
     </Container>

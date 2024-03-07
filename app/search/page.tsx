@@ -32,18 +32,20 @@ async function SearchPage({
     { projectsWithTool, projectsWithToolCount, projectsWithToolError },
     { developers, developersCount, developersError },
     { developersWithSkill, developersWithSkillCount, developersWithSkillError },
+    { developersWithTool, developersWithToolCount, developersWithToolError },
   ] = await Promise.all([
     searchProjectsByLabelAndSummary(search),
     searchProjectsWithSkill(search),
     searchProjectsWithTool(search),
     searchDevelopers(search),
     searchDevelopersWithSkill(search),
+    searchDevelopersWithTool(search),
   ]);
 
   return (
     <Container py="md" size="xl">
       <Grid gutter={{ base: "md", sm: "xl" }}>
-        <GridCol span={{ sm: 3 }} visibleFrom="sm">
+        <GridCol span={{ base: 12, sm: 3 }}>
           <Card withBorder pos="sticky" top="76px">
             <Group justify="space-between">
               <Text size="sm">Projects</Text>
@@ -68,6 +70,11 @@ async function SearchPage({
             <Group justify="space-between">
               <Text size="sm">Developers with skill</Text>
               <Text size="sm">{developersWithSkillCount || 0}</Text>
+            </Group>
+            <Divider mx="-md" my="sm" />
+            <Group justify="space-between">
+              <Text size="sm">Developers with tool</Text>
+              <Text size="sm">{developersWithToolCount || 0}</Text>
             </Group>
           </Card>
         </GridCol>
@@ -171,6 +178,27 @@ async function SearchPage({
                     url={{
                       pathname: "/developers",
                       query: { skills: [search] },
+                    }}
+                  />
+                )}
+            </SearchSection>
+            <Divider />
+            <SearchSection
+              title={"Developers using tool: " + displaySearch}
+              description="Developers that match your search criteria"
+            >
+              {developersWithTool && (
+                <SearchSectionDevelopersContent
+                  developers={developersWithTool}
+                  developersError={developersWithToolError}
+                />
+              )}
+              {developersWithToolCount !== undefined &&
+                developersWithToolCount > 2 && (
+                  <FindMoreButton
+                    url={{
+                      pathname: "/developers",
+                      query: { tools: [search] },
                     }}
                   />
                 )}
@@ -373,6 +401,22 @@ function searchDevelopersWithSkill(search: string) {
       developersWithSkill: res.developers,
       developersWithSkillCount: res.count,
       developersWithSkillError: res.error,
+    };
+  });
+}
+
+function searchDevelopersWithTool(search: string) {
+  return getDevelopersSample({
+    tools: {
+      some: {
+        name: { contains: search },
+      },
+    },
+  }).then((res) => {
+    return {
+      developersWithTool: res.developers,
+      developersWithToolCount: res.count,
+      developersWithToolError: res.error,
     };
   });
 }

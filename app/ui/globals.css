@@ -8,10 +8,12 @@
 
 :root[data-mantine-color-scheme="dark"] {
   --mantine-color-border: #424242;
+  --pill-color: #1f1f1f;
 }
 
 :root[data-mantine-color-scheme="light"] {
   --mantine-color-border: #dee2e6;
+  --pill-color: #f1f3f5;
 }
 
 .flex-grow-1 {
@@ -61,4 +63,13 @@
 
 footer {
   border-top: calc(0.0625rem* var(--mantine-scale)) solid var(--mantine-color-border);
+}
+
+.pill {
+  background-color: var(--pill-color);
+}
+
+.prewrap_breakword {
+  white-space: pre-wrap;
+  word-break: break-word;
 }

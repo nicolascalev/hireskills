@@ -133,7 +133,7 @@ function ProjectPageContent({
             <Text fw={500} mb="sm">
               Summary
             </Text>
-            <Text size="sm" style={{ whiteSpace: "pre-wrap" }}>
+            <Text size="sm"className="prewrap_breakword">
               {project.summary}
             </Text>
             <Group mt="sm" gap="xs">
@@ -183,7 +183,7 @@ function ProjectPageContent({
             <Text fw={500} mb="sm">
               Problem
             </Text>
-            <Text size="sm" style={{ whiteSpace: "pre-wrap" }}>
+            <Text size="sm"className="prewrap_breakword">
               {project.problem || "Problem not specified."}
             </Text>
           </div>
@@ -192,7 +192,7 @@ function ProjectPageContent({
             <Text fw={500} mb="sm">
               Solution
             </Text>
-            <Text size="sm" style={{ whiteSpace: "pre-wrap" }}>
+            <Text size="sm"className="prewrap_breakword">
               {project.solution || "Solution not specified."}
             </Text>
           </div>
@@ -219,7 +219,7 @@ function ProjectPageContent({
             <Text fw={500} mb="sm">
               Example of a challenge
             </Text>
-            <Text size="sm" style={{ whiteSpace: "pre-wrap" }}>
+            <Text size="sm"className="prewrap_breakword">
               {project.challengeExample || "Challenge not specified."}
             </Text>
           </div>

@@ -9,8 +9,8 @@ import {
   Grid,
   GridCol,
   Group,
-  List,
-  ListItem,
+  Pill,
+  PillGroup,
   Stack,
   Text,
   ThemeIcon,
@@ -27,6 +27,7 @@ import {
   IconLink,
   IconMap,
   IconScript,
+  IconTrophyFilled,
 } from "@tabler/icons-react";
 import { ReactNode, Suspense } from "react";
 import DeveloperAISummary from "./DeveloperAISummary";
@@ -186,7 +187,7 @@ function DeveloperPageContent({
               <Text fw={500} mb="sm">
                 Summary
               </Text>
-              <Text size="sm" style={{ whiteSpace: "pre-wrap" }}>
+              <Text size="sm" className="prewrap_breakword">
                 {user.summary || "No summary provided by the user."}
               </Text>
             </div>
@@ -215,78 +216,115 @@ function DeveloperPageContent({
               <Text fw={500} mb="sm">
                 Achievements
               </Text>
-              {user.career.achievements.length === 0 ? (
-                <Text size="sm">No achievements listed by the user.</Text>
-              ) : (
-                <List size="sm">
-                  {user.career.achievements.map((achievement, i) => (
-                    <ListItem key={i}>{achievement}</ListItem>
-                  ))}
-                </List>
-              )}
+              <Stack gap="xs">
+                {user.career.achievements.length === 0 ? (
+                  <Text size="sm">No achievements listed by the user.</Text>
+                ) : (
+                  user.career.achievements.map((achievement, i) => (
+                    <Group key={i} wrap="nowrap" gap="xs" align="start">
+                      <ThemeIcon
+                        size="xs"
+                        variant="transparent"
+                        color="yellow"
+                        mt={1}
+                      >
+                        <IconTrophyFilled size={14} />
+                      </ThemeIcon>
+                      <Text size="sm" className="prewrap_breakword">
+                        {achievement}
+                      </Text>
+                    </Group>
+                  ))
+                )}
+              </Stack>
             </div>
             <Divider />
             <Stack>
-              <Text fw={500}>
-                Experience
-              </Text>
-              {user.career.experience.length === 0 ? (
-                <Text size="sm">No experience listed by the user.</Text>
-              ) : (
-                user.career.experience.map((experience, i) => (
-                  <div key={i}>
-                    <Text size="sm" mb="xs">
-                      {experience.role}
-                      <Text size="sm" fw={600} component="span" mx="sm">
-                        {experience.company}
+              <Text fw={500}>Experience</Text>
+              <Stack gap="xl">
+                {user.career.experience.length === 0 ? (
+                  <Text size="sm">No experience listed by the user.</Text>
+                ) : (
+                  user.career.experience.map((experience, i) => (
+                    <div key={i}>
+                      <Text size="sm" fw={600}>
+                        {experience.role}
                       </Text>
-                      {experience.startDate} - {experience.endDate}
-                    </Text>
-                    <Text size="sm" style={{ whiteSpace: "pre-wrap" }}>
-                      {experience.description}
-                    </Text>
-                  </div>
-                ))
-              )}
+                      <Text size="sm">{experience.company}</Text>
+                      <Text size="sm" c="dimmed">
+                        {experience.startDate} - {experience.endDate}
+                      </Text>
+                      {experience.description && (
+                        <Text mt="xs" size="sm" className="prewrap_breakword">
+                          {experience.description}
+                        </Text>
+                      )}
+                    </div>
+                  ))
+                )}
+              </Stack>
             </Stack>
             <Divider />
             <Stack>
-              <Text fw={500}>
-                Education
-              </Text>
-              {user.career.education.length === 0 ? (
-                <Text size="sm">No education listed by the user.</Text>
-              ) : (
-                user.career.education.map((education, i) => (
-                  <div key={i}>
-                    <Text size="sm">{education.school}</Text>
-                    <Text size="sm">
-                      {education.degree} in {education.fieldOfStudy}
-                    </Text>
-                    <Text size="sm">
-                      {education.startDate} - {education.endDate}
-                    </Text>
-                  </div>
-                ))
-              )}
+              <Text fw={500}>Education</Text>
+              <Stack gap="xl">
+                {user.career.education.length === 0 ? (
+                  <Text size="sm">No education listed by the user.</Text>
+                ) : (
+                  user.career.education.map((education, i) => (
+                    <div key={i}>
+                      <Text size="sm" fw={600}>
+                        {education.school}
+                      </Text>
+                      <Text size="sm">
+                        {education.degree} in {education.fieldOfStudy}
+                      </Text>
+                      <Text size="sm" c="dimmed">
+                        {education.startDate} - {education.endDate}
+                      </Text>
+                      {education.description && (
+                        <Text mt="xs" size="sm" className="prewrap_breakword">
+                          {education.description}
+                        </Text>
+                      )}
+                    </div>
+                  ))
+                )}
+              </Stack>
             </Stack>
             <Divider />
             <div>
               <Text fw={500} mb="xs">
                 Skills and tools
               </Text>
-              <div>
-                <Text size="sm">
-                  Skills:{" "}
-                  {user.skills.map((skill) => skill.name).join(", ") ||
-                    "No skills listed by the user."}
+              <Stack gap="xs">
+                <Text size="sm">Skills:</Text>
+                {user.skills.length > 0 ? (
+                  <PillGroup>
+                    {user.skills.map((skill) => (
+                      <Pill key={skill.name} size="sm" className="pill">
+                        {skill.name}
+                      </Pill>
+                    ))}
+                  </PillGroup>
+                ) : (
+                  "No skills listed by the user."
+                )}
+                <Text size="sm" mt="xs">
+                  Programming languages and tools:
                 </Text>
-                <Text size="sm">
-                  Programming languages and tools:{" "}
-                  {user.tools.map((tool) => tool.name).join(", ") ||
-                    "No tools listed by the user."}
-                </Text>
-              </div>
+                {user.tools.length > 0 ? (
+                  <PillGroup>
+                    {user.tools.map((tool) => (
+                      <Pill key={tool.name} size="sm" className="pill">
+                        {tool.name}
+                      </Pill>
+                    ))}
+                  </PillGroup>
+                ) : (
+                  "No tools listed by the user."
+                )}
+              </Stack>
             </div>
           </Stack>
         </GridCol>

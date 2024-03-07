@@ -133,7 +133,7 @@ export default function Comment({
           </Text>
         </Group>
       </Group>
-      <Text size="sm" my="xs" style={{ whiteSpace: "pre-wrap" }}>
+      <Text size="sm" my="xs"className="prewrap_breakword">
         {comment.content}
       </Text>
       {level < 4 && (
@@ -231,7 +231,7 @@ export default function Comment({
                   </Text>
                 </Group>
               </Group>
-              <Text size="sm" my="xs" style={{ whiteSpace: "pre-wrap" }}>
+              <Text size="sm" my="xs"className="prewrap_breakword">
                 {comment.content}
               </Text>
             </div>

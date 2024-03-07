@@ -3,14 +3,18 @@ import { Button, Group, Stack, Text, TextInput, Textarea } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
 import { IconSparkles } from "@tabler/icons-react";
 import { useChat } from "ai/react";
+import { FormEvent, useState } from "react";
 
 function DeveloperAISummary({ developerId }: { developerId: string }) {
+  const [loading, setLoading] = useState(false);
   const { messages, input, handleInputChange, handleSubmit } = useChat({
     body: {
       developerId,
     },
+    onFinish: () => {
+      setLoading(false);
+    },
     onError: (error) => {
-      console.log(error);
       const err = error as any;
       if (err?.code == "insufficient_quota") {
         showNotification({
@@ -18,12 +22,24 @@ function DeveloperAISummary({ developerId }: { developerId: string }) {
           message: "We have reached the AI usage limit, please try again later",
           color: "red",
         });
+        return;
       }
+      showNotification({
+        title: "Failed to generate AI summary",
+        message: "An error occurred while generating the AI summary",
+        color: "red",
+      });
     },
   });
 
+  function customHandleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setLoading(true);
+    handleSubmit(e);
+  }
+
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={customHandleSubmit}>
       <Stack gap="xs">
         <Text fw={500}>AI Summary</Text>
         {messages.length > 0 && (
@@ -32,7 +48,7 @@ function DeveloperAISummary({ developerId }: { developerId: string }) {
               <Text
                 key={index}
                 size="sm"
-                style={{ whiteSpace: "pre-wrap", wordWrap: "break-word" }}
+                className="prewrap_breakword"
                 c={m.role === "user" ? "dimmed" : undefined}
                 mb={m.role === "user" ? undefined : "sm"}
                 maw="100%"
@@ -43,9 +59,8 @@ function DeveloperAISummary({ developerId }: { developerId: string }) {
           </div>
         )}
         <TextInput
-          label="Prompt"
-          description="Get a summary of the information you want"
           placeholder="What is the developer's experience with JavaScript?"
+          disabled={loading}
           value={input}
           onChange={handleInputChange}
         />
@@ -54,6 +69,7 @@ function DeveloperAISummary({ developerId }: { developerId: string }) {
             size="xs"
             type="submit"
             rightSection={<IconSparkles size={14} />}
+            loading={loading}
           >
             Generate
           </Button>
