@@ -1,5 +1,4 @@
-import { getCurrentUser, createUser } from "@/lib/auth";
-import { Container, Text } from "@mantine/core";
+import { createUser, getCurrentUser } from "@/lib/auth";
 import { redirect } from "next/navigation";
 
 async function RegisterUser() {
@@ -13,12 +12,6 @@ async function RegisterUser() {
     await createUser()
     redirect("/profile");
   }
-
-  return (
-    <Container py="md" size="xl">
-      <Text>We are setting things up, please don&apos;t close this tab.</Text>
-    </Container>
-  );
 }
 
 export default RegisterUser;

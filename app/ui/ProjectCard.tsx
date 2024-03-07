@@ -31,7 +31,7 @@ function ProjectCard({ project }: { project: ProjectCardType }) {
               <Group gap="5px" wrap="nowrap" align="center" mt="sm">
                 {project.isVerified && (
                   <>
-                    <ThemeIcon variant="transparent" color="green">
+                    <ThemeIcon variant="transparent" color="teal">
                       <IconRosetteFilled
                         style={{ width: "60%", height: "60%" }}
                       />

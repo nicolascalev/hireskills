@@ -2,16 +2,22 @@ import { authMiddleware, redirectToSignUp } from "@clerk/nextjs";
 
 export default authMiddleware({
   publicRoutes: [
+    // pages
     "/",
     "/search",
     "/developers",
     "/developers/:id",
     "/projects",
     "/projects/:id",
+
+    // endpoints
+    "/api/projects",
+    "/api/projects/:id/comments",
+    "/api/projects/:id/liked",
     "/api/tools",
     "/api/skills",
-    "/api/projects",
     "/api/developers",
+    "/api/chat",
   ],
   afterAuth(auth, req) {
     // handle users who aren't authenticated

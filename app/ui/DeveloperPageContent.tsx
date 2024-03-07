@@ -57,7 +57,7 @@ function DeveloperPageContent({
               <>
                 <Divider />
                 <Group wrap="nowrap" gap="xs">
-                  <ThemeIcon color="green" variant="transparent" size="xs">
+                  <ThemeIcon color="teal" variant="transparent" size="xs">
                     <IconGrowth />
                   </ThemeIcon>
                   <Text size="sm">Job seeking</Text>

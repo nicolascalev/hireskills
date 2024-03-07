@@ -81,7 +81,7 @@ function ProjectPageContent({
           )}
           {project.isVerified && (
             <Group wrap="nowrap" gap="xs">
-              <ThemeIcon variant="transparent" size="xs" color="green">
+              <ThemeIcon variant="transparent" size="xs" color="teal">
                 <IconDiscountCheck />
               </ThemeIcon>
               <Text size="sm">Verified project</Text>
@@ -102,7 +102,7 @@ function ProjectPageContent({
           {project.developer.jobSeeking &&
             project.developer.displayJobSeeking && (
               <Group wrap="nowrap" gap="xs">
-                <ThemeIcon color="green" variant="transparent" size="xs">
+                <ThemeIcon color="teal" variant="transparent" size="xs">
                   <IconGrowth />
                 </ThemeIcon>
                 <Text size="sm">Job seeking</Text>
