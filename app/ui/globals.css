@@ -73,3 +73,7 @@ footer {
   white-space: pre-wrap;
   word-break: break-word;
 }
+
+.like__button .mantine-ActionIcon-loader {
+  background-color: transparent;
+}

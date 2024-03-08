@@ -81,6 +81,7 @@ function ProjectLikeButton({ projectId }: { projectId: string }) {
         }
         loading={loading}
         onClick={toggleLike}
+        className="like__button"
       >
         {liked ? <IconHeartFilled size={14} /> : <IconHeart size={14} />}
       </ActionIcon>
