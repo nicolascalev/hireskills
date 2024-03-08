@@ -77,3 +77,7 @@ footer {
 .like__button .mantine-ActionIcon-loader {
   background-color: transparent;
 }
+
+.github__calendar > div {
+  font-size: var(--mantine-font-size-sm);
+}

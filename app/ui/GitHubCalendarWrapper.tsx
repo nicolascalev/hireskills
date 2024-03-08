@@ -12,7 +12,7 @@ function GitHubCalendarWrapper({ username }: { username: string }) {
 
   return (
     <>
-      <Box lightHidden>
+      <Box lightHidden className="github__calendar">
         <GitHubCalendar
           theme={{
             dark: [theme.colors.dark[5], theme.colors.green[5]],
@@ -21,7 +21,7 @@ function GitHubCalendarWrapper({ username }: { username: string }) {
           colorScheme="dark"
         />
       </Box>
-      <Box darkHidden>
+      <Box darkHidden className="github__calendar">
         <GitHubCalendar
           theme={{
             light: ["hsl(0, 0%, 95%)", theme.colors.green[5]],
