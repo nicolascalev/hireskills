@@ -124,12 +124,12 @@ async function upsertUsers(amount: number) {
           createdAt: faker.date.recent(),
           fullName: faker.person.fullName(),
           username: username,
-          role: jobSeeking
-            ? "Looking for new opportunities"
-            : faker.person.jobTitle(),
+          role: faker.person.jobTitle(),
           email: faker.internet.email(),
           avatarUrl: faker.image.avatar(),
-          company: jobSeeking ? null : faker.company.name(),
+          company: jobSeeking
+            ? "Looking for new opportunities"
+            : faker.company.name(),
           displayActiveOpenSource: randomBoolean(),
           displayEmail: randomBoolean(),
           displayGithubActivity: randomBoolean(),
