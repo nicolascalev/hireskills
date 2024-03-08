@@ -55,14 +55,14 @@ export default function HomePage() {
       <Divider />
       <Container py="3rem" size="xl">
         <ProjectsSection
-          title="Projects using Assembly"
-          description="Projects where at least one feature was built with Assembly"
+          title="Projects using JavaScript"
+          description="Projects where at least one feature was built with JavaScript"
           url={{
             pathname: "/projects",
-            query: { tools: ["Assembly"] },
+            query: { tools: ["JavaScript"] },
           }}
           where={{
-            tools: { some: { name: { contains: "Assembly" } } },
+            tools: { some: { name: { contains: "JavaScript" } } },
           }}
         />
       </Container>
