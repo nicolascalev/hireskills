@@ -3,6 +3,7 @@ import MessageCard from "@/app/ui/MessageCard";
 import ProjectCard from "@/app/ui/ProjectCard";
 import ProjectFilters from "@/app/ui/ProjectFilters";
 import ProjectFiltersDrawer from "@/app/ui/ProjectFiltersDrawer";
+import { AuthContext } from "@/lib/AuthContextProvider";
 import useProjects from "@/lib/hooks/useProjects";
 import { ProjectCardType } from "@/lib/types";
 import { DEFAULT_PAGE_SIZE } from "@/lib/utils";
@@ -18,9 +19,10 @@ import {
 } from "@mantine/core";
 import { IconFolderQuestion, IconMoodSad } from "@tabler/icons-react";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 function SpotlightPageContent({ endString }: { endString: string }) {
+  const { user } = useContext(AuthContext);
   const searchParams = useSearchParams();
   const [displayedProjects, setDisplayedProjects] = useState<ProjectCardType[]>(
     []
@@ -37,7 +39,7 @@ function SpotlightPageContent({ endString }: { endString: string }) {
 
   // fetch projects and pass the right search params and cursor
   const { projects, projectsError, projectsLoading, projectsRevalidate } =
-    useProjects(searchParams, cursor);
+    useProjects(searchParams, cursor, true);
 
   // when projects change, add them to displayed projects
   useEffect(() => {
@@ -57,14 +59,19 @@ function SpotlightPageContent({ endString }: { endString: string }) {
         <Stack>
           <div>
             <Text size="xl" fw={600}>
-              Week spotlight
+              This week&apos;s spotlight
             </Text>
             <Text c="dimmed">
               The spotlight is for unemployed developers who want to showcase
               their projects
             </Text>
           </div>
-          <Text>{endString}</Text>
+          <Group align="center">
+            {(!user || !user.isSpotlightParticipant) && (
+              <Button size="xs">Join this week&apos;s spotlight</Button>
+            )}
+            <Text size="sm">{endString}</Text>
+          </Group>
         </Stack>
       </Container>
       <Divider />

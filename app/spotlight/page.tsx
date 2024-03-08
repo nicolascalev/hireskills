@@ -22,7 +22,8 @@ async function SpotlightPage() {
     );
   }
 
-  const endString = "Ends " + moment(res.spotlight.finishesAt).fromNow();
+  const endString =
+    moment(res.spotlight.finishesAt).fromNow().replace("in ", "") + " left";
 
   return <SpotlightPageContent endString={endString} />;
 }

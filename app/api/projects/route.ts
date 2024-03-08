@@ -26,6 +26,8 @@ export async function GET(request: NextRequest) {
     ? PROJECT_SORT_OPTIONS.get(sort)
     : PROJECT_SORT_OPTIONS.get(PROJECT_DEFAULT_SORT);
 
+  const isSpotlight = searchParams.get("isSpotlight") === "true";
+
   try {
     const projects = await prisma.project.findMany({
       where: {
@@ -72,6 +74,11 @@ export async function GET(request: NextRequest) {
               },
         isUsedByPeople: onlyQueryUsedByPeople,
         isVerified: onlyQueryVerified,
+        developer: isSpotlight
+          ? {
+              isSpotlightParticipant: true,
+            }
+          : undefined,
       },
       orderBy: parsedSort,
       take: DEFAULT_PAGE_SIZE,

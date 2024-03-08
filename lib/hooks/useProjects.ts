@@ -5,12 +5,13 @@ import { ProjectCardType } from "../types";
 
 export default function useProjects(
   searchParams: ReadonlyURLSearchParams,
-  cursor?: string
+  cursor?: string,
+  isSpotlight?: boolean
 ) {
   const { data, error, isLoading, mutate } = useSWR(
     `/api/projects?${searchParams.toString()}${
       cursor ? `&cursor=${cursor}` : ""
-    }`,
+    }${isSpotlight !== undefined ? `&isSpotlight=${isSpotlight}` : ""}`,
     basicFetcher
   );
 
