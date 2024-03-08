@@ -9,7 +9,7 @@ export function timeAgo(date: MomentInput) {
 }
 
 export function onlyTimeAgo(date: MomentInput) {
-  return moment(date).fromNow().replace(" ago", "");
+  return moment(date).fromNow().replace(" ago", "").replace("a ", "1 ");
 }
 
 export function dateFormat(date: MomentInput) {

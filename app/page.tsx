@@ -40,21 +40,36 @@ export default function HomePage() {
       <Divider />
       <Container py="3rem" size="xl">
         <ProjectsSection
-          title="Projects using JavaScript"
-          description="Projects where at least one feature was built with JavaScript"
+          title="Weekly spotlight projects"
+          description="Projects highlighted in this week's spotlight"
           url={{
-            pathname: "/projects",
-            query: { tools: ["JavaScript"] },
+            pathname: "/spotlight",
           }}
           where={{
-            tools: { some: { name: { contains: "JavaScript" } } },
+            developer: {
+              isSpotlightParticipant: true,
+            },
+          }}
+        />
+      </Container>
+      <Divider />
+      <Container py="3rem" size="xl">
+        <ProjectsSection
+          title="Projects using Assembly"
+          description="Projects where at least one feature was built with Assembly"
+          url={{
+            pathname: "/projects",
+            query: { tools: ["Assembly"] },
+          }}
+          where={{
+            tools: { some: { name: { contains: "Assembly" } } },
           }}
         />
       </Container>
       <Divider />
       <Container py="3rem" size="xl">
         <DevelopersSection
-          title="Frontend developers"
+          title="Developers who have built frontend"
           description="Developers with experience in building user interfaces"
           url={{
             pathname: "/developers",
