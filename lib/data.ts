@@ -1,7 +1,7 @@
 import prisma from "@/lib/prisma";
 import { unstable_noStore as noStore } from "next/cache";
 import { DeveloperCardType, ProjectCardType } from "./types";
-import { Prisma } from "@prisma/client";
+import { Prisma, Spotlight } from "@prisma/client";
 
 export async function getDeveloperProjects(developerId: string) {
   noStore();
@@ -120,6 +120,28 @@ export async function getDevelopersSample(where: Prisma.UserWhereInput) {
     });
 
     return { error: "", developers, count };
+  } catch (err) {
+    return {
+      error: (err as any).message,
+    };
+  }
+}
+
+// this gets the last created spotlight not this week's spotlight so
+// you have to make sure you use a cron to create a new spotlight every week
+export async function getWeekSpotlight() {
+  noStore();
+  try {
+    const spotlight = (await prisma.spotlight.findFirst({
+      orderBy: {
+        startsAt: "desc",
+      },
+    })) as Spotlight;
+
+    return {
+      error: "",
+      spotlight,
+    };
   } catch (err) {
     return {
       error: (err as any).message,
