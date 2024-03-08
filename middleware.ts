@@ -18,6 +18,9 @@ export default authMiddleware({
     "/api/skills",
     "/api/developers",
     "/api/chat",
+
+    // cron jobs
+    "/api/spotlights",
   ],
   afterAuth(auth, req) {
     // handle users who aren't authenticated

@@ -33,6 +33,7 @@ model User {
   displayEmail                  Boolean          @default(false) @map("display_email")
   displayPublicResume           Boolean          @default(false) @map("display_public_resume")
   displayActiveOpenSource       Boolean          @default(false) @map("display_active_open_source")
+  isSpotlightParticipant        Boolean          @default(false) @map("is_spotlight_participant")
   resumes                       Resume[]
   defaultResumeId               String?          @map("default_resume_id")
   career                        Json
@@ -41,6 +42,7 @@ model User {
   projects                      Project[]
   projectsLiked                 ProjectLike[]
   postedComments                ProjectComment[]
+  joinedSpotlights              Spotlight[]      @relation("SpotlightToUser")
 
   @@map("users")
 }
@@ -130,4 +132,13 @@ model ProjectComment {
   repliedTo   ProjectComment?  @relation("ProjectCommentToProjectComment", fields: [repliedToId], references: [id])
 
   @@map("project_comments")
+}
+
+model Spotlight {
+  id           String   @id @default(uuid())
+  startsAt     DateTime @map("starts_at")
+  finishesAt   DateTime @map("finishes_at")
+  participants User[]   @relation("SpotlightToUser")
+
+  @@map("spotlights")
 }

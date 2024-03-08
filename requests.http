@@ -1,0 +1,7 @@
+# Endpoint for CRON. Restart week spotlight
+POST http://localhost:3000/api/spotlights
+
+# key should match the key in env variables
+{
+  "key": "somekey"
+}
