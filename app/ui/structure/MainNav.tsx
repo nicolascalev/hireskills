@@ -3,8 +3,7 @@ import { AuthContext } from "@/lib/AuthContextProvider";
 import {
   SignInButton,
   SignUpButton,
-  useClerk,
-  useSession,
+  useClerk
 } from "@clerk/nextjs";
 import {
   Avatar,
@@ -36,6 +35,7 @@ type Link = {
 };
 
 const links: Link[] = [
+  { label: "Spotlight", href: "/spotlight" },
   { label: "Projects", href: "/projects" },
   { label: "Developers", href: "/developers" },
 ];
