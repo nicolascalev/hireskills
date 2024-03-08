@@ -205,7 +205,7 @@ async function upsertProjects() {
   for (let i = 0; i < userIds.length; i++) {
     console.log("Adding project: ", i);
     const user = userIds[i];
-    const publishDate = faker.date.past();
+    const publishDate = faker.date.recent();
     const createdAt = faker.date.between({ from: publishDate, to: now });
     try {
       await prisma.project.create({
