@@ -20,6 +20,7 @@ import {
 import { IconFolderQuestion, IconMoodSad } from "@tabler/icons-react";
 import { useSearchParams } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
+import JoinSpotlightModal from "../ui/JoinSpotlightModal";
 
 function SpotlightPageContent({ endString }: { endString: string }) {
   const { user } = useContext(AuthContext);
@@ -68,7 +69,7 @@ function SpotlightPageContent({ endString }: { endString: string }) {
           </div>
           <Group align="center">
             {(!user || !user.isSpotlightParticipant) && (
-              <Button size="xs">Join this week&apos;s spotlight</Button>
+              <JoinSpotlightModal user={user} />
             )}
             <Text size="sm">{endString}</Text>
           </Group>

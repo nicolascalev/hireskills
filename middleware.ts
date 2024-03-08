@@ -9,6 +9,7 @@ export default authMiddleware({
     "/developers/:id",
     "/projects",
     "/projects/:id",
+    "/spotlight",
 
     // endpoints
     "/api/projects",
