@@ -22,6 +22,7 @@ export default authMiddleware({
 
     // cron jobs
     "/api/spotlights",
+    "/api/spotlights/fake",
   ],
   afterAuth(auth, req) {
     // handle users who aren't authenticated
