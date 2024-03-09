@@ -1,10 +1,6 @@
 "use client";
 import { AuthContext } from "@/lib/AuthContextProvider";
-import {
-  SignInButton,
-  SignUpButton,
-  useClerk
-} from "@clerk/nextjs";
+import { SignInButton, SignUpButton, useClerk } from "@clerk/nextjs";
 import {
   Avatar,
   Box,
@@ -45,7 +41,7 @@ function MainNav() {
   const isSignedIn = useMemo(() => !!user, [user]);
 
   const mobileNavbarFooter = useRef<HTMLDivElement>(null);
-  const [opened, { toggle }] = useDisclosure();
+  const [opened, { toggle, close }] = useDisclosure();
   const [mobileNavbarFooterOffsetHeight, setMobileNavbarFooterOffsetHeight] =
     useState(0);
 
@@ -168,6 +164,7 @@ function MainNav() {
                   href={link.href}
                   label={link.label}
                   py="md"
+                  onClick={() => close()}
                 />
               ))}
               {isSignedIn && (
@@ -176,6 +173,7 @@ function MainNav() {
                   href="/profile/projects"
                   label="My projects"
                   py="md"
+                  onClick={() => close()}
                 />
               )}
             </ScrollArea>
@@ -192,7 +190,12 @@ function MainNav() {
               {isSignedIn && user ? (
                 <>
                   <Group mb="sm" style={{ overflow: "visible" }}>
-                    <Avatar src={user?.avatarUrl || undefined} />
+                    <Avatar
+                      src={user?.avatarUrl || undefined}
+                      component={Link}
+                      href="/"
+                      onClick={() => close()}
+                    />
                     <div>
                       <Text>{user.fullName}</Text>
                       <Text size="sm" c="dimmed">
@@ -200,21 +203,37 @@ function MainNav() {
                       </Text>
                     </div>
                   </Group>
-                  <NavLink label="Profile" ml="-md" w="calc(100% + 32px)" />
+                  <NavLink
+                    label="Profile"
+                    ml="-md"
+                    w="calc(100% + 32px)"
+                    component={Link}
+                    href="/profile"
+                    onClick={() => close()}
+                  />
                   <NavLink
                     label="Sign out"
                     ml="-md"
                     w="calc(100% + 32px)"
-                    onClick={() => signOut(() => router.push("/"))}
+                    onClick={() => {
+                      close;
+                      signOut(() => router.push("/"));
+                    }}
                   />
                 </>
               ) : (
                 <Stack gap="xs">
                   <SignUpButton>
-                    <Button size="xs">Sign up</Button>
+                    <Button size="xs" onClick={() => close()}>
+                      Sign up
+                    </Button>
                   </SignUpButton>
                   <SignInButton>
-                    <Button size="xs" variant="transparent">
+                    <Button
+                      size="xs"
+                      variant="transparent"
+                      onClick={() => close()}
+                    >
                       Sign in
                     </Button>
                   </SignInButton>

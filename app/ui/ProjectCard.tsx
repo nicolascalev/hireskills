@@ -25,8 +25,12 @@ function ProjectCard({ project }: { project: ProjectCardType }) {
       <Stack gap="sm">
         <Group justify="space-between" align="start" wrap="nowrap" gap="xs">
           <div>
-            <Text fw={500}>{project.label}</Text>
-            <Text size="sm">{project.summary}</Text>
+            <Text fw={500} lineClamp={1}>
+              {project.label}
+            </Text>
+            <Text size="sm" lineClamp={1}>
+              {project.summary}
+            </Text>
             {(project.isVerified || project.isUsedByPeople) && (
               <Group gap="5px" wrap="nowrap" align="center" mt="sm">
                 {project.isVerified && (

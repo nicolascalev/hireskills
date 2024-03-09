@@ -63,9 +63,13 @@ export async function POST(request: NextRequest) {
     //  finishes one week after startsAt
     const finishesAt = new Date(startsAt.getTime() + 7 * 24 * 60 * 60 * 1000);
 
+    // get job seeking users that have at least one project
     const jobSeekingUsers = await prisma.user.findMany({
       where: {
         jobSeeking: true,
+        projects: {
+          some: {},
+        },
       },
       select: {
         id: true,
