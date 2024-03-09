@@ -4,7 +4,7 @@ import { DeveloperPage } from "@/lib/types";
 import { Resume } from "@prisma/client";
 import { notFound } from "next/navigation";
 
-export default async function DeveloperPage({
+export default async function DeveloperPageComponent({
   params,
 }: {
   params: { id: string };
