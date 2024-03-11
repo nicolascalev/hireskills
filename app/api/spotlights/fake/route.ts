@@ -68,7 +68,9 @@ export async function POST(request: NextRequest) {
       where: {
         jobSeeking: true,
         projects: {
-          some: {},
+          some: {
+            isPublic: true,
+          },
         },
       },
       select: {
