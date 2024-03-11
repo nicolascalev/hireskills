@@ -147,7 +147,7 @@ function MainNav() {
             title={<Avatar color="indigo">HS</Avatar>}
             styles={{
               body: {
-                height: "calc(100svh - 70px)",
+                height: "calc(100dvh - 70px)",
                 position: "relative",
                 padding: 0,
               },
@@ -155,7 +155,7 @@ function MainNav() {
             size="xl"
           >
             <ScrollArea
-              h={`calc(100svh - 70px - ${mobileNavbarFooterOffsetHeight}px)`}
+              h={`calc(100dvh - 70px - ${mobileNavbarFooterOffsetHeight}px)`}
             >
               {links.map((link) => (
                 <NavLink
