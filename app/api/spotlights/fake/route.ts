@@ -39,11 +39,8 @@ export async function POST(request: NextRequest) {
     // check that every userIdsForSpotlight is in users[]
     for (const userId of userIdsForSpotlight) {
       if (!users.find((user) => user.id === userId)) {
-        return new Response(
-          `User with id ${userId} that's also job seeking not found`,
-          {
-            status: 404,
-          }
+        console.log(
+          `Request body contains id for user ${userId} but that user is not job seeking or does not exist.`
         );
       }
     }
