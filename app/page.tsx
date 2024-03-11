@@ -9,35 +9,37 @@ export default function HomePage() {
 
   return (
     <>
-      <Container py="xl" size="xl">
-        <Group justify="center" py="3rem">
-          <Box ta="center" maw="400">
-            <Text component="h1" fw={700} size="3rem">
-              Hire Skills
-            </Text>
-            <Text my="sm" c="dimmed" size="lg">
-              Helping skilled developers with less traditional experience get
-              hired
-            </Text>
-            <Group justify="center">
-              {userId ? null : (
-                <SignUpButton>
-                  <Button size="xs">Sign Up</Button>
-                </SignUpButton>
-              )}
-              <Button
-                size="xs"
-                variant="default"
-                component={Link}
-                href="/developers"
-              >
-                Developers
-              </Button>
+      {userId ? null : (
+        <>
+          <Container py="xl" size="xl">
+            <Group justify="center" py="3rem">
+              <Box ta="center" maw="400">
+                <Text component="h1" fw={700} size="3rem">
+                  Hire Skills
+                </Text>
+                <Text my="sm" c="dimmed" size="lg">
+                  Helping skilled developers with less traditional experience
+                  get hired
+                </Text>
+                <Group justify="center">
+                  <SignUpButton>
+                    <Button size="xs">Sign Up</Button>
+                  </SignUpButton>
+                  <Button
+                    size="xs"
+                    variant="default"
+                    component={Link}
+                    href="/developers"
+                  >
+                    Developers
+                  </Button>
+                </Group>
+              </Box>
             </Group>
-          </Box>
-        </Group>
-      </Container>
-      <Divider />
+          </Container>
+          <Divider />
+        </>
+      )}
       <Container py="3rem" size="xl">
         <ProjectsSection
           title="Weekly spotlight projects"
