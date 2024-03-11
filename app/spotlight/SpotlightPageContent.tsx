@@ -5,7 +5,7 @@ import ProjectFilters from "@/app/ui/ProjectFilters";
 import ProjectFiltersDrawer from "@/app/ui/ProjectFiltersDrawer";
 import { AuthContext } from "@/lib/AuthContextProvider";
 import useProjects from "@/lib/hooks/useProjects";
-import { ProjectCardType } from "@/lib/types";
+import { DeveloperMinimalCardType, ProjectCardType } from "@/lib/types";
 import { DEFAULT_PAGE_SIZE } from "@/lib/utils";
 import {
   Button,
@@ -21,8 +21,15 @@ import { IconFolderQuestion, IconMoodSad } from "@tabler/icons-react";
 import { useSearchParams } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import JoinSpotlightModal from "../ui/JoinSpotlightModal";
+import SpotlightParticipants from "../ui/SpotlightParticipants";
 
-function SpotlightPageContent({ endString }: { endString: string }) {
+function SpotlightPageContent({
+  endString,
+  participants,
+}: {
+  endString: string;
+  participants: DeveloperMinimalCardType[];
+}) {
   const { user } = useContext(AuthContext);
   const searchParams = useSearchParams();
   const [displayedProjects, setDisplayedProjects] = useState<ProjectCardType[]>(
@@ -67,6 +74,7 @@ function SpotlightPageContent({ endString }: { endString: string }) {
               their projects
             </Text>
           </div>
+          <SpotlightParticipants participants={participants} />
           <Group align="center">
             {(!user || !user.isSpotlightParticipant) && (
               <JoinSpotlightModal user={user} />

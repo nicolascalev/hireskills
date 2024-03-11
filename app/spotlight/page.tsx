@@ -25,7 +25,12 @@ async function SpotlightPage() {
   const endString =
     moment(res.spotlight.finishesAt).fromNow().replace("in ", "") + " left";
 
-  return <SpotlightPageContent endString={endString} />;
+  return (
+    <SpotlightPageContent
+      endString={endString}
+      participants={res.participants}
+    />
+  );
 }
 
 export default SpotlightPage;

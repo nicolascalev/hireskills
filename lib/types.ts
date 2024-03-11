@@ -129,3 +129,13 @@ export type DeveloperCardType = Prisma.UserGetPayload<{
     };
   };
 }>;
+
+export type DeveloperMinimalCardType = Prisma.UserGetPayload<{
+  select: {
+    id: true;
+    username: true;
+    fullName: true;
+    avatarUrl: true;
+    role: true;
+  };
+}>;

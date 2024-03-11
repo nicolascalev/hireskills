@@ -138,9 +138,23 @@ export async function getWeekSpotlight() {
       },
     })) as Spotlight;
 
+    const participants = await prisma.user.findMany({
+      where: {
+        isSpotlightParticipant: true,
+      },
+      select: {
+        id: true,
+        username: true,
+        fullName: true,
+        avatarUrl: true,
+        role: true,
+      },
+    });
+
     return {
       error: "",
       spotlight,
+      participants,
     };
   } catch (err) {
     return {
