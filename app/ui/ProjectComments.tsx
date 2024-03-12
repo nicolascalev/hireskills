@@ -10,6 +10,9 @@ import { showNotification } from "@mantine/notifications";
 import { useContext, useEffect, useMemo, useState } from "react";
 import { useFormStatus } from "react-dom";
 import ProjectComment from "./ProjectComment";
+import { DEFAULT_PAGE_SIZE } from "@/lib/utils";
+import MessageCard from "./MessageCard";
+import { IconMessageOff } from "@tabler/icons-react";
 
 function ProjectComments({
   projectId,
@@ -24,16 +27,21 @@ function ProjectComments({
   const [justPosted, setJustPosted] = useState<CommentWithUser[]>([]);
   const [count, setCount] = useState(commentCount);
   const [cursor, setCursor] = useState<string | undefined>(undefined);
+  const [nextCursor, setNextCursor] = useState<string | undefined>(undefined);
   const {
     comments: loadedComments,
     commentsLoading,
     commentsError,
-    commentsNextCursor,
   } = useComments(true, projectId, null, cursor);
 
   useEffect(() => {
     if (loadedComments) {
       setComments((prev) => [...prev, ...loadedComments]);
+      if (loadedComments.length == DEFAULT_PAGE_SIZE) {
+        setNextCursor(loadedComments[loadedComments.length - 1].id);
+      } else {
+        setNextCursor(undefined);
+      }
     }
   }, [loadedComments]);
 
@@ -135,18 +143,24 @@ function ProjectComments({
             <Text size="sm">Loading comments...</Text>
           </Group>
         )}
-        {commentsNextCursor && (
+        {nextCursor && !commentsLoading && (
           <Group justify="center" grow>
             <Button
               size="xs"
-              onClick={() => setCursor(commentsNextCursor)}
-              loading={commentsLoading}
+              onClick={() => setCursor(nextCursor)}
               variant="default"
               maw={400}
             >
               Load more comments
             </Button>
           </Group>
+        )}
+        {!loadedComments && commentsError && (
+          <MessageCard
+            icon={<IconMessageOff />}
+            title="Error loading comments"
+            message="Please try again later"
+          />
         )}
       </Stack>
     </div>

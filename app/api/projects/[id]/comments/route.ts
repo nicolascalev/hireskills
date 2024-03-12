@@ -1,4 +1,5 @@
 import prisma from "@/lib/prisma";
+import { DEFAULT_PAGE_SIZE } from "@/lib/utils";
 import { NextRequest } from "next/server";
 
 export async function GET(
@@ -34,7 +35,7 @@ export async function GET(
         },
       },
       skip: cursor ? 1 : 0,
-      take: 20,
+      take: DEFAULT_PAGE_SIZE,
       cursor: cursor
         ? {
             id: cursor,

@@ -25,8 +25,8 @@ import Footer from "@/app/ui/structure/Footer";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "hireskills",
-  description: "Find developer based on their skills",
+  title: "Hire Skills",
+  description: "Find developers based on their skills",
 };
 
 const theme = createTheme({
@@ -61,6 +61,13 @@ export default function RootLayout({
           <head>
             <ColorSchemeScript defaultColorScheme="auto" />
             <link rel="icon" href="/favicon.ico" sizes="any" />
+            <link rel="icon" href="/favicon.png" type="image/png" sizes="any" />
+            <link
+              rel="apple-touch-icon"
+              href="/favicon.png"
+              type="image/png"
+              sizes="any"
+            />
           </head>
           <body className={inter.className}>
             <MantineProvider theme={theme} defaultColorScheme="auto">

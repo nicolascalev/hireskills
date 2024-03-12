@@ -4,6 +4,7 @@ import { postComment } from "@/lib/actions/project/manageComments";
 import useComments from "@/lib/hooks/useComments";
 import { timeAgo } from "@/lib/moment";
 import { CommentWithUser } from "@/lib/types";
+import { DEFAULT_PAGE_SIZE } from "@/lib/utils";
 import { commentSchema } from "@/lib/zod";
 import {
   Anchor,
@@ -20,10 +21,11 @@ import {
 import { useForm, zodResolver } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
 import { showNotification } from "@mantine/notifications";
-import { IconArrowForward } from "@tabler/icons-react";
+import { IconArrowForward, IconMessageOff } from "@tabler/icons-react";
 import Link from "next/link";
 import { useContext, useEffect, useMemo, useState } from "react";
 import { useFormStatus } from "react-dom";
+import MessageCard from "./MessageCard";
 
 export default function Comment({
   comment,
@@ -44,17 +46,22 @@ export default function Comment({
   const [justPosted, setJustPosted] = useState<CommentWithUser[]>([]);
   const [count, setCount] = useState(comment._count.replies);
   const [cursor, setCursor] = useState<string | undefined>(undefined);
+  const [nextCursor, setNextCursor] = useState<string | undefined>(undefined);
 
   const {
     comments: loadedReplies,
     commentsLoading,
     commentsError,
-    commentsNextCursor,
   } = useComments(showReplies, projectId, comment.id, cursor);
 
   useEffect(() => {
     if (loadedReplies) {
       setReplies((prev) => [...prev, ...loadedReplies]);
+      if (loadedReplies.length == DEFAULT_PAGE_SIZE) {
+        setNextCursor(loadedReplies[loadedReplies.length - 1].id);
+      } else {
+        setNextCursor(undefined);
+      }
     }
   }, [loadedReplies]);
 
@@ -133,7 +140,7 @@ export default function Comment({
           </Text>
         </Group>
       </Group>
-      <Text size="sm" my="xs"className="prewrap_breakword">
+      <Text size="sm" my="xs" className="prewrap_breakword">
         {comment.content}
       </Text>
       {level < 4 && (
@@ -196,18 +203,24 @@ export default function Comment({
               <Text size="sm">Loading...</Text>
             </Group>
           )}
-          {commentsNextCursor && (
+          {nextCursor && !commentsLoading && (
             <div>
               <Button
                 size="xs"
-                onClick={() => setCursor(commentsNextCursor)}
-                loading={commentsLoading}
+                onClick={() => setCursor(nextCursor)}
                 variant="default"
                 maw={400}
               >
                 Load more replies
               </Button>
             </div>
+          )}
+          {!loadedReplies && commentsError && (
+            <MessageCard
+              icon={<IconMessageOff />}
+              title="Error loading replies"
+              message="Please try again later"
+            />
           )}
         </Stack>
       )}
@@ -231,7 +244,7 @@ export default function Comment({
                   </Text>
                 </Group>
               </Group>
-              <Text size="sm" my="xs"className="prewrap_breakword">
+              <Text size="sm" my="xs" className="prewrap_breakword">
                 {comment.content}
               </Text>
             </div>

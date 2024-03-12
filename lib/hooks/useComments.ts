@@ -25,12 +25,10 @@ export default function useComments(
 
   const comments = data as CommentWithUser[] | null;
   const last = comments ? comments[comments.length - 1] : null;
-  const nextCursor = last ? last.id : undefined;
 
   return {
     comments: data as CommentWithUser[],
     commentsLoading: isLoading,
     commentsError: error,
-    commentsNextCursor: nextCursor,
   };
 }
