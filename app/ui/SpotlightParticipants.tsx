@@ -64,7 +64,9 @@ function SpotlightParticipants({
           {participants.map((participant) => (
             <DevelperMinimalCard key={participant.id} developer={participant} />
           ))}
-          <Button size="xs">Close</Button>
+          <Button size="xs" onClick={() => close()}>
+            Close
+          </Button>
         </Stack>
       </Modal>
     </>
