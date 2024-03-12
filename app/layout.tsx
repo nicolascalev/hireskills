@@ -60,6 +60,7 @@ export default function RootLayout({
         <html lang="en">
           <head>
             <ColorSchemeScript defaultColorScheme="auto" />
+            <link rel="icon" href="/favicon.ico" sizes="any" />
           </head>
           <body className={inter.className}>
             <MantineProvider theme={theme} defaultColorScheme="auto">
